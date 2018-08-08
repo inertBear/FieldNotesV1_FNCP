@@ -22,8 +22,8 @@ import com.devhunter.fncp.mvc.model.FNButton;
 import com.devhunter.fncp.mvc.model.FNLabel;
 import com.devhunter.fncp.mvc.model.FNPanel;
 import com.devhunter.fncp.mvc.model.FNTextField;
-import com.devhunter.fncp.mvc.model.FieldNoteUser;
-import com.devhunter.fncp.mvc.model.FieldNoteUser.FieldNoteUserBuilder;
+import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.mvc.model.FNUser.FNUser;
 import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
 
 public class DeleteUserPanel extends FNPanel{
@@ -77,12 +77,9 @@ public class DeleteUserPanel extends FNPanel{
 
 		mButtonDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Create FieldNoteUser -- we don't need to know the password to delete the user
-				FieldNoteUser user = new FieldNoteUserBuilder()
-						.setUserName(mDeleteUser.getText())
-						// bypass password validation, the existence of the user is validated by the server
-						.setPassword("password")
-						.createUser();
+				// Create FNEntity -- we don't need to know the password to delete the user
+                // bypass password validation, the existence of the user is validated by the server
+				FNEntity user = new FNUser(mDeleteUser.getText(), "password");
 				if (FieldNoteUserValidation.validate(user)) {
 					// send user to controller for CUD event
 					SQLUserController conn = new SQLUserController();

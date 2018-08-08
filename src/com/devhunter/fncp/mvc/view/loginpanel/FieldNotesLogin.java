@@ -133,7 +133,7 @@ public class FieldNotesLogin extends FNPanel {
 
 		mButtonLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: refactor to use FieldNoteUser
+				// TODO: refactor to use FNEntity
 				mLoginPanel.setVisible(false);
 				String username = mLoginUsername.getText();
 
@@ -141,11 +141,12 @@ public class FieldNotesLogin extends FNPanel {
 					FieldNotesUtil.getInstance().setCurrentUser(username);
 					// TODO: depreciated (for security reasons): need to change to .getPassword() -- this returns a char[]
 					String password = mLoginPassword.getText();
-					// send FNUser to controller for login validation
+					// send FNEntity to controller for login validation
 					boolean result = false;
 					FNLoginController action = new FNLoginController();
 					result = action.SQLLogin(username, password);
 					if (result) {
+					    //TODO: check user type: if admin load ALL, if user load:
 						FieldNotesControlPanel.getInstance();
 						//mLoginFrame.dispatchEvent(new WindowEvent(mLoginFrame, WindowEvent.WINDOW_CLOSING));
 					} else {

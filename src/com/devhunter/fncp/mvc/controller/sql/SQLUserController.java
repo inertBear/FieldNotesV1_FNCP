@@ -13,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.devhunter.fncp.constants.SqlConstants;
-import com.devhunter.fncp.mvc.model.FieldNoteUser;
+import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
 
 /**
  * This class holds the methods for all the user changes from and into the
@@ -38,8 +38,7 @@ public class SQLUserController {
 	 * Used when searching for a specific user within FieldNotes. Returns an
 	 * ArrayList containing the data of the search for user
 	 * 
-	 * @param String
-	 *            user
+	 * @param String user
 	 * @return ArrayList<String> searchResults
 	 * 
 	 *         TODO: Users needs to be a Class that holds the attributes: id, user
@@ -116,15 +115,15 @@ public class SQLUserController {
 	/**
 	 * Adds a User to the Database. validates and rejects duplicate UserNames
 	 * 
-	 * @param FieldNoteUser user
+	 * @param FNEntity user
 	 * @return int responseCode, (2 if the UserName already exists, 1 for success, 0
 	 *         for error)
 	 */
 
-	public int addUser(FieldNoteUser user) {
-		final String selectQuery = "SELECT * FROM rhl_login WHERE rhl_username = '" + user.getUserName() + "' ";
-		final String addUserQuery = "INSERT INTO rhl_login (rhl_username, rhl_password) " + "VALUES ( '" + user.getUserName()
-				+ "', '" + user.getPassword() + "' )";
+	public int addUser(FNEntity user) {
+		final String selectQuery = "SELECT * FROM rhl_login WHERE rhl_username = '" + user.getUsername() + "' ";
+		final String addUserQuery = "INSERT INTO rhl_login (rhl_username, rhl_password, rhl_user_type) " + "VALUES ( '" + user.getUsername()
+				+ "', '" + user.getPassword() + "', '" + user.getType() + "' )";
 		int responseCode = 0;
 		try {
 			mResultSet = mStatement.executeQuery(selectQuery);
@@ -145,15 +144,15 @@ public class SQLUserController {
 	/**
 	 * Deletes a FieldNotesUser from the Database. Validates user existence
 	 * 
-	 * @param FieldNoteUser user
+	 * @param FNUser user
 	 * @return int deleteUserResponseCode, (1 for success, 2 if the user did not
 	 *         exist, 0 for error)
 	 */
 
-	public int deleteUser(FieldNoteUser user) {
+	public int deleteUser(FNEntity user) {
 
-		final String selectQuery = "SELECT * FROM rhl_login WHERE rhl_username = '" + user.getUserName() + "' ";
-		final String deleteUserQuery = "DELETE FROM rhl_login where rhl_username = '" + user.getUserName() + "' ";
+		final String selectQuery = "SELECT * FROM rhl_login WHERE rhl_username = '" + user.getUsername() + "' ";
+		final String deleteUserQuery = "DELETE FROM rhl_login where rhl_username = '" + user.getUsername() + "' ";
 		int deleteUserResponseCode = 0;
 		try {
 			mResultSet = mStatement.executeQuery(selectQuery);
@@ -173,15 +172,15 @@ public class SQLUserController {
 	/**
 	 * Change the password of a user in the database. validates and rejects nonexistent UserNames
 	 * 
-	 * @param FieldNoteUser (contains the CURRENT user and NEW password)
+	 * @param FNUser (contains the CURRENT user and NEW password)
 	 * @return int changePassResponseCode, (1 if success, 2 if UserName does not
 	 *         exist, 0 if error)
 	 */
 
-	public int updatePassword(FieldNoteUser user) {
-		final String selectQuery = "SELECT * FROM rhl_login WHERE rhl_username = '" + user.getUserName() + "' ";
+	public int updatePassword(FNEntity user) {
+		final String selectQuery = "SELECT * FROM rhl_login WHERE rhl_username = '" + user.getUsername() + "' ";
 		final String updatePassQuery = "UPDATE rhl_login SET rhl_password = '" + user.getPassword()
-				+ "' WHERE rhl_username = '" + user.getUserName() + "'";
+				+ "' WHERE rhl_username = '" + user.getUsername() + "'";
 		int changePassResponseCode = 0;
 		try {
 			mResultSet = mStatement.executeQuery(selectQuery);
