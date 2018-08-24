@@ -7,11 +7,19 @@ package com.devhunter.fncp.mvc.model.FNUser;
 
 public class FNEntity {
 
+    public int mId = 0;
     public String mType = "UNKNOWN";
-
     public String mUsername = "FNUSER";
     //TODO: convert this to Char array
     public String mPassword = "FNPASSWORD";
+
+    public void setID(int id){
+        this.mId = id;
+    }
+
+    public int getId(){
+        return mId;
+    }
 
     public void setUsername(String username) {
         this.mUsername = username;
