@@ -1,199 +1,196 @@
 /**
  * © 2017-2018 FieldNotes
  * All Rights Reserved
- * 
+ * <p>
  * Created by DevHunter exclusively for FieldNotes
  */
 
 package com.devhunter.fncp.mvc.controller.sql;
+
+import com.devhunter.fncp.constants.SqlConstants;
+import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.utilities.SqlInterpolate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.devhunter.fncp.constants.SqlConstants;
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
-
 /**
  * This class holds the methods for all the user changes from and into the
  * database. Using these methods users can Add, Delete, Search and Change
  * Passwords for FieldNotes users. The methods housed here were only intended to
- * relate to the actual storing, alteration, and retrieving of FieldNote user
+ * relate to the actual storing, alteration, and retrieving of FNEntity
  * data.
  */
-
 public class SQLUserController {
 
-	private SQLBridgeService mSQLBridgeService;
-	private Statement mStatement;
-	private ResultSet mResultSet;
+    private Statement mStatement;
+    private ResultSet mResultSet;
 
-	public SQLUserController() {
-		//mSQLBridgeService = SQLBridgeService.getInstance();
-		mStatement = mSQLBridgeService.getInstance().getSQLBridgeStatement();
-	}
-	
-	/**
-	 * Used when searching for a specific user within FieldNotes. Returns an
-	 * ArrayList containing the data of the search for user
-	 * 
-	 * @param String user
-	 * @return ArrayList<String> searchResults
-	 * 
-	 *         TODO: Users needs to be a Class that holds the attributes: id, user
-	 *         name, and password. These user objects can then be stripped of their
-	 *         data for conversing with the database
-	 */
+    public SQLUserController() {
+        mStatement = SQLBridgeService.getInstance().getSQLBridgeStatement();
+    }
 
-	public ArrayList<String> mySQLSearchUser(String user) {
+    /**
+     * Used when searching for a specific user within FieldNotes. Returns an
+     * FNEntity of the user searched
+     *
+     * @param username
+     * @return ArrayList<FnEntity> searchResults
+     */
+    public FNEntity mySQLSearchUser(String username) {
 
-		final String selectQuery = "SELECT * FROM rhl_login WHERE rhl_username = '" + user + "' ";
-		ArrayList<String> searchResults = new ArrayList<String>();
+        //TODO: [FNCP-022] create an Entity factory to create the entity type by the String "type" passed in
+        FNEntity entity = new FNEntity();
+        String query = SqlInterpolate.interpolate(SqlConstants.SELECT_QUERY, username);
 
-		try {
-			mResultSet = mStatement.executeQuery(selectQuery);
+        try {
+            mResultSet = mStatement.executeQuery(query);
 
-			if (!mResultSet.next()) {
-				searchResults.add(0, "Username does not exist");
-				searchResults.add(1, "");
-				searchResults.add(2, "");
-			} else {
-				mResultSet.beforeFirst();
-				while (mResultSet.next()) {
-					String idValue = mResultSet.getString(SqlConstants.ID_COLUMN);
-					String userValue = mResultSet.getString(SqlConstants.USERNAME_COLUMN);
-					String passValue = mResultSet.getString(SqlConstants.PASSWORD_COLUMN);
+            if (mResultSet != null) {
+                if (mResultSet.next()) {
+                    // move iterator back to beginning of result set
+                    mResultSet.beforeFirst();
+                    while (mResultSet.next()) {
+                        entity.setID(Integer.parseInt(mResultSet.getString(SqlConstants.ID_COLUMN)));
+                        entity.setUsername(mResultSet.getString(SqlConstants.USERNAME_COLUMN));
+                        entity.setPassword(mResultSet.getString(SqlConstants.PASSWORD_COLUMN));
+                        entity.setType(mResultSet.getString((SqlConstants.USER_TYPE_COLUMN)));
+                    }
+                }
+                mResultSet.close();
+            }
 
-					searchResults.add(idValue);
-					searchResults.add(userValue);
-					searchResults.add(passValue);
-				}
-			}
-			mResultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("sql exception: Search Failed");
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+            System.out.println("No user data found for that value");
+        }
+        return entity;
+    }
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("sql exception: Search Failed");
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
-			System.out.println("No user data found for that value");
-		}
-		return searchResults;
-	}
+    /**
+     * Used when search for all users within FieldNotes. The users are returned in
+     * an ArrayList containing all the FNEntities
+     *
+     * @return ArrayList<FNEntity> allUsers
+     */
+    public ArrayList<FNEntity> mySQLSearchUser() {
 
-	/**
-	 * Used when search for all users within FieldNotes. The users are returned in
-	 * an ArrayList containing all the values of the (Future)'FieldNotesUser' class
-	 * 
-	 * @return ArrayList<String> allSearchResults
-	 */
+        ArrayList<FNEntity> allUsers = new ArrayList<>();
+        String query = SqlConstants.SELECT_ALL_QUERY;
 
-	public ArrayList<String> mySQLSearchUser() {
+        try {
+            mResultSet = mStatement.executeQuery(query);
 
-		final String selectAllQuery = "SELECT * FROM rhl_login ";
-		ArrayList<String> allSearchResults = new ArrayList<String>();
+            if (mResultSet != null) {
+                while (mResultSet.next()) {
+                    // create a new FNUser
+                    FNEntity user = new FNEntity();
+                    // assign the user data from the result row
+                    user.setID(Integer.parseInt(mResultSet.getString(SqlConstants.ID_COLUMN)));
+                    user.setUsername(mResultSet.getString(SqlConstants.USERNAME_COLUMN));
+                    user.setPassword(mResultSet.getString(SqlConstants.PASSWORD_COLUMN));
+                    user.setType(mResultSet.getString(SqlConstants.USER_TYPE_COLUMN));
+                    //add this user to the list of users
+                    allUsers.add(user);
+                }
+                mResultSet.close();
+            }
 
-		try {
-			mResultSet = mStatement.executeQuery(selectAllQuery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("sql exception: Search Failed");
+        }
+        return allUsers;
+    }
 
-			while (mResultSet.next()) {
-				allSearchResults.add(mResultSet.getString(SqlConstants.ID_COLUMN));
-				allSearchResults.add(mResultSet.getString(SqlConstants.USERNAME_COLUMN));
-				allSearchResults.add(mResultSet.getString(SqlConstants.PASSWORD_COLUMN));
-			}
 
-			mResultSet.close();
+    /**
+     * Adds a User to the Database. validates and rejects duplicate UserNames
+     *
+     * @param user
+     * @return int responseCode, (2 if the UserName already exists, 1 for success, 0
+     * for error)
+     */
+    public int addUser(FNEntity user) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("sql exception: Search Failed");
-		}
-		return allSearchResults;
-	}
+        String searchQuery = SqlInterpolate.interpolate(SqlConstants.SELECT_QUERY, user.getUsername());
+        String addQuery = SqlInterpolate.interpolate(SqlConstants.ADD_USER_QUERY, user.getUsername(), user.getPassword(), user.getType());
 
-	/**
-	 * Adds a User to the Database. validates and rejects duplicate UserNames
-	 * 
-	 * @param FNEntity user
-	 * @return int responseCode, (2 if the UserName already exists, 1 for success, 0
-	 *         for error)
-	 */
+        int responseCode;
+        try {
+            mResultSet = mStatement.executeQuery(searchQuery);
+            if (mResultSet.next()) {
+                responseCode = 2;
+            } else {
+                mStatement.executeUpdate(addQuery);
+                responseCode = 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("sql exception: Add User Failed");
+            responseCode = 0;
+        }
+        return responseCode;
+    }
 
-	public int addUser(FNEntity user) {
-		final String selectQuery = "SELECT * FROM rhl_login WHERE rhl_username = '" + user.getUsername() + "' ";
-		final String addUserQuery = "INSERT INTO rhl_login (rhl_username, rhl_password, rhl_user_type) " + "VALUES ( '" + user.getUsername()
-				+ "', '" + user.getPassword() + "', '" + user.getType() + "' )";
-		int responseCode = 0;
-		try {
-			mResultSet = mStatement.executeQuery(selectQuery);
-			if (mResultSet.next()) {
-				responseCode = 2;
-			} else {
-				mStatement.executeUpdate(addUserQuery);
-				responseCode = 1;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("sql exception: Add User Failed");
-			responseCode = 0;
-		}
-		return responseCode;
-	}
+    /**
+     * Deletes a FNEntity from the Database. Validates user existence
+     *
+     * @param user
+     * @return int deleteUserResponseCode, (1 for success, 2 if the user did not
+     * exist, 0 for error)
+     */
+    public int deleteUser(FNEntity user) {
 
-	/**
-	 * Deletes a FieldNotesUser from the Database. Validates user existence
-	 * 
-	 * @param FNUser user
-	 * @return int deleteUserResponseCode, (1 for success, 2 if the user did not
-	 *         exist, 0 for error)
-	 */
+        String searchQuery = SqlInterpolate.interpolate(SqlConstants.SELECT_QUERY, user.getUsername());
+        String deleteQuery = SqlInterpolate.interpolate(SqlConstants.DELETE_USER_QUERY, user.getUsername());
 
-	public int deleteUser(FNEntity user) {
+        int deleteUserResponseCode;
+        try {
+            mResultSet = mStatement.executeQuery(searchQuery);
+            if (mResultSet.next()) {
+                mStatement.executeUpdate(deleteQuery);
+                deleteUserResponseCode = 1;
+            } else {
+                deleteUserResponseCode = 2;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            deleteUserResponseCode = 0;
+        }
+        return deleteUserResponseCode;
+    }
 
-		final String selectQuery = "SELECT * FROM rhl_login WHERE rhl_username = '" + user.getUsername() + "' ";
-		final String deleteUserQuery = "DELETE FROM rhl_login where rhl_username = '" + user.getUsername() + "' ";
-		int deleteUserResponseCode = 0;
-		try {
-			mResultSet = mStatement.executeQuery(selectQuery);
-			if (mResultSet.next()) {
-				mStatement.executeUpdate(deleteUserQuery);
-				deleteUserResponseCode = 1;
-			} else {
-				deleteUserResponseCode = 2;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			deleteUserResponseCode = 0;
-		}
-		return deleteUserResponseCode;
-	}
+    /**
+     * Change the password of a user in the database. validates and rejects nonexistent UserNames
+     *
+     * @param user (contains the CURRENT user and NEW password)
+     * @return int changePassResponseCode, (1 if success, 2 if UserName does not
+     * exist, 0 if error)
+     */
+    public int updatePassword(FNEntity user) {
 
-	/**
-	 * Change the password of a user in the database. validates and rejects nonexistent UserNames
-	 * 
-	 * @param FNUser (contains the CURRENT user and NEW password)
-	 * @return int changePassResponseCode, (1 if success, 2 if UserName does not
-	 *         exist, 0 if error)
-	 */
+        String searchQuery = SqlInterpolate.interpolate(SqlConstants.SELECT_QUERY, user.getUsername());
+        String updatePassworQuery = SqlInterpolate.interpolate(SqlConstants.UPDATE_PASSWORD_QUERY, user.getPassword(), user.getUsername());
 
-	public int updatePassword(FNEntity user) {
-		final String selectQuery = "SELECT * FROM rhl_login WHERE rhl_username = '" + user.getUsername() + "' ";
-		final String updatePassQuery = "UPDATE rhl_login SET rhl_password = '" + user.getPassword()
-				+ "' WHERE rhl_username = '" + user.getUsername() + "'";
-		int changePassResponseCode = 0;
-		try {
-			mResultSet = mStatement.executeQuery(selectQuery);
-			if (mResultSet.next()) {
-				mStatement.executeUpdate(updatePassQuery);
-				changePassResponseCode = 1;
-			} else {
-				changePassResponseCode = 2;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			changePassResponseCode = 0;
-		}
-		return changePassResponseCode;
-	}
+        int changePassResponseCode;
+        try {
+            mResultSet = mStatement.executeQuery(searchQuery);
+            if (mResultSet.next()) {
+                mStatement.executeUpdate(updatePassworQuery);
+                changePassResponseCode = 1;
+            } else {
+                changePassResponseCode = 2;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            changePassResponseCode = 0;
+        }
+        return changePassResponseCode;
+    }
 }

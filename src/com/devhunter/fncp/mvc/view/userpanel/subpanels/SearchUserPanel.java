@@ -1,22 +1,11 @@
 /**
  * © 2017-2018 FieldNotes
  * All Rights Reserved
- * 
+ * <p>
  * Created by DevHunter exclusively for FieldNotes
  */
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
-
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import com.devhunter.fncp.constants.FieldNotesConstants;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
@@ -25,138 +14,146 @@ import com.devhunter.fncp.mvc.model.FNButton;
 import com.devhunter.fncp.mvc.model.FNLabel;
 import com.devhunter.fncp.mvc.model.FNPanel;
 import com.devhunter.fncp.mvc.model.FNTextField;
+import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
 import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class SearchUserPanel extends FNPanel {
 
-	// Panels
-	public static SearchUserPanel mInstance;
-	private static FNPanel mSearchUserPanel;
-	private static FNPanel mSearchTextFieldPanel;
-	// TextFields
-	private FNTextField mSearchUser;
-	// TextAreas
-	private JTextArea mSearchUserOutput;
-	// Buttons
-	private FNButton mButtonSearch;
-	private FNButton mButtonExport;
-	// ArrayLists
-	private ArrayList<String> mUserSearchResults;
+    // Panels
+    public static SearchUserPanel mInstance;
+    private static FNPanel mSearchUserPanel;
+    private static FNPanel mSearchTextFieldPanel;
+    // TextFields
+    private FNTextField mSearchUser;
+    // TextAreas
+    private JTextArea mSearchUserOutput;
+    // Buttons
+    private FNButton mButtonSearch;
+    private FNButton mButtonExport;
+    // ArrayLists
+    private ArrayList<String> mUserSearchResults;
 
-	private SearchUserPanel() {
-		// Create Panels
-		mSearchUserPanel = new FNPanel();
-		mSearchTextFieldPanel = new FNPanel();
-		// Create TextFields
-		mSearchUser = new FNTextField();
-		// Create TextAreas
-		mSearchUserOutput = new JTextArea(28, 32);
-		// Create Buttons
-		mButtonSearch = new FNButton(FieldNotesConstants.BUTTON_SEARCH);
-		mButtonExport = new FNButton(FieldNotesConstants.BUTTON_EXPORT);
-		// Create ArrayLists
-		mUserSearchResults = new ArrayList<String>();
-		init();
-	}
+    private static final String ID = "ID: ";
+    private static final String USERNAME = "Username: ";
+    private static final String PASSWORD = "Password: ";
+    private static final String USER_TYPE = "User Type: ";
 
-	public static SearchUserPanel getInstance() {
-		if (mInstance == null) {
-			mInstance = new SearchUserPanel();
-		}
-		return mInstance;
-	}
+    private SearchUserPanel() {
+        // Create Panels
+        mSearchUserPanel = new FNPanel();
+        mSearchTextFieldPanel = new FNPanel();
+        // Create TextFields
+        mSearchUser = new FNTextField();
+        // Create TextAreas
+        mSearchUserOutput = new JTextArea(28, 32);
+        // Create Buttons
+        mButtonSearch = new FNButton(FieldNotesConstants.BUTTON_SEARCH);
+        mButtonExport = new FNButton(FieldNotesConstants.BUTTON_EXPORT);
+        // Create ArrayLists
+        mUserSearchResults = new ArrayList<String>();
+        init();
+    }
 
-	void init() {
-		// Panel Layouts
-		BorderLayout searchUserLayout = new BorderLayout();
-		mSearchUserPanel.setLayout(searchUserLayout);
-		GridLayout searchUserTextFieldPanelLayout = new GridLayout(0,2);
-		mSearchTextFieldPanel.setLayout(searchUserTextFieldPanelLayout);
-		// Labels
-		FNLabel searchUserLbl = new FNLabel(FieldNotesConstants.FN_USERNAME_LABEL);
-		// ScrollPanes/TextAreas
-		JScrollPane userSearchScroll = new JScrollPane(mSearchUserOutput);
-		mSearchUserOutput.setEditable(false);
-		
-		// Add Views to TextField Panel
-		mSearchTextFieldPanel.add(searchUserLbl);
-		mSearchTextFieldPanel.add(mSearchUser);
-		mSearchTextFieldPanel.add(new FNLabel());
-		mSearchTextFieldPanel.add(mButtonSearch);
-		// Add Views to Main Panel
-		mSearchUserPanel.add(mSearchTextFieldPanel, BorderLayout.NORTH);
-		mSearchUserPanel.add(userSearchScroll, BorderLayout.CENTER);
-		mSearchUserPanel.add(mButtonExport, BorderLayout.SOUTH);
-		
-		// Initial View Settings
-		mSearchUserPanel.setVisible(false);
-		FieldNotesControlPanel.getFieldNotesFrame().repaint();
-		FieldNotesControlPanel.getFieldNotesFrame().revalidate();
-		
-		/*
-		 * TODO: Move controller code
-		 */
-		mButtonSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mSearchUserOutput.setVisible(true);
-				mSearchUserOutput.setText(null);
-				SQLUserController conn = new SQLUserController();
+    public static SearchUserPanel getInstance() {
+        if (mInstance == null) {
+            mInstance = new SearchUserPanel();
+        }
+        return mInstance;
+    }
 
-				if (mSearchUser.getText().trim().isEmpty()) {
-					mUserSearchResults = conn.mySQLSearchUser();
+    void init() {
+        // Panel Layouts
+        BorderLayout searchUserLayout = new BorderLayout();
+        mSearchUserPanel.setLayout(searchUserLayout);
+        GridLayout searchUserTextFieldPanelLayout = new GridLayout(0, 2);
+        mSearchTextFieldPanel.setLayout(searchUserTextFieldPanelLayout);
+        // Labels
+        FNLabel searchUserLbl = new FNLabel(FieldNotesConstants.FN_USERNAME_LABEL);
+        // ScrollPanes/TextAreas
+        JScrollPane userSearchScroll = new JScrollPane(mSearchUserOutput);
+        mSearchUserOutput.setEditable(false);
 
-					for (int i = 0; i < mUserSearchResults.size(); i++) {
-						if (i % 3 == 0) {
-							mSearchUserOutput.append("User ID:      " + mUserSearchResults.get(i) + "\n");
-						} else if ((i + 1) % 3 == 0) {
-							mSearchUserOutput.append("Password:  " + mUserSearchResults.get(i) + "\n\n");
-						} else {
-							mSearchUserOutput.append("Username:  " + mUserSearchResults.get(i) + "\n");
-						}
-					}
-				} else {
-					String username = mSearchUser.getText();
-					mUserSearchResults = conn.mySQLSearchUser(username);
-					mSearchUserOutput.setText("User ID:      " + mUserSearchResults.get(0) + "\n");
-					mSearchUserOutput.append("Username:  " + mUserSearchResults.get(1) + "\n");
-					mSearchUserOutput.append("Password:  " + mUserSearchResults.get(2) + "\n\n");
-				}
-			}
-		});
+        // Add Views to TextField Panel
+        mSearchTextFieldPanel.add(searchUserLbl);
+        mSearchTextFieldPanel.add(mSearchUser);
+        mSearchTextFieldPanel.add(new FNLabel());
+        mSearchTextFieldPanel.add(mButtonSearch);
+        // Add Views to Main Panel
+        mSearchUserPanel.add(mSearchTextFieldPanel, BorderLayout.NORTH);
+        mSearchUserPanel.add(userSearchScroll, BorderLayout.CENTER);
+        mSearchUserPanel.add(mButtonExport, BorderLayout.SOUTH);
 
-		// When user trys to export CSV file to user desktop
-		mButtonExport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int exportSuccessCode;
+        // Initial View Settings
+        mSearchUserPanel.setVisible(false);
+        FieldNotesControlPanel.getFieldNotesFrame().repaint();
+        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
 
-				ExportController exporter = new ExportController();
-				exportSuccessCode = exporter.writeUserToCSVFile(mUserSearchResults);
-				if (exportSuccessCode == 1) {
-					JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
-							"Success! CVS report generated");
-				} else {
-					JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
-							"Failure! CVS export error");
-				}
-			}
-		});
-	}
+        mButtonSearch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mSearchUserOutput.setVisible(true);
+                mSearchUserOutput.setText(null);
+                SQLUserController conn = new SQLUserController();
 
-	public static JPanel getView() {
-		return mSearchUserPanel;
-	}
+                if (mSearchUser.getText().trim().isEmpty()) {
+                    ArrayList<FNEntity> users = conn.mySQLSearchUser();
 
-	public static void showView() {
-		mSearchUserPanel.setVisible(true);
-	}
+                    for (FNEntity each : users) {
+                        //TODO: [FNCP-023] create static print user method in FNEntity EX: public static void printUser(where to print)
+                        mSearchUserOutput.append(ID + each.getId() + "\n");
+                        mSearchUserOutput.append(USERNAME + each.getUsername() + "\n");
+                        mSearchUserOutput.append(PASSWORD + each.getPassword() + "\n");
+                        mSearchUserOutput.append(USER_TYPE + each.getType() + "\n\n");
+                    }
+                } else {
+                    String username = mSearchUser.getText();
+                    FNEntity user = conn.mySQLSearchUser(username);
+                    mSearchUserOutput.setText(ID + user.getId() + "\n");
+                    mSearchUserOutput.append(USERNAME + user.getUsername() + "\n");
+                    mSearchUserOutput.append(PASSWORD + user.getPassword() + "\n");
+                    mSearchUserOutput.append(USER_TYPE + user.getType() + "\n\n");
+                }
+            }
+        });
 
-	public static void hideView() {
-		mSearchUserPanel.setVisible(false);
-		mInstance.resetGui();
-	}
+        // When user trys to export CSV file to user desktop
+        mButtonExport.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int exportSuccessCode;
 
-	private void resetGui() {
-		mSearchUser.setText(null);
-		mSearchUserOutput.setText(null);
-	}
+                ExportController exporter = new ExportController();
+                exportSuccessCode = exporter.writeUserToCSVFile(mUserSearchResults);
+                if (exportSuccessCode == 1) {
+                    JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
+                            "Success! CVS report generated");
+                } else {
+                    JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
+                            "Failure! CVS export error");
+                }
+            }
+        });
+    }
+
+    public static JPanel getView() {
+        return mSearchUserPanel;
+    }
+
+    public static void showView() {
+        mSearchUserPanel.setVisible(true);
+    }
+
+    public static void hideView() {
+        mSearchUserPanel.setVisible(false);
+        mInstance.resetGui();
+    }
+
+    private void resetGui() {
+        mSearchUser.setText(null);
+        mSearchUserOutput.setText(null);
+    }
 }
