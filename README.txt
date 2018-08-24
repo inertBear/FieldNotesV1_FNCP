@@ -52,7 +52,7 @@ Export Executable Jar from IntelliJ
 		Select the Directory to save it in
 		Apply/OK
 	Build -> Build Artifacts
-		Select Artifact -> build (to out/artifacts/FNCP_jar/FNCP_%date%
+		Select Artifact -> build (to out/artifacts/FNCP_jar/FNCP_%date%)
 
 Create Executable with Launch 4J
 
