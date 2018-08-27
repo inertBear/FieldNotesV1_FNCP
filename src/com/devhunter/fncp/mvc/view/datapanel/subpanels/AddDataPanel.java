@@ -205,7 +205,7 @@ public class AddDataPanel extends FNPanel {
 						.setLocation((String) mSpinnerNewDataLocation.getValue())
 						.setGPSCoords(mTextNewDataGPS.getText())
 						.setBillingType((String) mSpinnerNewDataBillable.getValue())
-						.createFieldNote();
+						.build();
 				// validate FieldNote
 				if(FieldNoteValidation.validate(fieldNote)) {
 					// send FieldNote to controller for CUD event

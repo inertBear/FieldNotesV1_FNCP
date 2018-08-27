@@ -220,7 +220,7 @@ public class EditDataPanel extends FNPanel {
 					mFlexTicketNumber = mCRUDSearch.getText();
 					// send Ticket Number to controller for CRUD search
 					SQLDataController conn = new SQLDataController();
-					FieldNote searchResult = conn.searchFieldNote(mFlexTicketNumber);
+					FieldNote searchResult = conn.mySQLSearchDataByTicketNumber(mFlexTicketNumber);
 					// if the returned value has a ticket number, then it is a valid FieldNote
 					if (searchResult.getTicketNumber() == null) {
 						JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
@@ -273,7 +273,7 @@ public class EditDataPanel extends FNPanel {
 						.setLocation((String) mSpinnerEditDataLocation.getValue())
 						.setGPSCoords(mTextEditDataGPS.getText())
 						.setBillingType((String) mSpinnerEditDataBillable.getValue())
-						.createFieldNote();
+						.build();
 				// Validate FieldNote
 				if(FieldNoteValidation.validate(fieldNote)) {
 					// send to controller for CUD Event

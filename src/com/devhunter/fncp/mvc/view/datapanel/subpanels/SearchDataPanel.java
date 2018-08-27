@@ -42,6 +42,7 @@ import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
  * 	investigate the Java version of a (Android) ListView. Produce a list similar to the mobile version.
  * 	Need to get rid of the JTextArea at the very least. It is really sloppy and ugly to look at.
  *
+ * TODO: SQL search methods now return arraylist<FieldNote> implement the search result display (like i did for the users)
  */
 
 public class SearchDataPanel extends FNPanel {
@@ -140,9 +141,6 @@ public class SearchDataPanel extends FNPanel {
 		FieldNotesControlPanel.getFieldNotesFrame().repaint();
 		FieldNotesControlPanel.getFieldNotesFrame().revalidate();
 
-		/*
-		 *  TODO: move controller code
-		 */
 		mButtonSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SQLDataController conn = new SQLDataController();

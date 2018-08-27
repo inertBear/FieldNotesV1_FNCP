@@ -187,7 +187,7 @@ public class DeleteDataPanel extends FNPanel {
 					mFlexTicketNumber = mCRUDSearch.getText();
 					// send Ticket Number to controller for CRUD search
 					SQLDataController conn = new SQLDataController();
-					FieldNote result = conn.searchFieldNote(mFlexTicketNumber);
+					FieldNote result = conn.mySQLSearchDataByTicketNumber(mFlexTicketNumber);
 					// if the returned value has a ticket number, then it is a valid FieldNote
 					if (result.getTicketNumber() == null) {
 						JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
