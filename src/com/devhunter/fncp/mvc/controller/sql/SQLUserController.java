@@ -115,6 +115,8 @@ public class SQLUserController {
      * @param user
      * @return int responseCode, (2 if the UserName already exists, 1 for success, 0
      * for error)
+     * <p>
+     * TODO: [FNCP-024] substitute responseCode for Tuple<boolean, message>
      */
     public int addUser(FNEntity user) {
 
@@ -176,13 +178,13 @@ public class SQLUserController {
     public int updatePassword(FNEntity user) {
 
         String searchQuery = SqlInterpolate.interpolate(SqlConstants.SELECT_USER_QUERY, user.getUsername());
-        String updatePassworQuery = SqlInterpolate.interpolate(SqlConstants.UPDATE_USER_PASSWORD_QUERY, user.getPassword(), user.getUsername());
+        String updatePasswordQuery = SqlInterpolate.interpolate(SqlConstants.UPDATE_USER_PASSWORD_QUERY, user.getPassword(), user.getUsername());
 
         int changePassResponseCode;
         try {
             mResultSet = mStatement.executeQuery(searchQuery);
             if (mResultSet.next()) {
-                mStatement.executeUpdate(updatePassworQuery);
+                mStatement.executeUpdate(updatePasswordQuery);
                 changePassResponseCode = 1;
             } else {
                 changePassResponseCode = 2;

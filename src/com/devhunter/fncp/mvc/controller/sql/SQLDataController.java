@@ -139,19 +139,17 @@ public class SQLDataController {
      * @param fieldNote fieldNote
      * @return int responseCode, confirms or rejects the added FieldNote
      */
-    public int addFieldNote(FieldNote fieldNote) {
+    public boolean addFieldNote(FieldNote fieldNote) {
 
-        int newDataResponseCode;
         final String query = SqlInterpolate.interpolate(SqlConstants.ADD_DATA_QUERY, fieldNote);
 
         try {
             mStatement.executeUpdate(query);
-            newDataResponseCode = 1;
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            newDataResponseCode = 0;
+            return false;
         }
-        return newDataResponseCode;
     }
 
     /**
@@ -180,19 +178,17 @@ public class SQLDataController {
      * @param fieldNote
      * @return int newDataResponse Code, confirms or rejects the added FiedlNote
      */
-    public int updateFieldNote(FieldNote fieldNote, String ticketNumber) {
+    public boolean updateFieldNote(FieldNote fieldNote, String ticketNumber) {
 
-        int responseCode;
         final String query = SqlInterpolate.interpolate(SqlConstants.UPDATE_DATA_QUERY, fieldNote, ticketNumber);
 
         try {
             mStatement.executeUpdate(query);
-            responseCode = 1;
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            responseCode = 0;
+            return false;
         }
-        return responseCode;
     }
 
     /**
@@ -201,19 +197,17 @@ public class SQLDataController {
      * @param ticketNumber
      * @return int reponseCode
      */
-    public int deleteFieldNote(String ticketNumber) {
+    public boolean deleteFieldNote(String ticketNumber) {
 
         final String deleteDataQuery = SqlInterpolate.interpolate(SqlConstants.DELETE_DATA_QUERY, ticketNumber);
-        int responseCode;
 
         try {
             mStatement.executeUpdate(deleteDataQuery);
-            responseCode = 1;
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            responseCode = 0;
+            return false;
         }
-        return responseCode;
     }
 
     /**
