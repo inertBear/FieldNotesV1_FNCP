@@ -37,7 +37,7 @@ public class SearchUserPanel extends FNPanel {
     private FNButton mButtonSearch;
     private FNButton mButtonExport;
     // ArrayLists
-    private ArrayList<String> mUserSearchResults;
+    private ArrayList<FNEntity> mUsers;
 
     private static final String ID = "ID: ";
     private static final String USERNAME = "Username: ";
@@ -56,7 +56,7 @@ public class SearchUserPanel extends FNPanel {
         mButtonSearch = new FNButton(FieldNotesConstants.BUTTON_SEARCH);
         mButtonExport = new FNButton(FieldNotesConstants.BUTTON_EXPORT);
         // Create ArrayLists
-        mUserSearchResults = new ArrayList<String>();
+        mUsers = new ArrayList<>();
         init();
     }
 
@@ -101,9 +101,9 @@ public class SearchUserPanel extends FNPanel {
                 SQLUserController conn = new SQLUserController();
 
                 if (mSearchUser.getText().trim().isEmpty()) {
-                    ArrayList<FNEntity> users = conn.mySQLSearchUser();
+                    mUsers = conn.mySQLSearchUser();
 
-                    for (FNEntity each : users) {
+                    for (FNEntity each : mUsers) {
                         //TODO: [FNCP-023] create static print user method in FNEntity EX: public static void printUser(where to print)
                         mSearchUserOutput.append(ID + each.getId() + "\n");
                         mSearchUserOutput.append(USERNAME + each.getUsername() + "\n");
@@ -124,16 +124,13 @@ public class SearchUserPanel extends FNPanel {
         // When user trys to export CSV file to user desktop
         mButtonExport.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int exportSuccessCode;
 
                 ExportController exporter = new ExportController();
-                exportSuccessCode = exporter.writeUserToCSVFile(mUserSearchResults);
-                if (exportSuccessCode == 1) {
-                    JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
-                            "Success! CVS report generated");
+                boolean exportSuccessCode = exporter.writeUserToCSVFile(mUsers);
+                if (exportSuccessCode) {
+                    JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
                 } else {
-                    JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
-                            "Failure! CVS export error");
+                    JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
                 }
             }
         });

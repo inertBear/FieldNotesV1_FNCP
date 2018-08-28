@@ -216,13 +216,13 @@ public class FieldNote {
 			return this;
 		}
 
-		public FieldNote createFieldNote() {
+		public FieldNote build() {
 			return new FieldNote(mNewUserName, mNewTicketNumber, mNewDateStart, mNewDateEnd, mNewTimeStart, mNewTimeEnd,
 					mNewMileageStart, mNewMileageEnd, mNewProjectNumber, mNewWellName, mNewDescription, mNewLocation,
 					mNewGPSCoords, mNewBillingType);
 		}
 		
-		public FieldNote createEmptyFieldNote() {
+		public FieldNote buildEmptyFieldNote() {
 			return new FieldNote(null, null , null, null, null, null, null, null, null, null, null, null, null, null);
 		}
 	}
