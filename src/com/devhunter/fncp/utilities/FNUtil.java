@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -18,7 +19,9 @@ import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerModel;
 import javax.swing.border.LineBorder;
 
-import com.devhunter.fncp.constants.FieldNotesConstants;
+import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
+import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
 
 /**
  * This class holds all of the common View characteristics including colors, borders, and Dimensions. 
@@ -27,9 +30,9 @@ import com.devhunter.fncp.constants.FieldNotesConstants;
  *
  */
 
-public class FieldNotesUtil {
+public class FNUtil {
 
-	private static FieldNotesUtil sInstance;
+	private static FNUtil sInstance;
 	private static String sCurrentUser;
 	private SpinnerListModel mLocationModel;
 	private SpinnerListModel mBillableModel;
@@ -48,10 +51,9 @@ public class FieldNotesUtil {
 	 * 
 	 * TODO: include utilities for Thread control- i.e. UI VS background threading
 	 */
-
-	private FieldNotesUtil() {
-		mLocationModel = new SpinnerListModel(FieldNotesConstants.APPROVED_BILLING_LOCATIONS);
-		mBillableModel = new SpinnerListModel(FieldNotesConstants.APPROVED_BILLING_CODES);
+	private FNUtil() {
+		mLocationModel = new SpinnerListModel(FNConstants.APPROVED_BILLING_LOCATIONS);
+		mBillableModel = new SpinnerListModel(FNConstants.APPROVED_BILLING_CODES);
 		mFormatter = new SimpleDateFormat("HHmmss");
 
 		mPrimaryColor = new Color(100, 149, 237);
@@ -63,9 +65,9 @@ public class FieldNotesUtil {
 		mLoginPanelDimension = new Dimension(325, 40);
 	}
 
-	public static FieldNotesUtil getInstance() {
+	public static FNUtil getInstance() {
 		if (sInstance == null) {
-			sInstance = new FieldNotesUtil();
+			sInstance = new FNUtil();
 		}
 		return sInstance;
 	}
@@ -78,17 +80,31 @@ public class FieldNotesUtil {
 	 * get the UserName of the currently logged in User.
 	 * @return String, user name
 	 */
-	
 	public String getCurrentUser() {
 		return sCurrentUser;
 	}
+
+	/**
+     * retrieve a specific FNEntity from the list of users
+     *
+     * @return user
+	 */
+	public FNEntity getEntityByUserName(String username){
+        SQLUserController userController = new SQLUserController();
+        ArrayList<FNEntity> allUsers = userController.mySQLSearchUser();
+        for (FNEntity user : allUsers) {
+            if(user.getUsername().equals(username)){
+                return user;
+            }
+        }
+        return new FNEntity();
+    }
 
 	/**
 	 * get the approved FieldNotes billing locations
 	 * 
 	 * @return SpinnerModel of approved Locations
 	 */
-
 	public SpinnerModel getLocations() {
 		return mLocationModel;
 	}
@@ -98,7 +114,6 @@ public class FieldNotesUtil {
 	 * 
 	 * @return SpinnerModel of approved billing codes
 	 */
-
 	public SpinnerModel getBillable() {
 		return mBillableModel;
 	}
@@ -108,7 +123,6 @@ public class FieldNotesUtil {
 	 * 
 	 * @return current Date
 	 */
-
 	public Date getZeroHour() {
 		String timeStamp = mFormatter.format(Calendar.getInstance().getTime());
 		Date now = null;
@@ -127,7 +141,6 @@ public class FieldNotesUtil {
 	 * 
 	 * @return small label dimension
 	 */
-	
 	public Dimension getSmallLabelDimension() {
 		return mSmallLabelDimension;
 	}
@@ -137,7 +150,6 @@ public class FieldNotesUtil {
 	 * 
 	 * @return standard label Dimension
 	 */
-
 	public Dimension getStandardLabelDimension() {
 		return mStandardLabelDimension;
 	}
@@ -147,7 +159,6 @@ public class FieldNotesUtil {
 	 * 
 	 * @return large label Dimension
 	 */
-	
 	public Dimension getLargeLabelDimension() {
 		return mLargeLabelDimension;
 	}
@@ -158,7 +169,6 @@ public class FieldNotesUtil {
 	 * 
 	 * @return standard TextField Dimension
 	 */
-
 	public Dimension getStandardTextFieldDimension() {
 		return mStandardTextFieldDimensions;
 	}
@@ -169,7 +179,6 @@ public class FieldNotesUtil {
 	 * 
 	 * @return large TextField Dimension
 	 */
-
 	public Dimension getLargeTextFieldDimen() {
 		return mLargeTextFieldDimension;
 	}
@@ -178,11 +187,14 @@ public class FieldNotesUtil {
 	 * get login panel Dimension
 	 * @return login panel Dimension
 	 */
-	
 	public Dimension getLoginPanelDimension() {
 		return mLoginPanelDimension;
 	}
-	
+
+    /**
+     * get a standard button dimension
+     * @return standard button Dimension
+     */
 	public Dimension getStandardButtonDimension() {
 		return mStandardButtonDimension;
 	}
@@ -192,7 +204,6 @@ public class FieldNotesUtil {
 	 * 
 	 * @return Color (blue)
 	 */
-
 	public Color getPrimaryColor() {
 		return mPrimaryColor;
 	}
@@ -201,7 +212,6 @@ public class FieldNotesUtil {
 	 * get the standard FieldNotes window border
 	 * @return standard LineBorder (blue)
 	 */
-	
 	public LineBorder getLineBorder() {
 		return new LineBorder(getPrimaryColor(), 5, true);
 	}
@@ -210,7 +220,6 @@ public class FieldNotesUtil {
 	 * get the standard rigid area for padding 
 	 * @return standard rigid area
 	 */
-	
 	public Dimension getStandardRigidArea() {
 		return new Dimension(0, 75);
 	}
@@ -218,7 +227,6 @@ public class FieldNotesUtil {
 	/**
 	 * reset ALL GUI elements within FieldNotes
 	 */
-
 	public void resetAllGui() {
 
 	}

@@ -23,16 +23,16 @@ import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
-import com.devhunter.fncp.FieldNotesInit;
-import com.devhunter.fncp.constants.FieldNotesConstants;
+import com.devhunter.fncp.FNInit;
+import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.sql.FNLoginController;
 import com.devhunter.fncp.mvc.model.FNImageButton;
 import com.devhunter.fncp.mvc.model.FNImageLabel;
 import com.devhunter.fncp.mvc.model.FNLabel;
 import com.devhunter.fncp.mvc.model.FNPanel;
 import com.devhunter.fncp.mvc.model.FNTextField;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
-import com.devhunter.fncp.utilities.FieldNotesUtil;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
+import com.devhunter.fncp.utilities.FNUtil;
 
 /**
  * This class draws the login panel as a singleton. Successful login will create an instance of
@@ -42,12 +42,12 @@ import com.devhunter.fncp.utilities.FieldNotesUtil;
  *
  */
 
-public class FieldNotesLogin extends FNPanel {
+public class FNLogin extends FNPanel {
 
 	// Login Frame
 	private static JFrame mLoginFrame;
 	// Panels
-	private static FieldNotesLogin mInstance;
+	private static FNLogin mInstance;
 	private FNPanel mLoginPanel;
 	private FNPanel mLoginCredentialPanel;
 	// ImageLabels
@@ -59,9 +59,9 @@ public class FieldNotesLogin extends FNPanel {
 	// ImageButtons
 	private FNImageButton mButtonLogin;
 
-	private FieldNotesLogin() {
+	private FNLogin() {
 		// Create Frames
-		mLoginFrame = FieldNotesInit.getFieldNotesJFrame();
+		mLoginFrame = FNInit.getFieldNotesJFrame();
 		// Create Panels
 		mLoginPanel = new FNPanel();
 		mLoginCredentialPanel = new FNPanel();
@@ -72,16 +72,16 @@ public class FieldNotesLogin extends FNPanel {
 		init();
 	}
 
-	public static FieldNotesLogin getInstance() {
+	public static FNLogin getInstance() {
 		if (mInstance == null) {
-			mInstance = new FieldNotesLogin();
+			mInstance = new FNLogin();
 		}
 		return mInstance;
 	}
 
 	public void init() {
 		// Frame
-		mLoginFrame.setSize(FieldNotesConstants.lOGIN_PANEL_X_AXIS, FieldNotesConstants.lOGIN_PANEL_Y_AXIS);
+		mLoginFrame.setSize(FNConstants.lOGIN_PANEL_X_AXIS, FNConstants.lOGIN_PANEL_Y_AXIS);
 		mLoginFrame.setLocationRelativeTo(null);
 		mLoginFrame.setVisible(true);
 		mLoginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,26 +92,26 @@ public class FieldNotesLogin extends FNPanel {
 		mLoginCredentialPanel.setLayout(loginCredentialPanelLayout);
 		// ImageLabels
 		try {
-			Image img = ImageIO.read(getClass().getResource(FieldNotesConstants.APPLICATION_LOGO_FOLDER));
+			Image img = ImageIO.read(getClass().getResource(FNConstants.APPLICATION_LOGO_FOLDER));
 			mLoginTitleLabel = new FNImageLabel(new ImageIcon(img));
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(mLoginFrame, "title image failed to load");
 		}
 		// ImageButtons
 		try {
-			Image img = ImageIO.read(getClass().getResource(FieldNotesConstants.BUTTON_SUBMIT_LOCATION));
+			Image img = ImageIO.read(getClass().getResource(FNConstants.BUTTON_SUBMIT_LOCATION));
 			mButtonLogin = new FNImageButton(new ImageIcon(img));
 		} catch (IOException e1) {
 			JOptionPane.showMessageDialog(mLoginFrame, "Image button failed to load");
 		}
 		// Labels
-		FNLabel lblUsername = new FNLabel(FieldNotesConstants.CRED_USERNAME_LABEL);
-		FNLabel lblPassword = new FNLabel(FieldNotesConstants.CRED_PASSWORD_LABEL);
+		FNLabel lblUsername = new FNLabel(FNConstants.CRED_USERNAME_LABEL);
+		FNLabel lblPassword = new FNLabel(FNConstants.CRED_PASSWORD_LABEL);
 		// Override Label properties
-		mLoginUsername.setPreferredSize(FieldNotesUtil.getInstance().getStandardTextFieldDimension());
-		mLoginPassword.setPreferredSize(FieldNotesUtil.getInstance().getStandardTextFieldDimension());
+		mLoginUsername.setPreferredSize(FNUtil.getInstance().getStandardTextFieldDimension());
+		mLoginPassword.setPreferredSize(FNUtil.getInstance().getStandardTextFieldDimension());
 		// Override PasswordField properties
-		mLoginPassword.setBorder(BorderFactory.createLineBorder(FieldNotesUtil.getInstance().getPrimaryColor()));
+		mLoginPassword.setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
 		
 		// Add Views to UserName/Password Panels
 		mLoginCredentialPanel.add(lblUsername);
@@ -133,21 +133,20 @@ public class FieldNotesLogin extends FNPanel {
 
 		mButtonLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: refactor to use FNEntity
 				mLoginPanel.setVisible(false);
 				String username = mLoginUsername.getText();
 
 				if (username != null) {
-					FieldNotesUtil.getInstance().setCurrentUser(username);
+					FNUtil.getInstance().setCurrentUser(username);
 					// TODO: depreciated (for security reasons): need to change to .getPassword() -- this returns a char[]
 					String password = mLoginPassword.getText();
 					// send FNEntity to controller for login validation
-					boolean result = false;
+					boolean result;
 					FNLoginController action = new FNLoginController();
 					result = action.SQLLogin(username, password);
 					if (result) {
 					    //TODO: check user type: if admin load ALL, if user load:
-						FieldNotesControlPanel.getInstance();
+						FNControlPanel.getInstance();
 						//mLoginFrame.dispatchEvent(new WindowEvent(mLoginFrame, WindowEvent.WINDOW_CLOSING));
 					} else {
 						JOptionPane.showMessageDialog(mLoginFrame, "Invalid username or password");

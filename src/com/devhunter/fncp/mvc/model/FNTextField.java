@@ -12,7 +12,7 @@ import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
-import com.devhunter.fncp.utilities.FieldNotesUtil;
+import com.devhunter.fncp.utilities.FNUtil;
 
 public class FNTextField extends JTextField {
 	
@@ -20,8 +20,8 @@ public class FNTextField extends JTextField {
 	
 	public FNTextField() {
 		new JTextField();
-		setPreferredSize(FieldNotesUtil.getInstance().getLargeTextFieldDimen());
-		setBorder(BorderFactory.createLineBorder(FieldNotesUtil.getInstance().getPrimaryColor()));
+		setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
+		setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
 		setAlignmentX(mCenterAlignment);
 		setAlignmentY(mCenterAlignment);
 	}

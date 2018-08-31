@@ -5,16 +5,16 @@
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
-import com.devhunter.fncp.constants.FieldNotesConstants;
-import com.devhunter.fncp.mvc.controller.FieldNoteUserValidation;
+import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.mvc.controller.FNUserValidation;
 import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
 import com.devhunter.fncp.mvc.model.FNButton;
 import com.devhunter.fncp.mvc.model.FNLabel;
 import com.devhunter.fncp.mvc.model.FNPanel;
 import com.devhunter.fncp.mvc.model.FNTextField;
 import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
-import com.devhunter.fncp.mvc.model.FNUser.FNUser;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
+import com.devhunter.fncp.utilities.FNUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +41,7 @@ public class ChangeUserPasswordPanel extends FNPanel {
         mChangeUserPass = new FNTextField();
         mNewUserPass = new FNTextField();
         // Create Buttons
-        mButtonChangePassword = new FNButton(FieldNotesConstants.BUTTON_UPDATE);
+        mButtonChangePassword = new FNButton(FNConstants.BUTTON_UPDATE);
         init();
         //
     }
@@ -60,8 +60,8 @@ public class ChangeUserPasswordPanel extends FNPanel {
         GridLayout changeUserPasswordTextFieldPanelLayout = new GridLayout(0, 2);
         mChangePasswordTextFieldPanel.setLayout(changeUserPasswordTextFieldPanelLayout);
         // Labels
-        FNLabel passUserlbl = new FNLabel(FieldNotesConstants.CRED_USERNAME_LABEL);
-        FNLabel newPassUserlbl = new FNLabel(FieldNotesConstants.USER_NEW_PASSWORD_LABEL);
+        FNLabel passUserlbl = new FNLabel(FNConstants.CRED_USERNAME_LABEL);
+        FNLabel newPassUserlbl = new FNLabel(FNConstants.USER_NEW_PASSWORD_LABEL);
 
         // Add Views to TextField Panel
         mChangePasswordTextFieldPanel.add(passUserlbl);
@@ -74,32 +74,35 @@ public class ChangeUserPasswordPanel extends FNPanel {
         mChangeUserPasswordPanel.add(mChangePasswordTextFieldPanel, BorderLayout.NORTH);
         // Initial View Settings
         mChangeUserPasswordPanel.setVisible(false);
-        FieldNotesControlPanel.getFieldNotesFrame().repaint();
-        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+        FNControlPanel.getFieldNotesFrame().repaint();
+        FNControlPanel.getFieldNotesFrame().revalidate();
 
         mButtonChangePassword.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Create FNEntity -- with new password
-                FNEntity user = new FNUser(mChangeUserPass.getText(), mNewUserPass.getText());
+                FNEntity user = FNUtil.getInstance().getEntityByUserName(mChangeUserPass.getText());
                 // Validate UserName and password
-                if (FieldNoteUserValidation.validate(user)) {
-                    // send user to controller for database update
-                    SQLUserController conn = new SQLUserController();
-                    int changePasswordResultCode = conn.updatePassword(user);
-                    // code 1 == success, code 2 == already exists, code 3 ==
-                    // failure
-                    if (changePasswordResultCode == 1) {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
-                                "User password updated in Field Notes");
-                    } else if (changePasswordResultCode == 2) {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
-                                "User doesn't exist in Field Notes");
-                    } else {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
-                                "Runtime Error - PLEASE CONTACT FIELD NOTES ADMIN SUPPORT");
+                if (!user.getUsername().equals("UNKNOWN")) {
+                    if (FNUserValidation.validate(user)) {
+                        // send user to controller for database update
+                        SQLUserController conn = new SQLUserController();
+                        int changePasswordResultCode = conn.updatePassword(user);
+                        // code 1 == success, code 2 == already exists, code 3 ==
+                        // failure
+                        if (changePasswordResultCode == 1) {
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                                    "User password updated in Field Notes");
+                        } else if (changePasswordResultCode == 2) {
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                                    "User doesn't exist in Field Notes");
+                        } else {
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                                    "Runtime Error - PLEASE CONTACT FIELD NOTES ADMIN SUPPORT");
+                        }
                     }
                 } else {
-                    //Validation failed - Do nothing and allow user to resubmit
+                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                            "User doesn't exist in Field Notes");
                 }
             }
         });

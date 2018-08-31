@@ -1,122 +1,121 @@
 /**
  * © 2017-2018 FieldNotes
  * All Rights Reserved
- * 
+ * <p>
  * Created by DevHunter exclusively for FieldNotes
  */
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import com.devhunter.fncp.constants.FieldNotesConstants;
-import com.devhunter.fncp.mvc.controller.FieldNoteUserValidation;
+import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.mvc.controller.FNUserValidation;
 import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
 import com.devhunter.fncp.mvc.model.FNButton;
 import com.devhunter.fncp.mvc.model.FNLabel;
 import com.devhunter.fncp.mvc.model.FNPanel;
 import com.devhunter.fncp.mvc.model.FNTextField;
 import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
-import com.devhunter.fncp.mvc.model.FNUser.FNUser;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
+import com.devhunter.fncp.utilities.FNUtil;
 
-public class DeleteUserPanel extends FNPanel{
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-	// Panels
-	private static DeleteUserPanel mInstance;
-	private static FNPanel mDeleteUserPanel;
-	private FNPanel mDeleteUserTextFieldPanel;
-	// TextFields
-	private FNTextField mDeleteUser;
-	// Buttons
-	private FNButton mButtonDelete;
+public class DeleteUserPanel extends FNPanel {
 
-	private DeleteUserPanel() {
-		// Create Panels
-		mDeleteUserPanel = new FNPanel();
-		mDeleteUserTextFieldPanel = new FNPanel();
-		// Create TextFields
-		mDeleteUser = new FNTextField();
-		// Create Buttons
-		mButtonDelete = new FNButton(FieldNotesConstants.BUTTON_DELETE);
-		init();
-	}
+    // Panels
+    private static DeleteUserPanel mInstance;
+    private static FNPanel mDeleteUserPanel;
+    private FNPanel mDeleteUserTextFieldPanel;
+    // TextFields
+    private FNTextField mDeleteUser;
+    // Buttons
+    private FNButton mButtonDelete;
 
-	public static DeleteUserPanel getInstance() {
-		if (mInstance == null) {
-			mInstance = new DeleteUserPanel();
-		}
-		return mInstance;
-	}
+    private DeleteUserPanel() {
+        // Create Panels
+        mDeleteUserPanel = new FNPanel();
+        mDeleteUserTextFieldPanel = new FNPanel();
+        // Create TextFields
+        mDeleteUser = new FNTextField();
+        // Create Buttons
+        mButtonDelete = new FNButton(FNConstants.BUTTON_DELETE);
+        init();
+    }
 
-	void init() {
-		// Panel Layouts
-		BorderLayout deleteUserPanelLayout = new BorderLayout();
-		mDeleteUserPanel.setLayout(deleteUserPanelLayout);
-		GridLayout deleteUserTextFieldPanelLayout = new GridLayout(0,2);
-		mDeleteUserTextFieldPanel.setLayout(deleteUserTextFieldPanelLayout);
-		// Labels
-		FNLabel deleteUserlbl = new FNLabel(FieldNotesConstants.CRED_USERNAME_LABEL);
+    public static DeleteUserPanel getInstance() {
+        if (mInstance == null) {
+            mInstance = new DeleteUserPanel();
+        }
+        return mInstance;
+    }
 
-		mDeleteUserTextFieldPanel.add(deleteUserlbl);
-		mDeleteUserTextFieldPanel.add(mDeleteUser);
-		mDeleteUserTextFieldPanel.add(new FNLabel());
-		mDeleteUserTextFieldPanel.add(mButtonDelete);
+    void init() {
+        // Panel Layouts
+        BorderLayout deleteUserPanelLayout = new BorderLayout();
+        mDeleteUserPanel.setLayout(deleteUserPanelLayout);
+        GridLayout deleteUserTextFieldPanelLayout = new GridLayout(0, 2);
+        mDeleteUserTextFieldPanel.setLayout(deleteUserTextFieldPanelLayout);
+        // Labels
+        FNLabel deleteUserlbl = new FNLabel(FNConstants.CRED_USERNAME_LABEL);
 
-		mDeleteUserPanel.add(mDeleteUserTextFieldPanel,BorderLayout.NORTH);
+        mDeleteUserTextFieldPanel.add(deleteUserlbl);
+        mDeleteUserTextFieldPanel.add(mDeleteUser);
+        mDeleteUserTextFieldPanel.add(new FNLabel());
+        mDeleteUserTextFieldPanel.add(mButtonDelete);
 
-		mDeleteUserPanel.setVisible(false);
-		FieldNotesControlPanel.getFieldNotesFrame().repaint();
-		FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+        mDeleteUserPanel.add(mDeleteUserTextFieldPanel, BorderLayout.NORTH);
 
-		mButtonDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// Create FNEntity -- we don't need to know the password to delete the user
-                // bypass password validation, the existence of the user is validated by the server
-				FNEntity user = new FNUser(mDeleteUser.getText(), "password");
-				if (FieldNoteUserValidation.validate(user)) {
-					// send user to controller for CUD event
-					SQLUserController conn = new SQLUserController();
-					int resultCode = conn.deleteUser(user);
-					// code 1 == success, code 2 == already exists, code 3 == failure
-					if (resultCode == 1) {
-						JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
-								"User deleted from Field Notes");
-					} else if (resultCode == 2) {
-						JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
-								"UserName does not exist");
-					} else {
-						JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
-								"Connection Error - USER NOT DELETED");
-					}
-				} else {
-					// Validation failed - Do nothing and allow user to resend
-				}
-			}
-		});
-	}
+        mDeleteUserPanel.setVisible(false);
+        FNControlPanel.getFieldNotesFrame().repaint();
+        FNControlPanel.getFieldNotesFrame().revalidate();
 
-	public static JPanel getView() {
-		return mDeleteUserPanel;
-	}
+        mButtonDelete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // the existence of the user is validated by the server
+                FNEntity user = FNUtil.getInstance().getEntityByUserName(mDeleteUser.getText());
+                if (!user.getUsername().equals("UNKNOWN")) {
+                    if (FNUserValidation.validate(user)) {
+                        // send user to controller for CUD event
+                        SQLUserController conn = new SQLUserController();
+                        int resultCode = conn.deleteUser(user);
+                        // code 1 == success, code 2 == already exists, code 3 == failure
+                        if (resultCode == 1) {
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                                    "User deleted from Field Notes");
+                        } else if (resultCode == 2) {
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                                    "UserName does not exist");
+                        } else {
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                                    "Connection Error - USER NOT DELETED");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                            "UserName does not exist");
+                }
+            }
+        });
+    }
 
-	public static void showView() {
-		mDeleteUserPanel.setVisible(true);
-	}
+    public static JPanel getView() {
+        return mDeleteUserPanel;
+    }
 
-	public static void hideView() {
-		mDeleteUserPanel.setVisible(false);
-		mInstance.resetGui();
-	}
+    public static void showView() {
+        mDeleteUserPanel.setVisible(true);
+    }
 
-	private void resetGui() {
-		mDeleteUser.setText(null);
-	}
+    public static void hideView() {
+        mDeleteUserPanel.setVisible(false);
+        mInstance.resetGui();
+    }
+
+    private void resetGui() {
+        mDeleteUser.setText(null);
+    }
 
 }

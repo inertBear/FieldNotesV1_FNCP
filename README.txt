@@ -37,7 +37,7 @@ Open FNCP in IntelliJ
 		click the “+”
 		select “Application”
 		Configuration
-		    Main class = “com.devhunter.fncp.FieldNotesInit"
+		    Main class = “com.devhunter.fncp.FNInit"
 			
 	    “Apply” and “OK”
 	

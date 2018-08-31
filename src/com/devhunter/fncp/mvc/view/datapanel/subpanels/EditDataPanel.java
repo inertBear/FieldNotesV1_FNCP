@@ -7,15 +7,15 @@
 
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
-import com.devhunter.fncp.constants.FieldNotesConstants;
+import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.CrudSearchValidation;
-import com.devhunter.fncp.mvc.controller.FieldNoteValidation;
+import com.devhunter.fncp.mvc.controller.FNValidation;
 import com.devhunter.fncp.mvc.controller.sql.SQLDataController;
 import com.devhunter.fncp.mvc.model.*;
 import com.devhunter.fncp.mvc.model.FieldNote.FieldNoteBuilder;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
-import com.devhunter.fncp.utilities.FieldNotesUtil;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
+import com.devhunter.fncp.utilities.FNUtil;
 import lu.tudor.santec.jtimechooser.JTimeChooser;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -87,8 +87,8 @@ public class EditDataPanel extends FNPanel {
         mTextEditDataProject = new FNTextField();
         mTextEditDataGPS = new FNTextField();
         // create Spinners
-        mSpinnerEditDataLocation = new JSpinner(FieldNotesUtil.getInstance().getLocations());
-        mSpinnerEditDataBillable = new JSpinner(FieldNotesUtil.getInstance().getBillable());
+        mSpinnerEditDataLocation = new JSpinner(FNUtil.getInstance().getLocations());
+        mSpinnerEditDataBillable = new JSpinner(FNUtil.getInstance().getBillable());
         // create TimeChooser
         mEditTicketTimeStart = new JTimeChooser(new Date());
         mEditTicketTimeEnd = new JTimeChooser(new Date());
@@ -102,7 +102,7 @@ public class EditDataPanel extends FNPanel {
         mEditTicketEndDatePanel = new JDatePanelImpl(mEditTicketEndModel, mEditTicketEndProperties);
         mEditTicketEndDatePicker = new JDatePickerImpl(mEditTicketEndDatePanel, new DateLabelFormatter());
         // create Buttons
-        buttonEdit = new FNButton(FieldNotesConstants.BUTTON_UPDATE);
+        buttonEdit = new FNButton(FNConstants.BUTTON_UPDATE);
         // create Strings
         mFlexTicketNumber = "";
         init();
@@ -122,33 +122,33 @@ public class EditDataPanel extends FNPanel {
         GridLayout crudSearchTextFieldPanelLayout = new GridLayout(0, 2);
         mCrudSearchTextFieldPanel.setLayout(crudSearchTextFieldPanelLayout);
         // CRUD Search Labels
-        FNLabel crudTicketLabel = new FNLabel(FieldNotesConstants.CRUD_SEARCH_TICKET_NUMBER);
+        FNLabel crudTicketLabel = new FNLabel(FNConstants.CRUD_SEARCH_TICKET_NUMBER);
         // CRUD Search Buttons
-        FNButton buttonCrudSearch = new FNButton(FieldNotesConstants.BUTTON_SEARCH);
+        FNButton buttonCrudSearch = new FNButton(FNConstants.BUTTON_SEARCH);
         // Panels/Layouts
         GridLayout editNDataPanelLayout = new GridLayout(0, 2);
         mEditFNDataPanel.setLayout(editNDataPanelLayout);
         FlowLayout editDataPanelLayout = new FlowLayout();
         mEditFNButtonPanel.setLayout(editDataPanelLayout);
         // Labels
-        FNLabel lblEditDataName = new FNLabel(FieldNotesConstants.FN_USERNAME_LABEL);
-        FNLabel lblEditDataWellName = new FNLabel(FieldNotesConstants.FN_WELLNAME_LABEL);
-        FNLabel lblEditDataDateStart = new FNLabel(FieldNotesConstants.FN_DATE_START_LABEL);
-        FNLabel lblEditDataTimeStart = new FNLabel(FieldNotesConstants.FN_TIME_START_LABEL);
-        FNLabel lblEditDataMileageStart = new FNLabel(FieldNotesConstants.FN_MILEAGE_START_LABEL);
-        FNLabel lblEditDataDescription = new FNLabel(FieldNotesConstants.FN_DESCRIPTION_LABEL);
-        FNLabel lblEditDataMileageEnd = new FNLabel(FieldNotesConstants.FN_MILEAGE_END_LABEL);
-        FNLabel lblEditDataDateEnd = new FNLabel(FieldNotesConstants.FN_DATE_END_LABEL);
-        FNLabel lblEditDataTimeEnd = new FNLabel(FieldNotesConstants.FN_TIME_END_LABEL);
-        FNLabel lblEditDataProject = new FNLabel(FieldNotesConstants.FN_PROJECT_LABEL);
-        FNLabel lblEditDataLocation = new FNLabel(FieldNotesConstants.FN_LOCATION_LABEL);
-        FNLabel lblEditDataGPS = new FNLabel(FieldNotesConstants.FN_GPS_LABEL);
-        FNLabel lblEditDataBillable = new FNLabel(FieldNotesConstants.FN_BILLING_LABEL);
+        FNLabel lblEditDataName = new FNLabel(FNConstants.FN_USERNAME_LABEL);
+        FNLabel lblEditDataWellName = new FNLabel(FNConstants.FN_WELLNAME_LABEL);
+        FNLabel lblEditDataDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
+        FNLabel lblEditDataTimeStart = new FNLabel(FNConstants.FN_TIME_START_LABEL);
+        FNLabel lblEditDataMileageStart = new FNLabel(FNConstants.FN_MILEAGE_START_LABEL);
+        FNLabel lblEditDataDescription = new FNLabel(FNConstants.FN_DESCRIPTION_LABEL);
+        FNLabel lblEditDataMileageEnd = new FNLabel(FNConstants.FN_MILEAGE_END_LABEL);
+        FNLabel lblEditDataDateEnd = new FNLabel(FNConstants.FN_DATE_END_LABEL);
+        FNLabel lblEditDataTimeEnd = new FNLabel(FNConstants.FN_TIME_END_LABEL);
+        FNLabel lblEditDataProject = new FNLabel(FNConstants.FN_PROJECT_LABEL);
+        FNLabel lblEditDataLocation = new FNLabel(FNConstants.FN_LOCATION_LABEL);
+        FNLabel lblEditDataGPS = new FNLabel(FNConstants.FN_GPS_LABEL);
+        FNLabel lblEditDataBillable = new FNLabel(FNConstants.FN_BILLING_LABEL);
         // NOT override the userName text field - in this case, they should be able to change the user if they need to.
         // Customize Spinner properties
-        mSpinnerEditDataLocation.setPreferredSize(FieldNotesUtil.getInstance().getLargeTextFieldDimen());
+        mSpinnerEditDataLocation.setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
         mSpinnerEditDataLocation.setEditor(new JSpinner.DefaultEditor(mSpinnerEditDataLocation));
-        mSpinnerEditDataBillable.setPreferredSize(FieldNotesUtil.getInstance().getLargeTextFieldDimen());
+        mSpinnerEditDataBillable.setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
         mSpinnerEditDataBillable.setEditor(new JSpinner.DefaultEditor(mSpinnerEditDataBillable));
         // set DatePickers properties
         mEditTicketStartProperties.put("text.today", "Today");
@@ -198,8 +198,8 @@ public class EditDataPanel extends FNPanel {
 
         // set initial CRUD Search View settings
         mCrudSearchPanel.setVisible(false);
-        FieldNotesControlPanel.getFieldNotesFrame().repaint();
-        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+        FNControlPanel.getFieldNotesFrame().repaint();
+        FNControlPanel.getFieldNotesFrame().revalidate();
 
         buttonCrudSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -212,11 +212,11 @@ public class EditDataPanel extends FNPanel {
                     FieldNote searchResult = conn.mySQLSearchDataByTicketNumber(mFlexTicketNumber);
                     // if the returned value has a ticket number, then it is a valid FieldNote
                     if (searchResult.getTicketNumber() == null) {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
                                 "No Data Found in Database");
                         mEditFNDataPanel.setVisible(false);
-                        FieldNotesControlPanel.getFieldNotesFrame().repaint();
-                        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+                        FNControlPanel.getFieldNotesFrame().repaint();
+                        FNControlPanel.getFieldNotesFrame().revalidate();
                     } else {
                         mEditFNDataPanel.setVisible(true);
                         mCRUDSearch.setText(mFlexTicketNumber);
@@ -235,8 +235,8 @@ public class EditDataPanel extends FNPanel {
                         mTextEditDataGPS.setText(searchResult.getGPSCoords());
                         mSpinnerEditDataBillable.setValue(matchCase(searchResult.getBillingType()));
 
-                        FieldNotesControlPanel.getFieldNotesFrame().repaint();
-                        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+                        FNControlPanel.getFieldNotesFrame().repaint();
+                        FNControlPanel.getFieldNotesFrame().revalidate();
                     }
                 } else {
                     //Validation failed - Do nothing and allow them to search again
@@ -264,17 +264,17 @@ public class EditDataPanel extends FNPanel {
                         .setBillingType((String) mSpinnerEditDataBillable.getValue())
                         .build();
                 // Validate FieldNote
-                if (FieldNoteValidation.validate(fieldNote)) {
+                if (FNValidation.validate(fieldNote)) {
                     // send to controller for CUD Event
                     SQLDataController conn = new SQLDataController();
                     boolean result = conn.updateFieldNote(fieldNote, mFlexTicketNumber);
 
                     // code 1 == success, code 0 == failure
                     if (result) {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Note Changes Submitted");
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Note Changes Submitted");
                         resetGui();
                     } else {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Connection Error - NOTE NOT UPDATED");
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Connection Error - NOTE NOT UPDATED");
                     }
                 } else {
                     //Validation failed - Do nothing and allow then to make changes and send again
@@ -323,8 +323,8 @@ public class EditDataPanel extends FNPanel {
         mEditFNDataPanel.setVisible(false);
         mCrudSearchPanel.setVisible(false);
         // clear all values in the views
-        mEditTicketTimeStart.setTime(FieldNotesUtil.getInstance().getZeroHour());
-        mEditTicketTimeEnd.setTime(FieldNotesUtil.getInstance().getZeroHour());
+        mEditTicketTimeStart.setTime(FNUtil.getInstance().getZeroHour());
+        mEditTicketTimeEnd.setTime(FNUtil.getInstance().getZeroHour());
         mCRUDSearch.setText(null);
         mTextEditDataName.setText(null);
         mTextEditDataWellName.setText(null);

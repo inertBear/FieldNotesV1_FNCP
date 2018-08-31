@@ -9,17 +9,17 @@ package com.devhunter.fncp;
 
 import javax.swing.JFrame;
 
-import com.devhunter.fncp.constants.FieldNotesConstants;
-import com.devhunter.fncp.mvc.view.loginpanel.FieldNotesLogin;
+import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.mvc.view.loginpanel.FNLogin;
 
-public class FieldNotesInit {
+public class FNInit {
 
 	private static JFrame FieldNotesFrame;
 
 	// starting point
 	public static void main(String[] args) {
-		FieldNotesFrame = new JFrame(FieldNotesConstants.APPLICATION_NAME);
-		FieldNotesLogin.getInstance();
+		FieldNotesFrame = new JFrame(FNConstants.APPLICATION_NAME);
+		FNLogin.getInstance();
 	}
 
 	public static JFrame getFieldNotesJFrame() {

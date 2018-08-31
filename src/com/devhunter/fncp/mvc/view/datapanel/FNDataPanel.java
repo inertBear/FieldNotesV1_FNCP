@@ -13,39 +13,39 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import com.devhunter.fncp.constants.FieldNotesConstants;
+import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.model.FNButton;
 import com.devhunter.fncp.mvc.model.FNPanel;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.mvc.view.datapanel.subpanels.AddDataPanel;
 import com.devhunter.fncp.mvc.view.datapanel.subpanels.DeleteDataPanel;
 import com.devhunter.fncp.mvc.view.datapanel.subpanels.EditDataPanel;
 import com.devhunter.fncp.mvc.view.datapanel.subpanels.SearchDataPanel;
 
 
-public class FieldNotesDataPanel extends FNPanel {
+public class FNDataPanel extends FNPanel {
 
-	private static FieldNotesDataPanel sInstance;
+	private static FNDataPanel sInstance;
 	private static FNPanel sDataControlPanel;
 	private FNButton mBtnDataSearch;
 	private FNButton mBtnDataAdd;
 	private FNButton mBtnDataDeleteSearch;
 	private FNButton mBtnDataEditSearch;
 
-	private FieldNotesDataPanel() {
+	private FNDataPanel() {
 		sDataControlPanel = new FNPanel();
-		mBtnDataSearch = new FNButton(FieldNotesConstants.DATA_SEARCH_BUTTON);
-		mBtnDataAdd = new FNButton(FieldNotesConstants.DATA_ADD_BUTTON);
-		mBtnDataDeleteSearch = new FNButton(FieldNotesConstants.DATA_DELETE_BUTTON);
-		mBtnDataEditSearch = new FNButton(FieldNotesConstants.DATA_EDIT_BUTTON);
+		mBtnDataSearch = new FNButton(FNConstants.DATA_SEARCH_BUTTON);
+		mBtnDataAdd = new FNButton(FNConstants.DATA_ADD_BUTTON);
+		mBtnDataDeleteSearch = new FNButton(FNConstants.DATA_DELETE_BUTTON);
+		mBtnDataEditSearch = new FNButton(FNConstants.DATA_EDIT_BUTTON);
 		init();
 		
 		sDataControlPanel.setVisible(true);
 	}
 
-	public static FieldNotesDataPanel getInstance() {
+	public static FNDataPanel getInstance() {
 		if (sInstance == null) {
-			sInstance = new FieldNotesDataPanel();
+			sInstance = new FNDataPanel();
 		}
 		return sInstance;
 	}
@@ -67,48 +67,48 @@ public class FieldNotesDataPanel extends FNPanel {
 		mBtnDataSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetGui();
-				FieldNotesControlPanel.getFieldNotesFrame().add(SearchDataPanel.getView(), BorderLayout.CENTER);
+				FNControlPanel.getFieldNotesFrame().add(SearchDataPanel.getView(), BorderLayout.CENTER);
 				sDataControlPanel.setVisible(true);
 				SearchDataPanel.getView().setVisible(true);
 
-				FieldNotesControlPanel.getFieldNotesFrame().repaint();
-				FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+				FNControlPanel.getFieldNotesFrame().repaint();
+				FNControlPanel.getFieldNotesFrame().revalidate();
 			}
 		});
 
 		mBtnDataAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetGui();
-				FieldNotesControlPanel.getFieldNotesFrame().add(AddDataPanel.getView(), BorderLayout.CENTER);
+				FNControlPanel.getFieldNotesFrame().add(AddDataPanel.getView(), BorderLayout.CENTER);
 				sDataControlPanel.setVisible(true);
 				AddDataPanel.getView().setVisible(true);
 
-				FieldNotesControlPanel.getFieldNotesFrame().repaint();
-				FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+				FNControlPanel.getFieldNotesFrame().repaint();
+				FNControlPanel.getFieldNotesFrame().revalidate();
 			}
 		});
 
 		mBtnDataDeleteSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetGui();
-				FieldNotesControlPanel.getFieldNotesFrame().add(DeleteDataPanel.getView(), BorderLayout.CENTER);
+				FNControlPanel.getFieldNotesFrame().add(DeleteDataPanel.getView(), BorderLayout.CENTER);
 				sDataControlPanel.setVisible(true);
 				DeleteDataPanel.getView().setVisible(true);
 
-				FieldNotesControlPanel.getFieldNotesFrame().repaint();
-				FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+				FNControlPanel.getFieldNotesFrame().repaint();
+				FNControlPanel.getFieldNotesFrame().revalidate();
 			}
 		});
 
 		mBtnDataEditSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetGui();
-				FieldNotesControlPanel.getFieldNotesFrame().add(EditDataPanel.getView(), BorderLayout.CENTER);
+				FNControlPanel.getFieldNotesFrame().add(EditDataPanel.getView(), BorderLayout.CENTER);
 				sDataControlPanel.setVisible(true);
 				EditDataPanel.getView().setVisible(true);
 
-				FieldNotesControlPanel.getFieldNotesFrame().repaint();
-				FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+				FNControlPanel.getFieldNotesFrame().repaint();
+				FNControlPanel.getFieldNotesFrame().revalidate();
 			}
 		});
 

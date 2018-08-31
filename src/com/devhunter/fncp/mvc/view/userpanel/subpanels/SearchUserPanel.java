@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
-import com.devhunter.fncp.constants.FieldNotesConstants;
+import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
 import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
 import com.devhunter.fncp.mvc.model.FNButton;
@@ -15,7 +15,7 @@ import com.devhunter.fncp.mvc.model.FNLabel;
 import com.devhunter.fncp.mvc.model.FNPanel;
 import com.devhunter.fncp.mvc.model.FNTextField;
 import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,8 +53,8 @@ public class SearchUserPanel extends FNPanel {
         // Create TextAreas
         mSearchUserOutput = new JTextArea(28, 32);
         // Create Buttons
-        mButtonSearch = new FNButton(FieldNotesConstants.BUTTON_SEARCH);
-        mButtonExport = new FNButton(FieldNotesConstants.BUTTON_EXPORT);
+        mButtonSearch = new FNButton(FNConstants.BUTTON_SEARCH);
+        mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
         // Create ArrayLists
         mUsers = new ArrayList<>();
         init();
@@ -74,7 +74,7 @@ public class SearchUserPanel extends FNPanel {
         GridLayout searchUserTextFieldPanelLayout = new GridLayout(0, 2);
         mSearchTextFieldPanel.setLayout(searchUserTextFieldPanelLayout);
         // Labels
-        FNLabel searchUserLbl = new FNLabel(FieldNotesConstants.FN_USERNAME_LABEL);
+        FNLabel searchUserLbl = new FNLabel(FNConstants.FN_USERNAME_LABEL);
         // ScrollPanes/TextAreas
         JScrollPane userSearchScroll = new JScrollPane(mSearchUserOutput);
         mSearchUserOutput.setEditable(false);
@@ -91,8 +91,8 @@ public class SearchUserPanel extends FNPanel {
 
         // Initial View Settings
         mSearchUserPanel.setVisible(false);
-        FieldNotesControlPanel.getFieldNotesFrame().repaint();
-        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+        FNControlPanel.getFieldNotesFrame().repaint();
+        FNControlPanel.getFieldNotesFrame().revalidate();
 
         mButtonSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -128,9 +128,9 @@ public class SearchUserPanel extends FNPanel {
                 ExportController exporter = new ExportController();
                 boolean exportSuccessCode = exporter.writeUserToCSVFile(mUsers);
                 if (exportSuccessCode) {
-                    JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
+                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
                 } else {
-                    JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
+                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
                 }
             }
         });

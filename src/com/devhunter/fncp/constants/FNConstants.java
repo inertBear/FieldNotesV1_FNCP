@@ -11,20 +11,20 @@ package com.devhunter.fncp.constants;
  * This class attempts to encapsulate everything that aligns this Version to FieldNotes with a specific entity.
  * The idea is: is FieldNotes needs to be customized for a new entity, the only changes that will need to be made
  * will be in these "CONSTANT" classes.
- *
+ * <p>
  * This class specifically holds the database connection data and the approved drop down values for that entity.
- *
  */
 
-public class FieldNotesConstants {
+public class FNConstants {
     // entity data
     public static final String ENTITY_NAME = "RHL";
     public static final int ENTITY_ID = 1;
     // Database connection information
-    public static final String AWS_DATABASE_ENDPOINT = "fieldnotes-rhl-restore.ckzbugsctcko.us-west-2.rds.amazonaws.com:3306";
-    public static final String FIELDNOTES_DATABASE_NAME = "FieldNotes_RHL";
+    private static final String AWS_DATABASE_ENDPOINT = "fieldnotes-rhl-restore.ckzbugsctcko.us-west-2.rds.amazonaws.com:3306";
+    private static final String FIELDNOTES_DATABASE_NAME = "FieldNotes_RHL";
     public static final String FIELDNOTES_DATABASE_USERNAME = "FNAdmin";
     public static final String FIELDNOTES_DATABASE_PASSWORD = "Nashv1ll3$";
+    public static final String CONNECTION_URL = "jdbc:mysql://" + FNConstants.AWS_DATABASE_ENDPOINT + "/" + FNConstants.FIELDNOTES_DATABASE_NAME;
     // approved work locations
     public static String[] APPROVED_BILLING_LOCATIONS = {"", "Office", "Field", "Shop"};
     // approved billing codes

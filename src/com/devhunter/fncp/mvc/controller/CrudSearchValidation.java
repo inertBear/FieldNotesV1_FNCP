@@ -9,7 +9,7 @@ package com.devhunter.fncp.mvc.controller;
 
 import javax.swing.JOptionPane;
 
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 public class CrudSearchValidation {
 	
@@ -24,7 +24,7 @@ public class CrudSearchValidation {
 				throw new IllegalArgumentException();
 			}
 		} catch (IllegalArgumentException e) {
-			JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), error);
+			JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), error);
 			return false;
 		}
 		return true;

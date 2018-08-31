@@ -10,20 +10,20 @@ package com.devhunter.fncp.mvc.model;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-import com.devhunter.fncp.utilities.FieldNotesUtil;
+import com.devhunter.fncp.utilities.FNUtil;
 
 public class FNLabel extends JLabel{
 	
 	public FNLabel() {
 		setText("");
 		setHorizontalAlignment(JLabel.CENTER);
-		setPreferredSize(FieldNotesUtil.getInstance().getStandardLabelDimension());
+		setPreferredSize(FNUtil.getInstance().getStandardLabelDimension());
 	}
 	
 	public FNLabel(String labelText) {
 		setText(labelText);
-		setPreferredSize(FieldNotesUtil.getInstance().getStandardLabelDimension());
+		setPreferredSize(FNUtil.getInstance().getStandardLabelDimension());
 		setHorizontalAlignment(JLabel.CENTER);
-		setBorder(BorderFactory.createLineBorder(FieldNotesUtil.getInstance().getPrimaryColor()));
+		setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
 	}
 }

@@ -5,14 +5,15 @@
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
-import com.devhunter.fncp.constants.FieldNotesConstants;
-import com.devhunter.fncp.mvc.controller.FieldNoteUserValidation;
+import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.mvc.controller.FNUserValidation;
 import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
 import com.devhunter.fncp.mvc.model.*;
 import com.devhunter.fncp.mvc.model.FNUser.FNAdmin;
 import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.mvc.model.FNUser.FNTestUser;
 import com.devhunter.fncp.mvc.model.FNUser.FNUser;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +46,7 @@ public class AddUserPanel extends FNPanel {
         mAddUser = new FNTextField();
         mAddPassword = new FNTextField();
         // Create Buttons
-        mButtonAdd = new FNButton(FieldNotesConstants.BUTTON_ADD);
+        mButtonAdd = new FNButton(FNConstants.BUTTON_ADD);
         //Create Checkboxes
         mAdminCheckbox = new FNCheckbox();
         mUserCheckbox = new FNCheckbox();
@@ -66,8 +67,8 @@ public class AddUserPanel extends FNPanel {
         BorderLayout addUserLayout = new BorderLayout();
         mAddUserPanel.setLayout(addUserLayout);
         // Labels
-        FNLabel addUserLbl = new FNLabel(FieldNotesConstants.USER_NEW_USERNAME_LABEL);
-        FNLabel addPassLbl = new FNLabel(FieldNotesConstants.USER_NEW_PASSWORD_LABEL);
+        FNLabel addUserLbl = new FNLabel(FNConstants.USER_NEW_USERNAME_LABEL);
+        FNLabel addPassLbl = new FNLabel(FNConstants.USER_NEW_PASSWORD_LABEL);
         //Checkboxes
         ButtonGroup userButtonGroup = new ButtonGroup();
         userButtonGroup.add(mUserCheckbox);
@@ -144,8 +145,8 @@ public class AddUserPanel extends FNPanel {
 
         // Initial View Settings
         mAddUserPanel.setVisible(false);
-        FieldNotesControlPanel.getFieldNotesFrame().repaint();
-        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+        FNControlPanel.getFieldNotesFrame().repaint();
+        FNControlPanel.getFieldNotesFrame().revalidate();
 
         mButtonAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -154,25 +155,25 @@ public class AddUserPanel extends FNPanel {
                 if (mAdminCheckbox.isSelected()) {
                     user = new FNAdmin(mAddUser.getText(), mAddPassword.getText());
                 } else if (mTestCheckbox.isSelected()) {
-                    user = new FNAdmin(mAddUser.getText(), mAddPassword.getText());
+                    user = new FNTestUser(mAddUser.getText(), mAddPassword.getText());
                 } else {
                     user = new FNUser(mAddUser.getText(), mAddPassword.getText());
                 }
 
                 // validate USER
-                if (FieldNoteUserValidation.validate(user)) {
+                if (FNUserValidation.validate(user)) {
                     // send user to controller for CUD event
                     SQLUserController conn = new SQLUserController();
                     int resultCode = conn.addUser(user);
                     // code 1 == success, code 2 == user already exists, code 3 == failure
                     if (resultCode == 1) {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
                                 "User added to Field Notes");
                     } else if (resultCode == 2) {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
                                 "User already exists in Field Notes");
                     } else {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
                                 "Connection Error - USER WAS NOT ADDED");
                     }
                 }
