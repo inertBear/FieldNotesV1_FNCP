@@ -14,7 +14,7 @@ package com.devhunter.fncp.constants;
  * <p>
  * This class specifically holds the entity-specific database table names and columns..
  */
-public class SqlConstants {
+public class FNSqlConstants {
 
     // database table: data
     public static final String TICKET_COLUMN = "ticketNumber";
@@ -40,6 +40,9 @@ public class SqlConstants {
     public static final String USER_TYPE_COLUMN = "rhl_user_type";
     //database table: data
     private static final String DATA_TABLE = "data";
+
+    // Login Queries
+    public static final String LOGIN_QUERY = "SELECT * FROM " + LOGIN_TABLE + " WHERE " + USER_USERNAME_COLUMN + " = '%s' AND " + USER_PASSWORD_COLUMN + " = '%s'";
 
     // User Controller Queries
     // use these default queries and SqlInterpolate to create queries
@@ -68,7 +71,7 @@ public class SqlConstants {
     public static final String SELECT_DATA_BY_RANGE_AND_USER_QUERY = "SELECT * FROM " + DATA_TABLE + " WHERE " + USER_COLUMN + "  = '%s' AND " + DATESTART_COLUMN + " >= '%s' AND " + DATEEND_COLUMN + " <= '%s'";
     //add data
     public static final String ADD_DATA_QUERY = "INSERT INTO " + DATA_TABLE + " (" + USER_COLUMN + ", " + WELLNAME_COLUMN + ", " + DATESTART_COLUMN + ", " + TIMESTART_COLUMN + "," + MILEAGESTART_COLUMN + ", " +
-        DESCRIPTION_COLUMN + ", " + MILEAGEEND_COLUMN + ", " + DATEEND_COLUMN + ", " + TIMEEND_COLUMN + ", " + PROJECTNUMBER_COLUMN + ", " + LOCATION_COLUMN + "," + GPSCOORDS_COLUMN + ", " +
+            DESCRIPTION_COLUMN + ", " + MILEAGEEND_COLUMN + ", " + DATEEND_COLUMN + ", " + TIMEEND_COLUMN + ", " + PROJECTNUMBER_COLUMN + ", " + LOCATION_COLUMN + "," + GPSCOORDS_COLUMN + ", " +
             BILLING_COLUMN + ") VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
     //update data
     public static final String UPDATE_DATA_QUERY = "UPDATE " + DATA_TABLE + " SET " + USER_COLUMN + " = '%s', " + WELLNAME_COLUMN + " = '%s', " + DATESTART_COLUMN + " = '%s', " + TIMESTART_COLUMN + " = '%s', " +

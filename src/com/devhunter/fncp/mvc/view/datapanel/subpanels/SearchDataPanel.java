@@ -7,12 +7,12 @@
 
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
-import com.devhunter.fncp.constants.FieldNotesConstants;
+import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
 import com.devhunter.fncp.mvc.controller.sql.SQLDataController;
 import com.devhunter.fncp.mvc.model.*;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -72,8 +72,8 @@ public class SearchDataPanel extends FNPanel {
         mDatePanelSearchEnd = new JDatePanelImpl(mSearchEndModel, mSearchEndProperties);
         mDatePickerSearchEnd = new JDatePickerImpl(mDatePanelSearchEnd, new DateLabelFormatter());
         // create Buttons
-        mButtonSearch = new FNButton(FieldNotesConstants.BUTTON_SEARCH);
-        mButtonExport = new FNButton(FieldNotesConstants.BUTTON_EXPORT);
+        mButtonSearch = new FNButton(FNConstants.BUTTON_SEARCH);
+        mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
         //search results
         mFieldNotes = new ArrayList<>();
         init();
@@ -93,9 +93,9 @@ public class SearchDataPanel extends FNPanel {
         GridLayout searchFNTextFieldPanelLayout = new GridLayout(0, 2);
         mSearchTextFieldPanel.setLayout(searchFNTextFieldPanelLayout);
         // Labels
-        FNLabel lblUsernameSearch = new FNLabel(FieldNotesConstants.FN_USERNAME_LABEL);
-        FNLabel lblDataSearchDateStart = new FNLabel(FieldNotesConstants.FN_DATE_START_LABEL);
-        FNLabel lblDataSearchDateEnd = new FNLabel(FieldNotesConstants.FN_DATE_END_LABEL);
+        FNLabel lblUsernameSearch = new FNLabel(FNConstants.FN_USERNAME_LABEL);
+        FNLabel lblDataSearchDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
+        FNLabel lblDataSearchDateEnd = new FNLabel(FNConstants.FN_DATE_END_LABEL);
         // ScrolPane/TextArea
         JScrollPane dataSearchScroll = new JScrollPane(mSearchDataOutput);
         mSearchDataOutput.setEditable(false);
@@ -122,8 +122,8 @@ public class SearchDataPanel extends FNPanel {
         mSearchDataPanel.add(mButtonExport, BorderLayout.SOUTH);
         // Initial View Settings
         mSearchDataPanel.setVisible(false);
-        FieldNotesControlPanel.getFieldNotesFrame().repaint();
-        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+        FNControlPanel.getFieldNotesFrame().repaint();
+        FNControlPanel.getFieldNotesFrame().revalidate();
 
         mButtonSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -158,7 +158,7 @@ public class SearchDataPanel extends FNPanel {
                     mSearchDataOutput.setText(null);
 
                     if (mDatePickerSearchEnd.getJFormattedTextField().getText().trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Please enter a date range");
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a date range");
                     } else {
                         try {
                             String startDate = mDatePickerSearchStart.getJFormattedTextField().getText();
@@ -168,14 +168,14 @@ public class SearchDataPanel extends FNPanel {
                             printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
 
                         } catch (StringIndexOutOfBoundsException e1) {
-                            JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Please enter a valid date range");
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a valid date range");
                         }
                     }
                     //if there is a user AND a date range
                 } else if (!mTextDataUsername.getText().trim().isEmpty() && !mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
                     // search by user name and date
                     if (mDatePickerSearchStart.getJFormattedTextField().getText().trim().isEmpty() || mDatePickerSearchEnd.getJFormattedTextField().getText().trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Please enter a date range");
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a date range");
                     } else {
                         try {
                             String username = mTextDataUsername.getText();
@@ -186,7 +186,7 @@ public class SearchDataPanel extends FNPanel {
                             printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
 
                         } catch (StringIndexOutOfBoundsException e1) {
-                            JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Please enter a valid date range");
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a valid date range");
                         }
                     }
                 }
@@ -201,9 +201,9 @@ public class SearchDataPanel extends FNPanel {
                 boolean exportSuccess = exporter.writeDataToCSVFile(mFieldNotes);
 
                 if (exportSuccess) {
-                    JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
+                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
                 } else {
-                    JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
+                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
                 }
             }
         });
@@ -237,20 +237,20 @@ public class SearchDataPanel extends FNPanel {
 
     private void printFieldNotesToJTextArea(ArrayList<FieldNote> fieldNotes, JTextArea textArea) {
         for (FieldNote each : fieldNotes) {
-            textArea.append(FieldNotesConstants.CRUD_SEARCH_TICKET_NUMBER + " " + each.getTicketNumber() + "\n");
-            textArea.append(FieldNotesConstants.FN_USERNAME_LABEL + " " + each.getUserName() + "\n");
-            textArea.append(FieldNotesConstants.FN_PROJECT_LABEL + " " + each.getProjectNumber() + "\n");
-            textArea.append(FieldNotesConstants.FN_WELLNAME_LABEL + " " + each.getWellName() + "\n");
-            textArea.append(FieldNotesConstants.FN_LOCATION_LABEL + " " + each.getLocation() + "\n");
-            textArea.append(FieldNotesConstants.FN_BILLING_LABEL + " " + each.getBillingType() + "\n");
-            textArea.append(FieldNotesConstants.FN_DATE_START_LABEL + " " + each.getDateStart() + "\n");
-            textArea.append(FieldNotesConstants.FN_DATE_END_LABEL + " " + each.getDateEnd() + "\n");
-            textArea.append(FieldNotesConstants.FN_TIME_START_LABEL + " " + each.getTimeStart() + "\n");
-            textArea.append(FieldNotesConstants.FN_TIME_END_LABEL + " " + each.getTimeEnd() + "\n");
-            textArea.append(FieldNotesConstants.FN_MILEAGE_START_LABEL + " " + each.getMileageStart() + "\n");
-            textArea.append(FieldNotesConstants.FN_MILEAGE_END_LABEL + " " + each.getMileageEnd() + "\n");
-            textArea.append(FieldNotesConstants.FN_DESCRIPTION_LABEL + " " + each.getDescription() + "\n");
-            textArea.append(FieldNotesConstants.FN_GPS_LABEL + " " + each.getGPSCoords() + "\n\n");
+            textArea.append(FNConstants.CRUD_SEARCH_TICKET_NUMBER + " " + each.getTicketNumber() + "\n");
+            textArea.append(FNConstants.FN_USERNAME_LABEL + " " + each.getUserName() + "\n");
+            textArea.append(FNConstants.FN_PROJECT_LABEL + " " + each.getProjectNumber() + "\n");
+            textArea.append(FNConstants.FN_WELLNAME_LABEL + " " + each.getWellName() + "\n");
+            textArea.append(FNConstants.FN_LOCATION_LABEL + " " + each.getLocation() + "\n");
+            textArea.append(FNConstants.FN_BILLING_LABEL + " " + each.getBillingType() + "\n");
+            textArea.append(FNConstants.FN_DATE_START_LABEL + " " + each.getDateStart() + "\n");
+            textArea.append(FNConstants.FN_DATE_END_LABEL + " " + each.getDateEnd() + "\n");
+            textArea.append(FNConstants.FN_TIME_START_LABEL + " " + each.getTimeStart() + "\n");
+            textArea.append(FNConstants.FN_TIME_END_LABEL + " " + each.getTimeEnd() + "\n");
+            textArea.append(FNConstants.FN_MILEAGE_START_LABEL + " " + each.getMileageStart() + "\n");
+            textArea.append(FNConstants.FN_MILEAGE_END_LABEL + " " + each.getMileageEnd() + "\n");
+            textArea.append(FNConstants.FN_DESCRIPTION_LABEL + " " + each.getDescription() + "\n");
+            textArea.append(FNConstants.FN_GPS_LABEL + " " + each.getGPSCoords() + "\n\n");
         }
 
     }

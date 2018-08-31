@@ -6,7 +6,7 @@
 package com.devhunter.fncp.mvc.controller;
 
 import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
 
@@ -17,9 +17,9 @@ import javax.swing.*;
  * 	3) validate admin privledges
  */
 
-public class FieldNoteUserValidation {
+public class FNUserValidation {
 
-    public FieldNoteUserValidation() {
+    public FNUserValidation() {
     }
 
     public static boolean validate(FNEntity user) {
@@ -43,7 +43,7 @@ public class FieldNoteUserValidation {
                 throw new IllegalArgumentException();
             }
         } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), error);
+            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), error);
             return false;
         }
         return true;

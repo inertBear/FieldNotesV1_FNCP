@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.controller.sql;
 
-import com.devhunter.fncp.constants.SqlConstants;
+import com.devhunter.fncp.constants.FNSqlConstants;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.mvc.model.FieldNote.FieldNoteBuilder;
 import com.devhunter.fncp.utilities.SqlInterpolate;
@@ -38,7 +38,7 @@ public class SQLDataController {
      */
     public ArrayList<FieldNote> mySQLSearchData() {
 
-        final String selectDataQuery = SqlConstants.SELECT_ALL_DATA_QUERY;
+        final String selectDataQuery = FNSqlConstants.SELECT_ALL_DATA_QUERY;
         ArrayList<FieldNote> fieldNotes = new ArrayList<>();
 
         try {
@@ -63,7 +63,7 @@ public class SQLDataController {
      */
     public ArrayList<FieldNote> mySQLSearchData(String userName) {
 
-        final String selectDataQuery = SqlInterpolate.interpolate(SqlConstants.SELECT_DATA_BY_USER_QUERY, userName);
+        final String selectDataQuery = SqlInterpolate.interpolate(FNSqlConstants.SELECT_DATA_BY_USER_QUERY, userName);
         ArrayList<FieldNote> fieldNotes = new ArrayList<>();
 
         try {
@@ -89,7 +89,7 @@ public class SQLDataController {
      */
     public ArrayList<FieldNote> mySQLSearchDataByDateRange(String startDate, String endDate) {
 
-        final String selectUserQuery = SqlInterpolate.interpolate(SqlConstants.SELECT_DATA_BY_RANGE_QUERY, startDate, endDate);
+        final String selectUserQuery = SqlInterpolate.interpolate(FNSqlConstants.SELECT_DATA_BY_RANGE_QUERY, startDate, endDate);
         ArrayList<FieldNote> fieldNotes = new ArrayList<>();
 
         try {
@@ -117,7 +117,7 @@ public class SQLDataController {
      */
     public ArrayList<FieldNote> mySQLSearchDataByUserAndDateRange(String username, String startDate, String endDate) {
 
-        final String selectUserQuery = SqlInterpolate.interpolate(SqlConstants.SELECT_DATA_BY_RANGE_AND_USER_QUERY, username, startDate, endDate);
+        final String selectUserQuery = SqlInterpolate.interpolate(FNSqlConstants.SELECT_DATA_BY_RANGE_AND_USER_QUERY, username, startDate, endDate);
         ArrayList<FieldNote> fieldNotes = new ArrayList<>();
 
         try {
@@ -141,7 +141,7 @@ public class SQLDataController {
      */
     public boolean addFieldNote(FieldNote fieldNote) {
 
-        final String query = SqlInterpolate.interpolate(SqlConstants.ADD_DATA_QUERY, fieldNote);
+        final String query = SqlInterpolate.interpolate(FNSqlConstants.ADD_DATA_QUERY, fieldNote);
 
         try {
             mStatement.executeUpdate(query);
@@ -160,7 +160,7 @@ public class SQLDataController {
      */
     public FieldNote mySQLSearchDataByTicketNumber(String ticketNumber) {
 
-        final String selectTicketQuery = SqlInterpolate.interpolate(SqlConstants.SELECT_DATA_BY_TICKET, ticketNumber);
+        final String selectTicketQuery = SqlInterpolate.interpolate(FNSqlConstants.SELECT_DATA_BY_TICKET, ticketNumber);
         ArrayList<FieldNote> fieldNotes = new ArrayList<>();
 
         try {
@@ -180,7 +180,7 @@ public class SQLDataController {
      */
     public boolean updateFieldNote(FieldNote fieldNote, String ticketNumber) {
 
-        final String query = SqlInterpolate.interpolate(SqlConstants.UPDATE_DATA_QUERY, fieldNote, ticketNumber);
+        final String query = SqlInterpolate.interpolate(FNSqlConstants.UPDATE_DATA_QUERY, fieldNote, ticketNumber);
 
         try {
             mStatement.executeUpdate(query);
@@ -199,7 +199,7 @@ public class SQLDataController {
      */
     public boolean deleteFieldNote(String ticketNumber) {
 
-        final String deleteDataQuery = SqlInterpolate.interpolate(SqlConstants.DELETE_DATA_QUERY, ticketNumber);
+        final String deleteDataQuery = SqlInterpolate.interpolate(FNSqlConstants.DELETE_DATA_QUERY, ticketNumber);
 
         try {
             mStatement.executeUpdate(deleteDataQuery);
@@ -224,20 +224,20 @@ public class SQLDataController {
         if (resultSet != null) {
             while (resultSet.next()) {
                 FieldNote fieldNote = new FieldNoteBuilder()
-                        .setUserName(resultSet.getString(SqlConstants.USER_COLUMN))
-                        .setTicketNumber(resultSet.getString(SqlConstants.TICKET_COLUMN))
-                        .setWellName(resultSet.getString(SqlConstants.WELLNAME_COLUMN))
-                        .setDateStart(resultSet.getString(SqlConstants.DATESTART_COLUMN))
-                        .setTimeStart(resultSet.getString(SqlConstants.TIMESTART_COLUMN))
-                        .setMileageStart(resultSet.getString(SqlConstants.MILEAGESTART_COLUMN))
-                        .setDescription(resultSet.getString(SqlConstants.DESCRIPTION_COLUMN))
-                        .setMileageEnd(resultSet.getString(SqlConstants.MILEAGEEND_COLUMN))
-                        .setDateEnd(resultSet.getString(SqlConstants.DATEEND_COLUMN))
-                        .setTimeEnd(resultSet.getString(SqlConstants.TIMEEND_COLUMN))
-                        .setProjectNumber(resultSet.getString(SqlConstants.PROJECTNUMBER_COLUMN))
-                        .setLocation(resultSet.getString(SqlConstants.LOCATION_COLUMN))
-                        .setGPSCoords(resultSet.getString(SqlConstants.GPSCOORDS_COLUMN))
-                        .setBillingType(resultSet.getString(SqlConstants.BILLING_COLUMN))
+                        .setUserName(resultSet.getString(FNSqlConstants.USER_COLUMN))
+                        .setTicketNumber(resultSet.getString(FNSqlConstants.TICKET_COLUMN))
+                        .setWellName(resultSet.getString(FNSqlConstants.WELLNAME_COLUMN))
+                        .setDateStart(resultSet.getString(FNSqlConstants.DATESTART_COLUMN))
+                        .setTimeStart(resultSet.getString(FNSqlConstants.TIMESTART_COLUMN))
+                        .setMileageStart(resultSet.getString(FNSqlConstants.MILEAGESTART_COLUMN))
+                        .setDescription(resultSet.getString(FNSqlConstants.DESCRIPTION_COLUMN))
+                        .setMileageEnd(resultSet.getString(FNSqlConstants.MILEAGEEND_COLUMN))
+                        .setDateEnd(resultSet.getString(FNSqlConstants.DATEEND_COLUMN))
+                        .setTimeEnd(resultSet.getString(FNSqlConstants.TIMEEND_COLUMN))
+                        .setProjectNumber(resultSet.getString(FNSqlConstants.PROJECTNUMBER_COLUMN))
+                        .setLocation(resultSet.getString(FNSqlConstants.LOCATION_COLUMN))
+                        .setGPSCoords(resultSet.getString(FNSqlConstants.GPSCOORDS_COLUMN))
+                        .setBillingType(resultSet.getString(FNSqlConstants.BILLING_COLUMN))
                         .build();
 
                 fieldNotes.add(fieldNote);

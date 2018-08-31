@@ -7,12 +7,12 @@
 
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
-import com.devhunter.fncp.constants.FieldNotesConstants;
+import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.CrudSearchValidation;
 import com.devhunter.fncp.mvc.controller.sql.SQLDataController;
 import com.devhunter.fncp.mvc.model.*;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
-import com.devhunter.fncp.utilities.FieldNotesUtil;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
+import com.devhunter.fncp.utilities.FNUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,7 +70,7 @@ public class DeleteDataPanel extends FNPanel {
         mTextDeleteDataGPS = new FNTextField();
         mTextDeleteDataBillable = new FNTextField();
         // create Buttons
-        buttonDelete = new FNButton(FieldNotesConstants.BUTTON_DELETE);
+        buttonDelete = new FNButton(FNConstants.BUTTON_DELETE);
         // create Strings
         mFlexTicketNumber = "";
         init();
@@ -90,30 +90,30 @@ public class DeleteDataPanel extends FNPanel {
         GridLayout crudSearchTextFieldPanelLayout = new GridLayout(0, 2);
         mCrudSearchTextFieldPanel.setLayout(crudSearchTextFieldPanelLayout);
         // CRUD Search Labels
-        FNLabel crudTicketLabel = new FNLabel(FieldNotesConstants.CRUD_SEARCH_TICKET_NUMBER);
+        FNLabel crudTicketLabel = new FNLabel(FNConstants.CRUD_SEARCH_TICKET_NUMBER);
         // CRUD Search Buttons
-        FNButton buttonCrudSearch = new FNButton(FieldNotesConstants.BUTTON_SEARCH);
+        FNButton buttonCrudSearch = new FNButton(FNConstants.BUTTON_SEARCH);
         // Panels/layouts
         GridLayout deleteFNDataPanelLayout = new GridLayout(0, 2);
         mDeleteFNDataPanel.setLayout(deleteFNDataPanelLayout);
         FlowLayout deleteFNButtonPanelLayout = new FlowLayout();
         mDeleteFNButtonPanel.setLayout(deleteFNButtonPanelLayout);
-        mDeleteFNButtonPanel.setBorder(FieldNotesUtil.getInstance().getLineBorder());
+        mDeleteFNButtonPanel.setBorder(FNUtil.getInstance().getLineBorder());
 
         // Labels
-        FNLabel lblDeleteDataName = new FNLabel(FieldNotesConstants.FN_USERNAME_LABEL);
-        FNLabel lblDeleteDataWellName = new FNLabel(FieldNotesConstants.FN_WELLNAME_LABEL);
-        FNLabel lblDeleteDataDateStart = new FNLabel(FieldNotesConstants.FN_DATE_START_LABEL);
-        FNLabel lblDeleteDataTimeStart = new FNLabel(FieldNotesConstants.FN_TIME_START_LABEL);
-        FNLabel lblDeleteDataMileageStart = new FNLabel(FieldNotesConstants.FN_MILEAGE_START_LABEL);
-        FNLabel lblDeleteDataDescription = new FNLabel(FieldNotesConstants.FN_DESCRIPTION_LABEL);
-        FNLabel lblDeleteDataMileageEnd = new FNLabel(FieldNotesConstants.FN_MILEAGE_END_LABEL);
-        FNLabel lblDeleteDataDateEnd = new FNLabel(FieldNotesConstants.FN_DATE_END_LABEL);
-        FNLabel lblDeleteDataTimeEnd = new FNLabel(FieldNotesConstants.FN_TIME_END_LABEL);
-        FNLabel lblDeleteDataProject = new FNLabel(FieldNotesConstants.FN_PROJECT_LABEL);
-        FNLabel lblDeleteDataLocation = new FNLabel(FieldNotesConstants.FN_LOCATION_LABEL);
-        FNLabel lblDeleteDataGPS = new FNLabel(FieldNotesConstants.FN_GPS_LABEL);
-        FNLabel lblDeleteDataBillable = new FNLabel(FieldNotesConstants.FN_BILLING_LABEL);
+        FNLabel lblDeleteDataName = new FNLabel(FNConstants.FN_USERNAME_LABEL);
+        FNLabel lblDeleteDataWellName = new FNLabel(FNConstants.FN_WELLNAME_LABEL);
+        FNLabel lblDeleteDataDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
+        FNLabel lblDeleteDataTimeStart = new FNLabel(FNConstants.FN_TIME_START_LABEL);
+        FNLabel lblDeleteDataMileageStart = new FNLabel(FNConstants.FN_MILEAGE_START_LABEL);
+        FNLabel lblDeleteDataDescription = new FNLabel(FNConstants.FN_DESCRIPTION_LABEL);
+        FNLabel lblDeleteDataMileageEnd = new FNLabel(FNConstants.FN_MILEAGE_END_LABEL);
+        FNLabel lblDeleteDataDateEnd = new FNLabel(FNConstants.FN_DATE_END_LABEL);
+        FNLabel lblDeleteDataTimeEnd = new FNLabel(FNConstants.FN_TIME_END_LABEL);
+        FNLabel lblDeleteDataProject = new FNLabel(FNConstants.FN_PROJECT_LABEL);
+        FNLabel lblDeleteDataLocation = new FNLabel(FNConstants.FN_LOCATION_LABEL);
+        FNLabel lblDeleteDataGPS = new FNLabel(FNConstants.FN_GPS_LABEL);
+        FNLabel lblDeleteDataBillable = new FNLabel(FNConstants.FN_BILLING_LABEL);
         // Override TextField properties
         mTextDeleteDataName.setEditable(false);
         mTextDeleteDataWellName.setEditable(false);
@@ -169,8 +169,8 @@ public class DeleteDataPanel extends FNPanel {
 
         // set initial View settings
         mCrudSearchPanel.setVisible(false);
-        FieldNotesControlPanel.getFieldNotesFrame().repaint();
-        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+        FNControlPanel.getFieldNotesFrame().repaint();
+        FNControlPanel.getFieldNotesFrame().revalidate();
 
         buttonCrudSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -182,12 +182,12 @@ public class DeleteDataPanel extends FNPanel {
                     FieldNote result = conn.mySQLSearchDataByTicketNumber(mFlexTicketNumber);
                     // if the returned value has a ticket number, then it is a valid FieldNote
                     if (result.getTicketNumber() == null) {
-                        JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(),
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
                                 "No Data Found in Database");
                         // hide fieldnote data
                         mDeleteFNDataPanel.setVisible(false);
-                        FieldNotesControlPanel.getFieldNotesFrame().repaint();
-                        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+                        FNControlPanel.getFieldNotesFrame().repaint();
+                        FNControlPanel.getFieldNotesFrame().revalidate();
                     } else {
                         // show search bar and field note data
                         mDeleteFNDataPanel.setVisible(true);
@@ -207,8 +207,8 @@ public class DeleteDataPanel extends FNPanel {
                         mTextDeleteDataGPS.setText(result.getGPSCoords());
                         mTextDeleteDataBillable.setText(matchCase(result.getBillingType()));
 
-                        FieldNotesControlPanel.getFieldNotesFrame().repaint();
-                        FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+                        FNControlPanel.getFieldNotesFrame().repaint();
+                        FNControlPanel.getFieldNotesFrame().revalidate();
                     }
                 } else {
                     //Validation failed - Do nothing and allow them to search again
@@ -228,9 +228,9 @@ public class DeleteDataPanel extends FNPanel {
                         boolean result = conn.deleteFieldNote(mFlexTicketNumber);
                         // code 1 == success, code 0 == failure
                         if (result) {
-                            JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Note Deleted");
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Note Deleted");
                         } else {
-                            JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Connection error - NOTE NOT DELETED");
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Connection error - NOTE NOT DELETED");
                         }
                         break;
                     case JOptionPane.NO_OPTION:

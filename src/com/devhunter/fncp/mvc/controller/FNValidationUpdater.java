@@ -14,6 +14,6 @@ package com.devhunter.fncp.mvc.controller;
  *
  */
 
-public class FieldNoteValidationUpdater {
+public class FNValidationUpdater {
 
 }

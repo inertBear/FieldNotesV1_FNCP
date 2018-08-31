@@ -9,12 +9,12 @@ package com.devhunter.fncp.mvc.model;
 
 import javax.swing.JPanel;
 
-import com.devhunter.fncp.utilities.FieldNotesUtil;
+import com.devhunter.fncp.utilities.FNUtil;
 
 public class FNPanel extends JPanel { 
 	
 	public FNPanel() {
 		new JPanel();
-		setBorder(FieldNotesUtil.getInstance().getLineBorder());
+		setBorder(FNUtil.getInstance().getLineBorder());
 	}
 }

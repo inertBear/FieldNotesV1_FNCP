@@ -4,7 +4,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import com.devhunter.fncp.utilities.FieldNotesUtil;
+import com.devhunter.fncp.utilities.FNUtil;
 
 public class FNImageLabel extends JLabel{
 	
@@ -16,7 +16,7 @@ public class FNImageLabel extends JLabel{
 		setBorder(null);
 		setText(null);
 		setOpaque(false);
-		setBorder(BorderFactory.createLineBorder(FieldNotesUtil.getInstance().getPrimaryColor()));
+		setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
 	}
 
 }

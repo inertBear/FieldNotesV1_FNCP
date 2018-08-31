@@ -13,36 +13,36 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import com.devhunter.fncp.constants.FieldNotesConstants;
+import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.model.FNButton;
 import com.devhunter.fncp.mvc.model.FNPanel;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.mvc.view.userpanel.subpanels.AddUserPanel;
 import com.devhunter.fncp.mvc.view.userpanel.subpanels.ChangeUserPasswordPanel;
 import com.devhunter.fncp.mvc.view.userpanel.subpanels.DeleteUserPanel;
 import com.devhunter.fncp.mvc.view.userpanel.subpanels.SearchUserPanel;
 
-public class FieldNotesUserPanel extends FNPanel {
+public class FNUserPanel extends FNPanel {
 
-	private static FieldNotesUserPanel sInstance;
+	private static FNUserPanel sInstance;
 	private static FNPanel sUserControlPanel;
 	private FNButton mBtnUserSearch;
 	private FNButton mBtnUserAdd;
 	private FNButton mBtnUserDelete;
 	private FNButton mBtnUserPassword;
 
-	private FieldNotesUserPanel() {
+	private FNUserPanel() {
 		sUserControlPanel = new FNPanel();
-		mBtnUserSearch = new FNButton(FieldNotesConstants.USER_SEARCH_BUTTON);
-		mBtnUserAdd = new FNButton(FieldNotesConstants.USER_ADD_BUTTON);
-		mBtnUserDelete = new FNButton(FieldNotesConstants.USER_DELETE_BUTTON);
-		mBtnUserPassword = new FNButton(FieldNotesConstants.USER_EDIT_PASSWORD_BUTTON);
+		mBtnUserSearch = new FNButton(FNConstants.USER_SEARCH_BUTTON);
+		mBtnUserAdd = new FNButton(FNConstants.USER_ADD_BUTTON);
+		mBtnUserDelete = new FNButton(FNConstants.USER_DELETE_BUTTON);
+		mBtnUserPassword = new FNButton(FNConstants.USER_EDIT_PASSWORD_BUTTON);
 		init();
 	}
 
-	public static FieldNotesUserPanel getInstance() {
+	public static FNUserPanel getInstance() {
 		if (sInstance == null) {
-			sInstance = new FieldNotesUserPanel();
+			sInstance = new FNUserPanel();
 		}
 		return sInstance;
 	}
@@ -68,12 +68,12 @@ public class FieldNotesUserPanel extends FNPanel {
 		mBtnUserSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetGui();
-				FieldNotesControlPanel.getFieldNotesFrame().add(SearchUserPanel.getView(), BorderLayout.CENTER);
+				FNControlPanel.getFieldNotesFrame().add(SearchUserPanel.getView(), BorderLayout.CENTER);
 				sUserControlPanel.setVisible(true);
 				SearchUserPanel.getView().setVisible(true);
 
-				FieldNotesControlPanel.getFieldNotesFrame().repaint();
-				FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+				FNControlPanel.getFieldNotesFrame().repaint();
+				FNControlPanel.getFieldNotesFrame().revalidate();
 			}
 		});
 
@@ -81,12 +81,12 @@ public class FieldNotesUserPanel extends FNPanel {
 		mBtnUserAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetGui();
-				FieldNotesControlPanel.getFieldNotesFrame().add(AddUserPanel.getView(), BorderLayout.CENTER);
+				FNControlPanel.getFieldNotesFrame().add(AddUserPanel.getView(), BorderLayout.CENTER);
 				sUserControlPanel.setVisible(true);
 				AddUserPanel.getView().setVisible(true);
 
-				FieldNotesControlPanel.getFieldNotesFrame().repaint();
-				FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+				FNControlPanel.getFieldNotesFrame().repaint();
+				FNControlPanel.getFieldNotesFrame().revalidate();
 			}
 		});
 
@@ -94,12 +94,12 @@ public class FieldNotesUserPanel extends FNPanel {
 		mBtnUserDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetGui();
-				FieldNotesControlPanel.getFieldNotesFrame().add(DeleteUserPanel.getView(), BorderLayout.CENTER);
+				FNControlPanel.getFieldNotesFrame().add(DeleteUserPanel.getView(), BorderLayout.CENTER);
 				sUserControlPanel.setVisible(true);
 				DeleteUserPanel.getView().setVisible(true);
 
-				FieldNotesControlPanel.getFieldNotesFrame().repaint();
-				FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+				FNControlPanel.getFieldNotesFrame().repaint();
+				FNControlPanel.getFieldNotesFrame().revalidate();
 			}
 		});
 
@@ -107,12 +107,12 @@ public class FieldNotesUserPanel extends FNPanel {
 		mBtnUserPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetGui();
-				FieldNotesControlPanel.getFieldNotesFrame().add(ChangeUserPasswordPanel.getView(), BorderLayout.CENTER);
+				FNControlPanel.getFieldNotesFrame().add(ChangeUserPasswordPanel.getView(), BorderLayout.CENTER);
 				sUserControlPanel.setVisible(true);
 				ChangeUserPasswordPanel.getView().setVisible(true);
 
-				FieldNotesControlPanel.getFieldNotesFrame().repaint();
-				FieldNotesControlPanel.getFieldNotesFrame().revalidate();
+				FNControlPanel.getFieldNotesFrame().repaint();
+				FNControlPanel.getFieldNotesFrame().revalidate();
 			}
 		});
 	}

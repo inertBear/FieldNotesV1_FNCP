@@ -13,21 +13,21 @@ import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 
 import com.devhunter.fncp.mvc.model.FieldNote;
-import com.devhunter.fncp.mvc.view.FieldNotesControlPanel;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 /**
  * This class handles the validation of the FieldNote objects. It is responsible for ensuring that no
- * incomplete or incorrect values get from the User-end and into the database. FieldNoteValidation will
+ * incomplete or incorrect values get from the User-end and into the database. FNValidation will
  * throw an IllegalArgumentException if the data is incomplete.
  *
  */
 
-public class FieldNoteValidation {
+public class FNValidation {
 	
 	private static SimpleDateFormat dateFormat;
 	private static SimpleDateFormat timeFormat;
 	
-	public FieldNoteValidation() {
+	public FNValidation() {
 	}
 	
 	public static boolean validate(FieldNote fn) {
@@ -72,7 +72,7 @@ public class FieldNoteValidation {
 				throw new IllegalArgumentException();
 			} else if(fn.getLocation().equals("here") || fn.getLocation().equals("there") || fn.getLocation().equals("anywhere")) {
 				//"v0.0.1 pre-Legacy", hand entered (here, there, anywhere) locations for test
-				//FIXME: user FieldNoteValidationUpdater to set location to ""
+				//FIXME: user FNValidationUpdater to set location to ""
 				error = "Legacy data detected - please update Location";
 				throw new IllegalArgumentException();
 			} else if(fn.getLocation().equals("office") || fn.getLocation().equals("field") || fn.getLocation().equals("shop")) {
@@ -135,10 +135,10 @@ public class FieldNoteValidation {
 			}
 			
 		} catch (IllegalArgumentException e) {
-			JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), error);
+			JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), error);
 			return false;
 		} catch (ParseException e) {
-			JOptionPane.showMessageDialog(FieldNotesControlPanel.getFieldNotesFrame(), "Date Parse Error "
+			JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Date Parse Error "
 					+ "- please make sure it is in the correct format.");
 			return false;
 		}
