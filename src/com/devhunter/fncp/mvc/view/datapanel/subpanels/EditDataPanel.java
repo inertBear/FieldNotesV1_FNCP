@@ -38,7 +38,7 @@ public class EditDataPanel extends FNPanel {
     private static FNPanel mCrudSearchPanel;
     private FNPanel mCrudSearchTextFieldPanel;
     // Panels
-    public static EditDataPanel sInstance;
+    private static EditDataPanel sInstance;
     private static FNPanel mEditFNDataPanel;
     private FNPanel mEditFNButtonPanel;
     // TextFields
@@ -59,11 +59,9 @@ public class EditDataPanel extends FNPanel {
     // DatePickers
     private UtilDateModel mEditTicketStartModel;
     private Properties mEditTicketStartProperties;
-    private JDatePanelImpl mEditTicketStartDatePanel;
     private JDatePickerImpl mEditTicketStartDatePicker;
     private UtilDateModel mEditTicketEndModel;
     private Properties mEditTicketEndProperties;
-    private JDatePanelImpl mEditTicketEndDatePanel;
     private JDatePickerImpl mEditTicketEndDatePicker;
     // Buttons
     private FNButton buttonEdit;
@@ -95,11 +93,11 @@ public class EditDataPanel extends FNPanel {
         // create DatePickers
         mEditTicketStartModel = new UtilDateModel();
         mEditTicketStartProperties = new Properties();
-        mEditTicketStartDatePanel = new JDatePanelImpl(mEditTicketStartModel, mEditTicketStartProperties);
+        JDatePanelImpl mEditTicketStartDatePanel = new JDatePanelImpl(mEditTicketStartModel, mEditTicketStartProperties);
         mEditTicketStartDatePicker = new JDatePickerImpl(mEditTicketStartDatePanel, new DateLabelFormatter());
         mEditTicketEndModel = new UtilDateModel();
         mEditTicketEndProperties = new Properties();
-        mEditTicketEndDatePanel = new JDatePanelImpl(mEditTicketEndModel, mEditTicketEndProperties);
+        JDatePanelImpl mEditTicketEndDatePanel = new JDatePanelImpl(mEditTicketEndModel, mEditTicketEndProperties);
         mEditTicketEndDatePicker = new JDatePickerImpl(mEditTicketEndDatePanel, new DateLabelFormatter());
         // create Buttons
         buttonEdit = new FNButton(FNConstants.BUTTON_UPDATE);
@@ -115,7 +113,7 @@ public class EditDataPanel extends FNPanel {
         return sInstance;
     }
 
-    void init() {
+    private void init() {
         // CRUD Search Panel Layouts
         BorderLayout crudSearchLayout = new BorderLayout();
         mCrudSearchPanel.setLayout(crudSearchLayout);
@@ -212,34 +210,35 @@ public class EditDataPanel extends FNPanel {
                     FieldNote searchResult = conn.mySQLSearchDataByTicketNumber(mFlexTicketNumber);
                     // if the returned value has a ticket number, then it is a valid FieldNote
                     if (searchResult.getTicketNumber() == null) {
-                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
-                                "No Data Found in Database");
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "No Data Found in Database");
                         mEditFNDataPanel.setVisible(false);
                         FNControlPanel.getFieldNotesFrame().repaint();
                         FNControlPanel.getFieldNotesFrame().revalidate();
                     } else {
-                        mEditFNDataPanel.setVisible(true);
-                        mCRUDSearch.setText(mFlexTicketNumber);
+                        if (FNUtil.getInstance().hasAdminAccess() || searchResult.getUserName().equals(FNUtil.getInstance().getCurrentUsername())) {
+                            mEditFNDataPanel.setVisible(true);
+                            mCRUDSearch.setText(mFlexTicketNumber);
 
-                        mTextEditDataName.setText(searchResult.getUserName());
-                        mTextEditDataWellName.setText(searchResult.getWellName());
-                        mEditTicketStartDatePicker.getJFormattedTextField().setText(searchResult.getDateStart());
-                        mEditTicketTimeStart.setTime(parseTime(searchResult.getTimeStart()));
-                        mTextEditDataMileageStart.setText(searchResult.getMileageStart());
-                        mTextEditDataDescription.setText(searchResult.getDescription());
-                        mTextEditDataMileageEnd.setText(searchResult.getMileageEnd());
-                        mEditTicketEndDatePicker.getJFormattedTextField().setText(searchResult.getDateEnd());
-                        mEditTicketTimeEnd.setTime(parseTime(searchResult.getTimeEnd()));
-                        mTextEditDataProject.setText(searchResult.getProjectNumber());
-                        mSpinnerEditDataLocation.setValue(matchCase(searchResult.getLocation()));
-                        mTextEditDataGPS.setText(searchResult.getGPSCoords());
-                        mSpinnerEditDataBillable.setValue(matchCase(searchResult.getBillingType()));
+                            mTextEditDataName.setText(searchResult.getUserName());
+                            mTextEditDataWellName.setText(searchResult.getWellName());
+                            mEditTicketStartDatePicker.getJFormattedTextField().setText(searchResult.getDateStart());
+                            mEditTicketTimeStart.setTime(parseTime(searchResult.getTimeStart()));
+                            mTextEditDataMileageStart.setText(searchResult.getMileageStart());
+                            mTextEditDataDescription.setText(searchResult.getDescription());
+                            mTextEditDataMileageEnd.setText(searchResult.getMileageEnd());
+                            mEditTicketEndDatePicker.getJFormattedTextField().setText(searchResult.getDateEnd());
+                            mEditTicketTimeEnd.setTime(parseTime(searchResult.getTimeEnd()));
+                            mTextEditDataProject.setText(searchResult.getProjectNumber());
+                            mSpinnerEditDataLocation.setValue(matchCase(searchResult.getLocation()));
+                            mTextEditDataGPS.setText(searchResult.getGPSCoords());
+                            mSpinnerEditDataBillable.setValue(matchCase(searchResult.getBillingType()));
 
-                        FNControlPanel.getFieldNotesFrame().repaint();
-                        FNControlPanel.getFieldNotesFrame().revalidate();
+                            FNControlPanel.getFieldNotesFrame().repaint();
+                            FNControlPanel.getFieldNotesFrame().revalidate();
+                        } else {
+                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "You can only edit you own tickets");
+                        }
                     }
-                } else {
-                    //Validation failed - Do nothing and allow them to search again
                 }
             }
         });
@@ -276,14 +275,12 @@ public class EditDataPanel extends FNPanel {
                     } else {
                         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Connection Error - NOTE NOT UPDATED");
                     }
-                } else {
-                    //Validation failed - Do nothing and allow then to make changes and send again
                 }
             }
         });
     }
 
-    public String formatTime(String time) {
+    private String formatTime(String time) {
         return time.substring(0, 5);
     }
 
@@ -294,7 +291,7 @@ public class EditDataPanel extends FNPanel {
         return value.substring(0, 1).toUpperCase() + value.substring(1);
     }
 
-    public Time parseTime(String string) {
+    private Time parseTime(String string) {
         DateFormat formatter = new SimpleDateFormat("HH:mm");
         Time timeValue = null;
         try {

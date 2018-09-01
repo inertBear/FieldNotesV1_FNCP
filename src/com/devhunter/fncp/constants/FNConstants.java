@@ -59,6 +59,7 @@ public class FNConstants {
     public static String CRUD_SEARCH_TICKET_NUMBER = "Ticket Number:";
     // User Maintenance Strings
     public static String USER_NEW_USERNAME_LABEL = "New Username:";
+    public static String USER_CURRENT_PASSWORD_LABEL = "Current Password:";
     public static String USER_NEW_PASSWORD_LABEL = "New Password:";
     // FieldNote field strings
     public static String FN_USERNAME_LABEL = "Name:";

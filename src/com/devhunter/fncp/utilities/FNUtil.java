@@ -20,6 +20,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.border.LineBorder;
 
 import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNUserConstants;
 import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
 import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
 
@@ -33,7 +34,7 @@ import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
 public class FNUtil {
 
 	private static FNUtil sInstance;
-	private static String sCurrentUser;
+	private static FNEntity mCurrentUser;
 	private SpinnerListModel mLocationModel;
 	private SpinnerListModel mBillableModel;
 	private SimpleDateFormat mFormatter;
@@ -71,18 +72,30 @@ public class FNUtil {
 		}
 		return sInstance;
 	}
-	
-	public void setCurrentUser(String currentUser) {
-		sCurrentUser = currentUser;
+
+    /**
+     * set logged in user
+     * @param username
+     */
+	public void setCurrentUser(String username) {
+        mCurrentUser = getEntityByUserName(username);
 	}
 	
 	/**
 	 * get the UserName of the currently logged in User.
 	 * @return String, user name
 	 */
-	public String getCurrentUser() {
-		return sCurrentUser;
+	public String getCurrentUsername() {
+		return mCurrentUser.getUsername();
 	}
+
+    /**
+     * does user have admin access
+     * @return true or false
+     */
+	public boolean hasAdminAccess(){
+        return mCurrentUser.getType().equals(FNUserConstants.ADMIN_USER);
+    }
 
 	/**
      * retrieve a specific FNEntity from the list of users
@@ -213,7 +226,7 @@ public class FNUtil {
 	 * @return standard LineBorder (blue)
 	 */
 	public LineBorder getLineBorder() {
-		return new LineBorder(getPrimaryColor(), 5, true);
+		return new LineBorder(getPrimaryColor(), 2, true);
 	}
 	
 	/**

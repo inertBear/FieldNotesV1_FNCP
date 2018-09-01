@@ -129,7 +129,7 @@ public class AddDataPanel extends FNPanel {
         FNLabel lblNewDataBillable = new FNLabel(FNConstants.FN_BILLING_LABEL);
         // Override TextField properties
         mTextNewDataName.setEditable(false);
-        mTextNewDataName.setText(FNUtil.getInstance().getCurrentUser());
+        mTextNewDataName.setText(FNUtil.getInstance().getCurrentUsername());
         // Customize Spinner properties
         mSpinnerNewDataLocation.setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
         mSpinnerNewDataLocation.setEditor(new JSpinner.DefaultEditor(mSpinnerNewDataLocation));

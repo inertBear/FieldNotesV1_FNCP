@@ -13,6 +13,7 @@ import com.devhunter.fncp.mvc.controller.sql.SQLDataController;
 import com.devhunter.fncp.mvc.model.*;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
+import com.devhunter.fncp.utilities.FNUtil;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -32,7 +33,7 @@ import java.util.Properties;
 public class SearchDataPanel extends FNPanel {
 
     // Panels
-    public static SearchDataPanel sInstance;
+    private static SearchDataPanel sInstance;
     private static FNPanel mSearchDataPanel;
     private static FNPanel mSearchTextFieldPanel;
     // TextFields
@@ -42,11 +43,9 @@ public class SearchDataPanel extends FNPanel {
     // DatePicker
     private UtilDateModel mSearchStartModel;
     private Properties mSearchStartProperties;
-    private JDatePanelImpl mDatePanelSearchStart;
     private JDatePickerImpl mDatePickerSearchStart;
     private UtilDateModel mSearchEndModel;
     private Properties mSearchEndProperties;
-    private JDatePanelImpl mDatePanelSearchEnd;
     private JDatePickerImpl mDatePickerSearchEnd;
     // Buttons
     private FNButton mButtonSearch;
@@ -65,11 +64,11 @@ public class SearchDataPanel extends FNPanel {
         // create DatePickers
         mSearchStartModel = new UtilDateModel();
         mSearchStartProperties = new Properties();
-        mDatePanelSearchStart = new JDatePanelImpl(mSearchStartModel, mSearchStartProperties);
+        JDatePanelImpl mDatePanelSearchStart = new JDatePanelImpl(mSearchStartModel, mSearchStartProperties);
         mDatePickerSearchStart = new JDatePickerImpl(mDatePanelSearchStart, new DateLabelFormatter());
         mSearchEndModel = new UtilDateModel();
         mSearchEndProperties = new Properties();
-        mDatePanelSearchEnd = new JDatePanelImpl(mSearchEndModel, mSearchEndProperties);
+        JDatePanelImpl mDatePanelSearchEnd = new JDatePanelImpl(mSearchEndModel, mSearchEndProperties);
         mDatePickerSearchEnd = new JDatePickerImpl(mDatePanelSearchEnd, new DateLabelFormatter());
         // create Buttons
         mButtonSearch = new FNButton(FNConstants.BUTTON_SEARCH);
@@ -86,7 +85,7 @@ public class SearchDataPanel extends FNPanel {
         return sInstance;
     }
 
-    void init() {
+    private void init() {
         // Panel Layouts
         BorderLayout searchFNPanelLayout = new BorderLayout();
         mSearchDataPanel.setLayout(searchFNPanelLayout);
@@ -96,7 +95,7 @@ public class SearchDataPanel extends FNPanel {
         FNLabel lblUsernameSearch = new FNLabel(FNConstants.FN_USERNAME_LABEL);
         FNLabel lblDataSearchDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
         FNLabel lblDataSearchDateEnd = new FNLabel(FNConstants.FN_DATE_END_LABEL);
-        // ScrolPane/TextArea
+        // ScrollPane/TextArea
         JScrollPane dataSearchScroll = new JScrollPane(mSearchDataOutput);
         mSearchDataOutput.setEditable(false);
         // Set DatePicker Properties
@@ -106,6 +105,13 @@ public class SearchDataPanel extends FNPanel {
         mSearchEndProperties.put("text.today", "Today");
         mSearchEndProperties.put("text.month", "Month");
         mSearchEndProperties.put("text.year", "Year");
+
+        // NO-ADMIN USERS: can only search their own data
+        if (!FNUtil.getInstance().hasAdminAccess()) {
+            mTextDataUsername.setText(FNUtil.getInstance().getCurrentUsername());
+            mTextDataUsername.setEditable(false);
+            mTextDataUsername.setBackground(Color.WHITE);
+        }
 
         // Add Views to TextFieldPanel
         mSearchTextFieldPanel.add(lblUsernameSearch);
@@ -120,17 +126,14 @@ public class SearchDataPanel extends FNPanel {
         mSearchDataPanel.add(mSearchTextFieldPanel, BorderLayout.NORTH);
         mSearchDataPanel.add(dataSearchScroll, BorderLayout.CENTER);
         mSearchDataPanel.add(mButtonExport, BorderLayout.SOUTH);
-        // Initial View Settings
-        mSearchDataPanel.setVisible(false);
-        FNControlPanel.getFieldNotesFrame().repaint();
-        FNControlPanel.getFieldNotesFrame().revalidate();
 
         mButtonSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                SQLDataController conn = new SQLDataController();
                 mSearchDataOutput.setEnabled(true);
                 mSearchDataOutput.setVisible(true);
                 mSearchDataOutput.setText(null);
+
+                SQLDataController conn = new SQLDataController();
 
                 // if start date but no end, or end date but no start
                 if (mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty() && !mDatePickerSearchEnd.getJFormattedTextField().getText().isEmpty()
@@ -207,6 +210,12 @@ public class SearchDataPanel extends FNPanel {
                 }
             }
         });
+
+        // Initial View Settings
+        mSearchDataPanel.setVisible(false);
+
+        FNControlPanel.getFieldNotesFrame().repaint();
+        FNControlPanel.getFieldNotesFrame().revalidate();
     }
 
     public static JPanel getView() {
@@ -224,7 +233,9 @@ public class SearchDataPanel extends FNPanel {
 
     private void resetGui() {
         mSearchDataPanel.setVisible(false);
-        mTextDataUsername.setText(null);
+        if (FNUtil.getInstance().hasAdminAccess()) {
+            mTextDataUsername.setText(null);
+        }
         mSearchDataOutput.setText(null);
 
         LocalDate now = LocalDate.now();

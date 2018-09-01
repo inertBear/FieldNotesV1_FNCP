@@ -1,17 +1,11 @@
 /**
  * © 2017-2018 FieldNotes
  * All Rights Reserved
- * 
+ * <p>
  * Created by DevHunter exclusively for FieldNotes
  */
 
 package com.devhunter.fncp.mvc.view.datapanel;
-
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JPanel;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.model.FNButton;
@@ -21,123 +15,132 @@ import com.devhunter.fncp.mvc.view.datapanel.subpanels.AddDataPanel;
 import com.devhunter.fncp.mvc.view.datapanel.subpanels.DeleteDataPanel;
 import com.devhunter.fncp.mvc.view.datapanel.subpanels.EditDataPanel;
 import com.devhunter.fncp.mvc.view.datapanel.subpanels.SearchDataPanel;
+import com.devhunter.fncp.utilities.FNUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class FNDataPanel extends FNPanel {
 
-	private static FNDataPanel sInstance;
-	private static FNPanel sDataControlPanel;
-	private FNButton mBtnDataSearch;
-	private FNButton mBtnDataAdd;
-	private FNButton mBtnDataDeleteSearch;
-	private FNButton mBtnDataEditSearch;
+    private static FNDataPanel sInstance;
+    private static FNPanel sDataControlPanel;
+    private FNButton mBtnDataSearch;
+    private FNButton mBtnDataAdd;
+    private FNButton mBtnDataDeleteSearch;
+    private FNButton mBtnDataEditSearch;
 
-	private FNDataPanel() {
-		sDataControlPanel = new FNPanel();
-		mBtnDataSearch = new FNButton(FNConstants.DATA_SEARCH_BUTTON);
-		mBtnDataAdd = new FNButton(FNConstants.DATA_ADD_BUTTON);
-		mBtnDataDeleteSearch = new FNButton(FNConstants.DATA_DELETE_BUTTON);
-		mBtnDataEditSearch = new FNButton(FNConstants.DATA_EDIT_BUTTON);
-		init();
-		
-		sDataControlPanel.setVisible(true);
-	}
+    private FNDataPanel() {
+        sDataControlPanel = new FNPanel();
+        mBtnDataSearch = new FNButton(FNConstants.DATA_SEARCH_BUTTON);
+        mBtnDataAdd = new FNButton(FNConstants.DATA_ADD_BUTTON);
+        mBtnDataDeleteSearch = new FNButton(FNConstants.DATA_DELETE_BUTTON);
+        mBtnDataEditSearch = new FNButton(FNConstants.DATA_EDIT_BUTTON);
+        init();
 
-	public static FNDataPanel getInstance() {
-		if (sInstance == null) {
-			sInstance = new FNDataPanel();
-		}
-		return sInstance;
-	}
+        sDataControlPanel.setVisible(true);
+    }
 
-	void init() {
-		// Initialize Data Control Panel
-		sDataControlPanel.add(mBtnDataSearch);
-		sDataControlPanel.add(mBtnDataAdd);
-		sDataControlPanel.add(mBtnDataDeleteSearch);
-		sDataControlPanel.add(mBtnDataEditSearch);
-		sDataControlPanel.setVisible(false);
+    public static FNDataPanel getInstance() {
+        if (sInstance == null) {
+            sInstance = new FNDataPanel();
+        }
+        return sInstance;
+    }
 
-		//FUTURE TODO: introduce lazy loading to reduce startup time
-		SearchDataPanel.getInstance();
-		AddDataPanel.getInstance();
-		DeleteDataPanel.getInstance();
-		EditDataPanel.getInstance();
+    private void init() {
+        // Initialize Data Control Panel
+        sDataControlPanel.add(mBtnDataSearch);
+        sDataControlPanel.add(mBtnDataAdd);
+        // ADMIN ACCESS
+        if (FNUtil.getInstance().hasAdminAccess()) {
+            sDataControlPanel.add(mBtnDataDeleteSearch);
+        }
+        sDataControlPanel.add(mBtnDataEditSearch);
+        sDataControlPanel.setVisible(false);
 
-		mBtnDataSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				resetGui();
-				FNControlPanel.getFieldNotesFrame().add(SearchDataPanel.getView(), BorderLayout.CENTER);
-				sDataControlPanel.setVisible(true);
-				SearchDataPanel.getView().setVisible(true);
+        //TODO: introduce lazy loading to reduce startup time
+        SearchDataPanel.getInstance();
+        AddDataPanel.getInstance();
+        DeleteDataPanel.getInstance();
+        EditDataPanel.getInstance();
 
-				FNControlPanel.getFieldNotesFrame().repaint();
-				FNControlPanel.getFieldNotesFrame().revalidate();
-			}
-		});
+        mBtnDataSearch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                resetGui();
+                FNControlPanel.getFieldNotesFrame().add(SearchDataPanel.getView(), BorderLayout.CENTER);
+                sDataControlPanel.setVisible(true);
+                SearchDataPanel.getView().setVisible(true);
 
-		mBtnDataAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				resetGui();
-				FNControlPanel.getFieldNotesFrame().add(AddDataPanel.getView(), BorderLayout.CENTER);
-				sDataControlPanel.setVisible(true);
-				AddDataPanel.getView().setVisible(true);
+                FNControlPanel.getFieldNotesFrame().repaint();
+                FNControlPanel.getFieldNotesFrame().revalidate();
+            }
+        });
 
-				FNControlPanel.getFieldNotesFrame().repaint();
-				FNControlPanel.getFieldNotesFrame().revalidate();
-			}
-		});
+        mBtnDataAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                resetGui();
+                FNControlPanel.getFieldNotesFrame().add(AddDataPanel.getView(), BorderLayout.CENTER);
+                sDataControlPanel.setVisible(true);
+                AddDataPanel.getView().setVisible(true);
 
-		mBtnDataDeleteSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				resetGui();
-				FNControlPanel.getFieldNotesFrame().add(DeleteDataPanel.getView(), BorderLayout.CENTER);
-				sDataControlPanel.setVisible(true);
-				DeleteDataPanel.getView().setVisible(true);
+                FNControlPanel.getFieldNotesFrame().repaint();
+                FNControlPanel.getFieldNotesFrame().revalidate();
+            }
+        });
 
-				FNControlPanel.getFieldNotesFrame().repaint();
-				FNControlPanel.getFieldNotesFrame().revalidate();
-			}
-		});
+        mBtnDataDeleteSearch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                resetGui();
+                FNControlPanel.getFieldNotesFrame().add(DeleteDataPanel.getView(), BorderLayout.CENTER);
+                sDataControlPanel.setVisible(true);
+                DeleteDataPanel.getView().setVisible(true);
 
-		mBtnDataEditSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				resetGui();
-				FNControlPanel.getFieldNotesFrame().add(EditDataPanel.getView(), BorderLayout.CENTER);
-				sDataControlPanel.setVisible(true);
-				EditDataPanel.getView().setVisible(true);
+                FNControlPanel.getFieldNotesFrame().repaint();
+                FNControlPanel.getFieldNotesFrame().revalidate();
+            }
+        });
 
-				FNControlPanel.getFieldNotesFrame().repaint();
-				FNControlPanel.getFieldNotesFrame().revalidate();
-			}
-		});
+        mBtnDataEditSearch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                resetGui();
+                FNControlPanel.getFieldNotesFrame().add(EditDataPanel.getView(), BorderLayout.CENTER);
+                sDataControlPanel.setVisible(true);
+                EditDataPanel.getView().setVisible(true);
 
-	}
+                FNControlPanel.getFieldNotesFrame().repaint();
+                FNControlPanel.getFieldNotesFrame().revalidate();
+            }
+        });
 
-	// clears visual aspects of the GUI
-	private void resetGui() {
-		sDataControlPanel.setVisible(false);
+    }
 
-		SearchDataPanel.hideView();
-		AddDataPanel.hideView();
-		DeleteDataPanel.hideView();
-		EditDataPanel.hideView();
-	}
+    // clears visual aspects of the GUI
+    private void resetGui() {
+        sDataControlPanel.setVisible(false);
 
-	public String formatTime(String time) {
-		return time.substring(0, 5);
-	}
+        SearchDataPanel.hideView();
+        AddDataPanel.hideView();
+        DeleteDataPanel.hideView();
+        EditDataPanel.hideView();
+    }
 
-	public static JPanel getView() {
-		return sDataControlPanel;
-	}
+    public String formatTime(String time) {
+        return time.substring(0, 5);
+    }
 
-	public static void showView() {
-		sDataControlPanel.setVisible(true);
-	}
+    public static JPanel getView() {
+        return sDataControlPanel;
+    }
 
-	public static void hideView() {
-		sDataControlPanel.setVisible(false);
-		sInstance.resetGui();
-	}
+    public static void showView() {
+        sDataControlPanel.setVisible(true);
+    }
+
+    public static void hideView() {
+        sDataControlPanel.setVisible(false);
+        sInstance.resetGui();
+    }
 }
