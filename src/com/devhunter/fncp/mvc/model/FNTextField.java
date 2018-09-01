@@ -15,13 +15,14 @@ import javax.swing.JTextField;
 import com.devhunter.fncp.utilities.FNUtil;
 
 public class FNTextField extends JTextField {
-	
-	float mCenterAlignment = Component.CENTER_ALIGNMENT;
-	
-	public FNTextField() {
+
+    public FNTextField() {
 		new JTextField();
 		setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
 		setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
+
+		float mCenterAlignment = Component.CENTER_ALIGNMENT;
+
 		setAlignmentX(mCenterAlignment);
 		setAlignmentY(mCenterAlignment);
 	}
