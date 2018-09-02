@@ -123,14 +123,13 @@ public class FNLogin extends FNPanel {
                 String username = mLoginUsername.getText();
 
                 if (username != null) {
-                    FNUtil.getInstance().setCurrentUser(username);
                     String password = mLoginPassword.getText();
                     // send FNEntity to controller for login validation
                     boolean result;
                     FNLoginController action = new FNLoginController();
                     result = action.SQLLogin(username, password);
                     if (result) {
-                        //TODO: check user type: if admin load ALL, if user load:
+                        FNUtil.getInstance().setCurrentUser(username);
                         FNControlPanel.getInstance();
                         //mLoginFrame.dispatchEvent(new WindowEvent(mLoginFrame, WindowEvent.WINDOW_CLOSING));
                     } else {

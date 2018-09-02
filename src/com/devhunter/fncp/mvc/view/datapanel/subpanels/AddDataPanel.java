@@ -106,7 +106,7 @@ public class AddDataPanel extends FNPanel {
         return sInstance;
     }
 
-    void init() {
+    private void init() {
         // Panels/Layouts
         GridLayout addFNDataPanelLayout = new GridLayout(0, 2);
         mAddFNMainPanel.setLayout(addFNDataPanelLayout);
