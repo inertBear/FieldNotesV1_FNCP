@@ -9,12 +9,12 @@ package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
-import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
-import com.devhunter.fncp.mvc.model.FNButton;
-import com.devhunter.fncp.mvc.model.FNLabel;
-import com.devhunter.fncp.mvc.model.FNPanel;
-import com.devhunter.fncp.mvc.model.FNTextField;
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.model.fnview.FNButton;
+import com.devhunter.fncp.mvc.model.fnview.FNLabel;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNTextField;
+import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
@@ -98,7 +98,7 @@ public class SearchUserPanel extends FNPanel {
             public void actionPerformed(ActionEvent e) {
                 mSearchUserOutput.setVisible(true);
                 mSearchUserOutput.setText(null);
-                SQLUserController conn = new SQLUserController();
+                FNUserController conn = new FNUserController();
 
                 if (mSearchUser.getText().trim().isEmpty()) {
                     mUsers = conn.mySQLSearchUser();

@@ -3,7 +3,7 @@
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.devhunter.fncp.mvc.model.FNUser;
+package com.devhunter.fncp.mvc.model.fnuser;
 
 import static com.devhunter.fncp.constants.FNUserConstants.TEST_USER;
 

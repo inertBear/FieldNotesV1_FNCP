@@ -55,6 +55,11 @@ public class FNConstants {
     public static String DATA_ADD_BUTTON = "Add Data";
     public static String DATA_DELETE_BUTTON = "Delete Data";
     public static String DATA_EDIT_BUTTON = "Edit Data";
+    // Billing Panel Strings
+    public static String BILLING_CONTROLS_BUTTON = "Billing Controls";
+    public static String UNBILLED_DATA = "Unbilled";
+    public static String BILLED_DATA = "Billed";
+    public static String COMPLETED_DATA = "Completed";
     // CRUD Search Panel Strings
     public static String CRUD_SEARCH_TICKET_NUMBER = "Ticket Number:";
     // User Maintenance Strings

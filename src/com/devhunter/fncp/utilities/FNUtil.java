@@ -8,13 +8,17 @@
 package com.devhunter.fncp.utilities;
 
 import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNSqlConstants;
 import com.devhunter.fncp.constants.FNUserConstants;
-import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.model.FieldNote;
+import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -100,7 +104,7 @@ public class FNUtil {
      * @return user
      */
     public FNEntity getEntityByUserName(String username) {
-        SQLUserController userController = new SQLUserController();
+        FNUserController userController = new FNUserController();
         ArrayList<FNEntity> allUsers = userController.mySQLSearchUser();
         for (FNEntity user : allUsers) {
             if (user.getUsername().equalsIgnoreCase(username)) {
@@ -108,6 +112,71 @@ public class FNUtil {
             }
         }
         return new FNEntity();
+    }
+
+    /**
+     * Retreive the FieldNotes from within a ResultSet
+     *
+     * @param resultSet
+     * @return ArrayList<FieldNote>
+     * @throws SQLException
+     */
+    public static ArrayList<FieldNote> retrieveFieldNotes(ResultSet resultSet) throws SQLException {
+
+        ArrayList<FieldNote> fieldNotes = new ArrayList<>();
+
+        if (resultSet != null) {
+            while (resultSet.next()) {
+                FieldNote fieldNote = new FieldNote.FieldNoteBuilder()
+                        .setUserName(resultSet.getString(FNSqlConstants.USER_COLUMN))
+                        .setTicketNumber(resultSet.getString(FNSqlConstants.TICKET_COLUMN))
+                        .setWellName(resultSet.getString(FNSqlConstants.WELLNAME_COLUMN))
+                        .setDateStart(resultSet.getString(FNSqlConstants.DATESTART_COLUMN))
+                        .setTimeStart(resultSet.getString(FNSqlConstants.TIMESTART_COLUMN))
+                        .setMileageStart(resultSet.getString(FNSqlConstants.MILEAGESTART_COLUMN))
+                        .setDescription(resultSet.getString(FNSqlConstants.DESCRIPTION_COLUMN))
+                        .setMileageEnd(resultSet.getString(FNSqlConstants.MILEAGEEND_COLUMN))
+                        .setDateEnd(resultSet.getString(FNSqlConstants.DATEEND_COLUMN))
+                        .setTimeEnd(resultSet.getString(FNSqlConstants.TIMEEND_COLUMN))
+                        .setProjectNumber(resultSet.getString(FNSqlConstants.PROJECTNUMBER_COLUMN))
+                        .setLocation(resultSet.getString(FNSqlConstants.LOCATION_COLUMN))
+                        .setGPSCoords(resultSet.getString(FNSqlConstants.GPSCOORDS_COLUMN))
+                        .setBillingType(resultSet.getString(FNSqlConstants.BILLING_COLUMN))
+                        .build();
+
+                fieldNotes.add(fieldNote);
+            }
+            resultSet.close();
+        } else {
+            FieldNote fieldNote = new FieldNote.FieldNoteBuilder().buildEmptyFieldNote();
+            fieldNotes.add(fieldNote);
+        }
+        return fieldNotes;
+    }
+
+    /**
+     * Print an array of FieldNotes to the JTextArea
+     *
+     * @param fieldNotes
+     * @param textArea
+     */
+    public static void printFieldNotesToJTextArea(ArrayList<FieldNote> fieldNotes, JTextArea textArea) {
+        for (FieldNote each : fieldNotes) {
+            textArea.append(FNConstants.CRUD_SEARCH_TICKET_NUMBER + " " + each.getTicketNumber() + "\n");
+            textArea.append(FNConstants.FN_USERNAME_LABEL + " " + each.getUserName() + "\n");
+            textArea.append(FNConstants.FN_PROJECT_LABEL + " " + each.getProjectNumber() + "\n");
+            textArea.append(FNConstants.FN_WELLNAME_LABEL + " " + each.getWellName() + "\n");
+            textArea.append(FNConstants.FN_LOCATION_LABEL + " " + each.getLocation() + "\n");
+            textArea.append(FNConstants.FN_BILLING_LABEL + " " + each.getBillingType() + "\n");
+            textArea.append(FNConstants.FN_DATE_START_LABEL + " " + each.getDateStart() + "\n");
+            textArea.append(FNConstants.FN_DATE_END_LABEL + " " + each.getDateEnd() + "\n");
+            textArea.append(FNConstants.FN_TIME_START_LABEL + " " + each.getTimeStart() + "\n");
+            textArea.append(FNConstants.FN_TIME_END_LABEL + " " + each.getTimeEnd() + "\n");
+            textArea.append(FNConstants.FN_MILEAGE_START_LABEL + " " + each.getMileageStart() + "\n");
+            textArea.append(FNConstants.FN_MILEAGE_END_LABEL + " " + each.getMileageEnd() + "\n");
+            textArea.append(FNConstants.FN_DESCRIPTION_LABEL + " " + each.getDescription() + "\n");
+            textArea.append(FNConstants.FN_GPS_LABEL + " " + each.getGPSCoords() + "\n\n");
+        }
     }
 
     /**

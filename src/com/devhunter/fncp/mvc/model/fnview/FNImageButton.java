@@ -1,16 +1,18 @@
-package com.devhunter.fncp.mvc.model;
+package com.devhunter.fncp.mvc.model.fnview;
+
+import java.io.FileNotFoundException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.JButton;
 
 import com.devhunter.fncp.utilities.FNUtil;
 
-public class FNImageLabel extends JLabel{
+public class FNImageButton extends JButton{
 	
-	public FNImageLabel(ImageIcon icon) {
+	public FNImageButton(ImageIcon icon) throws FileNotFoundException {
 		setSize(icon.getImage().getWidth(null), icon.getImage().getHeight(null));
-		setHorizontalAlignment(JLabel.CENTER);
+		setHorizontalAlignment(JButton.CENTER);
 		setIcon(icon);
 		setIconTextGap(0);
 		setBorder(null);

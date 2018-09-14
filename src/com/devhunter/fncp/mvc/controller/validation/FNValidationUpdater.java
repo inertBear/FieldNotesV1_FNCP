@@ -1,11 +1,11 @@
 /**
  * © 2017-2018 FieldNotes
  * All Rights Reserved
- * 
+ * <p>
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.devhunter.fncp.mvc.controller;
+package com.devhunter.fncp.mvc.controller.validation;
 
 /**
  * this class will update a FieldNote that fails validation for a "stupid" reason. i.e - if the location is "turnkey",

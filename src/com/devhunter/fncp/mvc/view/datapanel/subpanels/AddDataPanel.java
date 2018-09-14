@@ -8,11 +8,15 @@
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.FNValidation;
-import com.devhunter.fncp.mvc.controller.sql.SQLDataController;
+import com.devhunter.fncp.mvc.controller.validation.FNValidation;
+import com.devhunter.fncp.mvc.controller.sql.FNDataController;
 import com.devhunter.fncp.mvc.model.*;
 import com.devhunter.fncp.mvc.model.FieldNote.FieldNoteBuilder;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
+import com.devhunter.fncp.mvc.model.fnview.FNButton;
+import com.devhunter.fncp.mvc.model.fnview.FNLabel;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNTextField;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 import lu.tudor.santec.jtimechooser.JTimeChooser;
@@ -199,7 +203,7 @@ public class AddDataPanel extends FNPanel {
                 // validate FieldNote
                 if (FNValidation.validate(fieldNote)) {
                     // send FieldNote to controller for CUD event
-                    SQLDataController conn = new SQLDataController();
+                    FNDataController conn = new FNDataController();
                     boolean result = conn.addFieldNote(fieldNote);
 
                     // code 1 == success, code 0 == failure

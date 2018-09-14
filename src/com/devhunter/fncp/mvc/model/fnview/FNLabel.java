@@ -5,7 +5,7 @@
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.devhunter.fncp.mvc.model;
+package com.devhunter.fncp.mvc.model.fnview;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;

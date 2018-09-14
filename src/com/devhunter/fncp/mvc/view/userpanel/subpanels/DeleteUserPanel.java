@@ -8,13 +8,13 @@
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.FNUserValidation;
-import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
-import com.devhunter.fncp.mvc.model.FNButton;
-import com.devhunter.fncp.mvc.model.FNLabel;
-import com.devhunter.fncp.mvc.model.FNPanel;
-import com.devhunter.fncp.mvc.model.FNTextField;
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.mvc.controller.validation.FNUserValidation;
+import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.model.fnview.FNButton;
+import com.devhunter.fncp.mvc.model.fnview.FNLabel;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNTextField;
+import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 
@@ -79,7 +79,7 @@ public class DeleteUserPanel extends FNPanel {
                 if (!user.getUsername().equals("UNKNOWN")) {
                     if (FNUserValidation.validate(user)) {
                         // send user to controller for CUD event
-                        SQLUserController conn = new SQLUserController();
+                        FNUserController conn = new FNUserController();
                         int resultCode = conn.deleteUser(user);
                         // code 1 == success, code 2 == already exists, code 3 == failure
                         if (resultCode == 1) {

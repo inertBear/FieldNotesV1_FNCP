@@ -6,11 +6,11 @@
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.FNUserValidation;
+import com.devhunter.fncp.mvc.controller.validation.FNUserValidation;
 import com.devhunter.fncp.mvc.controller.sql.FNLoginController;
-import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
-import com.devhunter.fncp.mvc.model.*;
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
+import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 
@@ -133,7 +133,7 @@ public class ChangeUserPasswordPanel extends FNPanel {
             // Validate UserName and password
             if (FNUserValidation.validate(entity)) {
                 // send user to controller for database update
-                SQLUserController conn = new SQLUserController();
+                FNUserController conn = new FNUserController();
                 int changePasswordResultCode = conn.updatePassword(entity);
                 // code 1 == success, code 2 == already exists, code 3 ==
                 // failure

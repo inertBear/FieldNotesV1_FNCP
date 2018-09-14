@@ -7,8 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-import com.devhunter.fncp.mvc.model.FNPanel;
-import com.devhunter.fncp.mvc.model.FNTextField;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNTextField;
 import com.devhunter.fncp.utilities.FNUtil;
 
 

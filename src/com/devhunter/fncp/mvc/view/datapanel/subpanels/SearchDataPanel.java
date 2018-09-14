@@ -9,9 +9,14 @@ package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
-import com.devhunter.fncp.mvc.controller.sql.SQLDataController;
+import com.devhunter.fncp.mvc.controller.sql.FNBillingController;
+import com.devhunter.fncp.mvc.controller.sql.FNDataController;
 import com.devhunter.fncp.mvc.model.*;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
+import com.devhunter.fncp.mvc.model.fnview.FNButton;
+import com.devhunter.fncp.mvc.model.fnview.FNLabel;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNTextField;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -133,7 +138,7 @@ public class SearchDataPanel extends FNPanel {
                 mSearchDataOutput.setVisible(true);
                 mSearchDataOutput.setText(null);
 
-                SQLDataController conn = new SQLDataController();
+                FNDataController conn = new FNDataController();
 
                 // if start date but no end, or end date but no start
                 if (mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty() && !mDatePickerSearchEnd.getJFormattedTextField().getText().isEmpty()
@@ -144,14 +149,14 @@ public class SearchDataPanel extends FNPanel {
                         && mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
                     // search all names and dates
                     mFieldNotes = conn.mySQLSearchData();
-                    printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
+                    FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
 
                     // if user search bar has a name, but no dates are selected
                 } else if (!mTextDataUsername.getText().trim().isEmpty() && mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
                     // search specific name and all dates
                     String username = mTextDataUsername.getText();
                     mFieldNotes = conn.mySQLSearchData(username);
-                    printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
+                    FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
 
                     // if no user, but dates are selected
                 } else if (mTextDataUsername.getText().trim().isEmpty() && !mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
@@ -168,7 +173,7 @@ public class SearchDataPanel extends FNPanel {
                             String endDate = mDatePickerSearchEnd.getJFormattedTextField().getText();
 
                             mFieldNotes = conn.mySQLSearchDataByDateRange(startDate, endDate);
-                            printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
+                            FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
 
                         } catch (StringIndexOutOfBoundsException e1) {
                             JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a valid date range");
@@ -186,7 +191,7 @@ public class SearchDataPanel extends FNPanel {
                             String endDate = mDatePickerSearchEnd.getJFormattedTextField().getText();
 
                             mFieldNotes = conn.mySQLSearchDataByUserAndDateRange(username, startDate, endDate);
-                            printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
+                            FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
 
                         } catch (StringIndexOutOfBoundsException e1) {
                             JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a valid date range");
@@ -244,25 +249,5 @@ public class SearchDataPanel extends FNPanel {
         mDatePickerSearchStart.getJFormattedTextField().setText("");
         mSearchEndModel.setDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
         mDatePickerSearchEnd.getJFormattedTextField().setText("");
-    }
-
-    private void printFieldNotesToJTextArea(ArrayList<FieldNote> fieldNotes, JTextArea textArea) {
-        for (FieldNote each : fieldNotes) {
-            textArea.append(FNConstants.CRUD_SEARCH_TICKET_NUMBER + " " + each.getTicketNumber() + "\n");
-            textArea.append(FNConstants.FN_USERNAME_LABEL + " " + each.getUserName() + "\n");
-            textArea.append(FNConstants.FN_PROJECT_LABEL + " " + each.getProjectNumber() + "\n");
-            textArea.append(FNConstants.FN_WELLNAME_LABEL + " " + each.getWellName() + "\n");
-            textArea.append(FNConstants.FN_LOCATION_LABEL + " " + each.getLocation() + "\n");
-            textArea.append(FNConstants.FN_BILLING_LABEL + " " + each.getBillingType() + "\n");
-            textArea.append(FNConstants.FN_DATE_START_LABEL + " " + each.getDateStart() + "\n");
-            textArea.append(FNConstants.FN_DATE_END_LABEL + " " + each.getDateEnd() + "\n");
-            textArea.append(FNConstants.FN_TIME_START_LABEL + " " + each.getTimeStart() + "\n");
-            textArea.append(FNConstants.FN_TIME_END_LABEL + " " + each.getTimeEnd() + "\n");
-            textArea.append(FNConstants.FN_MILEAGE_START_LABEL + " " + each.getMileageStart() + "\n");
-            textArea.append(FNConstants.FN_MILEAGE_END_LABEL + " " + each.getMileageEnd() + "\n");
-            textArea.append(FNConstants.FN_DESCRIPTION_LABEL + " " + each.getDescription() + "\n");
-            textArea.append(FNConstants.FN_GPS_LABEL + " " + each.getGPSCoords() + "\n\n");
-        }
-
     }
 }

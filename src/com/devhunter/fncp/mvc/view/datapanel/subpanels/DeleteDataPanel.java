@@ -8,9 +8,13 @@
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.CrudSearchValidation;
-import com.devhunter.fncp.mvc.controller.sql.SQLDataController;
+import com.devhunter.fncp.mvc.controller.validation.CrudSearchValidation;
+import com.devhunter.fncp.mvc.controller.sql.FNDataController;
 import com.devhunter.fncp.mvc.model.*;
+import com.devhunter.fncp.mvc.model.fnview.FNButton;
+import com.devhunter.fncp.mvc.model.fnview.FNLabel;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNTextField;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 
@@ -178,7 +182,7 @@ public class DeleteDataPanel extends FNPanel {
                 if (CrudSearchValidation.validate(mCRUDSearch.getText())) {
                     mFlexTicketNumber = mCRUDSearch.getText();
                     // send Ticket Number to controller for CRUD search
-                    SQLDataController conn = new SQLDataController();
+                    FNDataController conn = new FNDataController();
                     FieldNote result = conn.mySQLSearchDataByTicketNumber(mFlexTicketNumber);
                     // if the returned value has a ticket number, then it is a valid FieldNote
                     if (result.getTicketNumber() == null) {
@@ -224,7 +228,7 @@ public class DeleteDataPanel extends FNPanel {
                 switch (res) {
                     case JOptionPane.YES_OPTION:
                         // send to controller for CUD Event
-                        SQLDataController conn = new SQLDataController();
+                        FNDataController conn = new FNDataController();
                         boolean result = conn.deleteFieldNote(mFlexTicketNumber);
                         // code 1 == success, code 0 == failure
                         if (result) {
@@ -249,6 +253,7 @@ public class DeleteDataPanel extends FNPanel {
 
     /**
      * updates the old billing codes and locations as they are viewed.
+     *
      * @param value
      * @return
      */

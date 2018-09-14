@@ -15,6 +15,8 @@ import com.devhunter.fncp.mvc.model.FieldNote;
 
 public class SqlInterpolate {
 
+    //TODO: take a list of Strings format until end of list
+
     public static String interpolate(String queryTemplate, String variable) {
         return String.format(queryTemplate, variable);
     }
@@ -25,6 +27,10 @@ public class SqlInterpolate {
 
     public static String interpolate(String queryTemplate, String variable, String variable2, String variable3) {
         return String.format(queryTemplate, variable, variable2, variable3);
+    }
+
+    public static String interpolate(String queryTemplate, String variable, String variable2, String variable3, String variable4) {
+        return String.format(queryTemplate, variable, variable2, variable3, variable4);
     }
 
     public static String interpolate(String queryTemplate, FieldNote fieldNote) {

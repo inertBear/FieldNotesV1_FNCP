@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.controller.exporter;
 
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
 import com.devhunter.fncp.mvc.model.FieldNote;
 
 import java.io.File;

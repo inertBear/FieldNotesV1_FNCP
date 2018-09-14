@@ -3,7 +3,7 @@
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.devhunter.fncp.mvc.model.FNUser;
+package com.devhunter.fncp.mvc.model.fnuser;
 
 public class FNEntity {
 

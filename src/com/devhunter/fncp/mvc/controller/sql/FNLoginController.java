@@ -7,7 +7,9 @@
 
 package com.devhunter.fncp.mvc.controller.sql;
 
+import com.devhunter.fncp.constants.FNQueries;
 import com.devhunter.fncp.constants.FNSqlConstants;
+import com.devhunter.fncp.mvc.controller.FNBridgeService;
 import com.devhunter.fncp.mvc.view.loginpanel.FNLogin;
 import com.devhunter.fncp.utilities.SqlInterpolate;
 
@@ -21,7 +23,7 @@ public class FNLoginController {
     private Statement mStatement;
 
     public FNLoginController() {
-        mStatement = SQLBridgeService.getInstance().getSQLBridgeStatement();
+        mStatement = FNBridgeService.getInstance().getSQLBridgeStatement();
     }
 
     /**
@@ -38,7 +40,7 @@ public class FNLoginController {
     public boolean SQLLogin(String username, String password) {
         boolean isLoggedIn = false;
         if (mStatement != null) {
-            String query = SqlInterpolate.interpolate(FNSqlConstants.LOGIN_QUERY, username, password);
+            String query = SqlInterpolate.interpolate(FNQueries.LOGIN_QUERY, username, password);
             try {
                 ResultSet resultSet = mStatement.executeQuery(query);
                 isLoggedIn = resultSet.next();

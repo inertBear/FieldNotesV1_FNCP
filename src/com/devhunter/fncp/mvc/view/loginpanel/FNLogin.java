@@ -10,7 +10,7 @@ package com.devhunter.fncp.mvc.view.loginpanel;
 import com.devhunter.fncp.FNInit;
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.sql.FNLoginController;
-import com.devhunter.fncp.mvc.model.*;
+import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 

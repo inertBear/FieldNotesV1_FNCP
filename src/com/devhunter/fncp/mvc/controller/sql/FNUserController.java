@@ -7,8 +7,10 @@
 
 package com.devhunter.fncp.mvc.controller.sql;
 
+import com.devhunter.fncp.constants.FNQueries;
 import com.devhunter.fncp.constants.FNSqlConstants;
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.mvc.controller.FNBridgeService;
+import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
 import com.devhunter.fncp.utilities.SqlInterpolate;
 
 import java.sql.ResultSet;
@@ -23,13 +25,13 @@ import java.util.ArrayList;
  * relate to the actual storing, alteration, and retrieving of FNEntity
  * data.
  */
-public class SQLUserController {
+public class FNUserController {
 
     private Statement mStatement;
     private ResultSet mResultSet;
 
-    public SQLUserController() {
-        mStatement = SQLBridgeService.getInstance().getSQLBridgeStatement();
+    public FNUserController() {
+        mStatement = FNBridgeService.getInstance().getSQLBridgeStatement();
     }
 
     /**
@@ -43,7 +45,7 @@ public class SQLUserController {
 
         //TODO: [FNCP-022] create an Entity factory to create the entity type by the String "type" passed in
         FNEntity entity = new FNEntity();
-        String query = SqlInterpolate.interpolate(FNSqlConstants.SELECT_USER_QUERY, username);
+        String query = SqlInterpolate.interpolate(FNQueries.SELECT_USER_QUERY, username);
 
         try {
             mResultSet = mStatement.executeQuery(query);
@@ -81,14 +83,14 @@ public class SQLUserController {
     public ArrayList<FNEntity> mySQLSearchUser() {
 
         ArrayList<FNEntity> allUsers = new ArrayList<>();
-        String query = FNSqlConstants.SELECT_ALL_USER_QUERY;
+        String query = FNQueries.SELECT_ALL_USER_QUERY;
 
         try {
             mResultSet = mStatement.executeQuery(query);
 
             if (mResultSet != null) {
                 while (mResultSet.next()) {
-                    // create a new FNUser
+                    // create a new fnuser
                     FNEntity user = new FNEntity();
                     // assign the user data from the result row
                     user.setID(Integer.parseInt(mResultSet.getString(FNSqlConstants.USER_ID_COLUMN)));
@@ -120,8 +122,8 @@ public class SQLUserController {
      */
     public int addUser(FNEntity user) {
 
-        String searchQuery = SqlInterpolate.interpolate(FNSqlConstants.SELECT_USER_QUERY, user.getUsername());
-        String addQuery = SqlInterpolate.interpolate(FNSqlConstants.ADD_USER_QUERY, user.getUsername(), user.getPassword(), user.getType());
+        String searchQuery = SqlInterpolate.interpolate(FNQueries.SELECT_USER_QUERY, user.getUsername());
+        String addQuery = SqlInterpolate.interpolate(FNQueries.ADD_USER_QUERY, user.getUsername(), user.getPassword(), user.getType());
 
         int responseCode;
         try {
@@ -149,8 +151,8 @@ public class SQLUserController {
      */
     public int deleteUser(FNEntity user) {
 
-        String searchQuery = SqlInterpolate.interpolate(FNSqlConstants.SELECT_USER_QUERY, user.getUsername());
-        String deleteQuery = SqlInterpolate.interpolate(FNSqlConstants.DELETE_USER_QUERY, user.getUsername());
+        String searchQuery = SqlInterpolate.interpolate(FNQueries.SELECT_USER_QUERY, user.getUsername());
+        String deleteQuery = SqlInterpolate.interpolate(FNQueries.DELETE_USER_QUERY, user.getUsername());
 
         int deleteUserResponseCode;
         try {
@@ -177,8 +179,8 @@ public class SQLUserController {
      */
     public int updatePassword(FNEntity user) {
 
-        String searchQuery = SqlInterpolate.interpolate(FNSqlConstants.SELECT_USER_QUERY, user.getUsername());
-        String updatePasswordQuery = SqlInterpolate.interpolate(FNSqlConstants.UPDATE_USER_PASSWORD_QUERY, user.getPassword(), user.getUsername());
+        String searchQuery = SqlInterpolate.interpolate(FNQueries.SELECT_USER_QUERY, user.getUsername());
+        String updatePasswordQuery = SqlInterpolate.interpolate(FNQueries.UPDATE_USER_PASSWORD_QUERY, user.getPassword(), user.getUsername());
 
         int changePassResponseCode;
         try {

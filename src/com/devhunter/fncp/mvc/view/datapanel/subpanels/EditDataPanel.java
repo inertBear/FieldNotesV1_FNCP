@@ -8,12 +8,16 @@
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.CrudSearchValidation;
-import com.devhunter.fncp.mvc.controller.FNValidation;
-import com.devhunter.fncp.mvc.controller.sql.SQLDataController;
+import com.devhunter.fncp.mvc.controller.validation.CrudSearchValidation;
+import com.devhunter.fncp.mvc.controller.validation.FNValidation;
+import com.devhunter.fncp.mvc.controller.sql.FNDataController;
 import com.devhunter.fncp.mvc.model.*;
 import com.devhunter.fncp.mvc.model.FieldNote.FieldNoteBuilder;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
+import com.devhunter.fncp.mvc.model.fnview.FNButton;
+import com.devhunter.fncp.mvc.model.fnview.FNLabel;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNTextField;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 import lu.tudor.santec.jtimechooser.JTimeChooser;
@@ -206,7 +210,7 @@ public class EditDataPanel extends FNPanel {
                     //mCrudSearchPanel.setVisible(false);
                     mFlexTicketNumber = mCRUDSearch.getText();
                     // send Ticket Number to controller for CRUD search
-                    SQLDataController conn = new SQLDataController();
+                    FNDataController conn = new FNDataController();
                     FieldNote searchResult = conn.mySQLSearchDataByTicketNumber(mFlexTicketNumber);
                     // if the returned value has a ticket number, then it is a valid FieldNote
                     if (searchResult.getTicketNumber() == null) {
@@ -265,7 +269,7 @@ public class EditDataPanel extends FNPanel {
                 // Validate FieldNote
                 if (FNValidation.validate(fieldNote)) {
                     // send to controller for CUD Event
-                    SQLDataController conn = new SQLDataController();
+                    FNDataController conn = new FNDataController();
                     boolean result = conn.updateFieldNote(fieldNote, mFlexTicketNumber);
 
                     // code 1 == success, code 0 == failure

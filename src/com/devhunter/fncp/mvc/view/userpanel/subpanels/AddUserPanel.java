@@ -6,13 +6,13 @@
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.FNUserValidation;
-import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
-import com.devhunter.fncp.mvc.model.*;
-import com.devhunter.fncp.mvc.model.FNUser.FNAdmin;
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
-import com.devhunter.fncp.mvc.model.FNUser.FNTestUser;
-import com.devhunter.fncp.mvc.model.FNUser.FNUser;
+import com.devhunter.fncp.mvc.controller.validation.FNUserValidation;
+import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.model.fnuser.FNAdmin;
+import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
+import com.devhunter.fncp.mvc.model.fnuser.FNTestUser;
+import com.devhunter.fncp.mvc.model.fnuser.FNUser;
+import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
@@ -74,7 +74,7 @@ public class AddUserPanel extends FNPanel {
         userButtonGroup.add(mUserCheckbox);
         userButtonGroup.add(mAdminCheckbox);
         userButtonGroup.add(mTestCheckbox);
-        //set FNUser by default
+        //set fnuser by default
         mUserCheckbox.setSelected(true);
         //add checkboxes to panel
         mCheckBoxPanel.add(new FNLabel("as User:"));
@@ -163,7 +163,7 @@ public class AddUserPanel extends FNPanel {
                 // validate USER
                 if (FNUserValidation.validate(user)) {
                     // send user to controller for CUD event
-                    SQLUserController conn = new SQLUserController();
+                    FNUserController conn = new FNUserController();
                     int resultCode = conn.addUser(user);
                     // code 1 == success, code 2 == user already exists, code 3 == failure
                     if (resultCode == 1) {
