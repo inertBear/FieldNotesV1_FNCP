@@ -62,14 +62,14 @@ public class FNBillingPanel extends FNPanel {
         });
 
         mBtnBilled.addActionListener(e -> {
-            //TODO: implement Billed Tab
+            //TODO: [FNCP-007] implement Billed Tab
 
             FNControlPanel.getFieldNotesFrame().repaint();
             FNControlPanel.getFieldNotesFrame().revalidate();
         });
 
         mBtnCompleted.addActionListener(e -> {
-            //TODO: implement Complete Tab
+            //TODO: [FNCP-007] implement Complete Tab
 
             FNControlPanel.getFieldNotesFrame().repaint();
             FNControlPanel.getFieldNotesFrame().revalidate();

@@ -27,6 +27,8 @@ import java.util.ArrayList;
  */
 public class FNUserController {
 
+    //TODO: extend FNController class
+
     private Statement mStatement;
     private ResultSet mResultSet;
 

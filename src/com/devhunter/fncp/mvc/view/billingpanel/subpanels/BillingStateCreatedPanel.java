@@ -71,7 +71,7 @@ public class BillingStateCreatedPanel {
         mBtnSearch = new FNButton(FNConstants.BUTTON_SEARCH);
         mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
 
-        // TODO: rewrite display of searched FieldNotes :: create TextAreas
+        // TODO: [FNCP-007] rewrite display of searched FieldNotes :: create TextAreas
         mSearchDataOutput = new JTextArea(28, 32);
         //search results
         mFieldNotes = new ArrayList<>();
@@ -129,8 +129,6 @@ public class BillingStateCreatedPanel {
 
             FNBillingController conn = new FNBillingController();
 
-            //TODO: fix this logic
-
             // if start date is valid
             if (CrudSearchValidation.isDateRangeValid(startDate, endDate)) {
                 // if there is a date
@@ -145,10 +143,12 @@ public class BillingStateCreatedPanel {
                             mFieldNotes = conn.searchCreatedDataByUsernameAndDateRange(username, startDate, endDate);
                         }
                     } else if (!projectName.isEmpty()) {
+                        // search by project name and date range
                         mFieldNotes = conn.searchCreatedDataByProjectAndDateRange(projectName, startDate, endDate);
+                    } else {
+                        // search by date range
+                        mFieldNotes = conn.searchCreatedDataByDateRange(startDate, endDate);
                     }
-                    // search by date range
-                    mFieldNotes = conn.searchCreatedDataByDateRange(startDate, endDate);
                 } else {
                     // if there is a username
                     if (!username.isEmpty()) {

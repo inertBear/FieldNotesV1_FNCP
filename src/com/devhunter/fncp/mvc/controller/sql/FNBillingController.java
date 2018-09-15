@@ -8,7 +8,6 @@
 package com.devhunter.fncp.mvc.controller.sql;
 
 import com.devhunter.fncp.constants.FNQueries;
-import com.devhunter.fncp.constants.FNSqlConstants;
 import com.devhunter.fncp.mvc.controller.FNController;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.utilities.SqlInterpolate;
@@ -16,6 +15,10 @@ import com.devhunter.fncp.utilities.SqlInterpolate;
 import java.util.ArrayList;
 
 public class FNBillingController extends FNController {
+
+    //TODO: [FNCP-007] add commenting
+    //TODO: [FNCP-007] add controller methods for Billed and Completed states (
+        // Q: will that go here, or should I make separate classes for them?)
 
     public FNBillingController() {
         super();
@@ -51,7 +54,7 @@ public class FNBillingController extends FNController {
      */
     public ArrayList<FieldNote> searchCreatedDataByProject(String projectName) {
 
-        final String selectQuery = SqlInterpolate.interpolate(FNQueries.SELECT_CREATED_DATA_BY_USER_QUERY, projectName);
+        final String selectQuery = SqlInterpolate.interpolate(FNQueries.SELECT_CREATED_DATA_BY_PROJECT_QUERY, projectName);
         return search(selectQuery);
     }
 

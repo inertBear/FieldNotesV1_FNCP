@@ -16,6 +16,7 @@ import com.devhunter.fncp.mvc.model.FieldNote;
 public class SqlInterpolate {
 
     //TODO: take a list of Strings format until end of list
+    //TODO: add comments
 
     public static String interpolate(String queryTemplate, String variable) {
         return String.format(queryTemplate, variable);

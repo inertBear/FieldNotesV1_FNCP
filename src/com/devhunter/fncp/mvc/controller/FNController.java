@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 public class FNController {
 
+    //TODO: [FNCP-007] add comments
+
     private Statement mStatement;
 
     public FNController() {

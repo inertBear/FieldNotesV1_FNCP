@@ -26,6 +26,8 @@ public class FNLoginController {
         mStatement = FNBridgeService.getInstance().getSQLBridgeStatement();
     }
 
+    //TODO: extend FNController class
+
     /**
      * This method is called when a user clicks on the login button from the
      * FieldNotes login page. Returning true confirms that the users credentials are

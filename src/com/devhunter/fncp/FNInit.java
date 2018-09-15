@@ -16,7 +16,6 @@ public class FNInit {
 
 	private static JFrame FieldNotesFrame;
 
-	// starting point
 	public static void main(String[] args) {
 		FieldNotesFrame = new JFrame(FNConstants.APPLICATION_NAME);
 		FNLogin.getInstance();

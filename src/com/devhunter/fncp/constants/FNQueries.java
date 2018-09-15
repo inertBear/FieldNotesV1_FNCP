@@ -54,13 +54,13 @@ public class FNQueries {
     //search "created" data by date range
     public static final String SELECT_CREATED_DATA_BY_RANGE_QUERY = SELECT_CREATED_DATA_QUERY + " AND " + DATESTART_COLUMN + " >= '%s' AND " + DATEEND_COLUMN + " <= '%s'";
     //search "created" data by user and date range
-    public static final String SELECT_CREATED_DATA_BY_RANGE_AND_USER_QUERY = SELECT_CREATED_DATA_QUERY + " AND " + USER_COLUMN + "  = '%s' AND " + DATESTART_COLUMN + " >= '%s' AND " + DATEEND_COLUMN + " <= '%s'";
+    public static final String SELECT_CREATED_DATA_BY_RANGE_AND_USER_QUERY = SELECT_CREATED_DATA_QUERY + " AND " + USER_COLUMN + " = '%s' AND " + DATESTART_COLUMN + " >= '%s' AND " + DATEEND_COLUMN + " <= '%s'";
     //search "created data by project
     public static final String SELECT_CREATED_DATA_BY_PROJECT_QUERY = SELECT_CREATED_DATA_QUERY + " AND " + PROJECTNUMBER_COLUMN + " = '%s'";
     //search "created" data by user and project
     public static final String SELECT_CREATED_DATA_BY_USER_AND_PROJECT_QUERY = SELECT_CREATED_DATA_BY_USER_QUERY + " AND " + PROJECTNUMBER_COLUMN + " = '%s'";
     //search "created data by project and date range
-    public static final String SELECT_CREATED_DATA_BY_PROJECT_AND_DATE_RANGE_QUERY = SELECT_CREATED_DATA_BY_PROJECT_QUERY + "AND " + DATESTART_COLUMN + " >= '%s' AND " + DATEEND_COLUMN + " <= '%s'";
+    public static final String SELECT_CREATED_DATA_BY_PROJECT_AND_DATE_RANGE_QUERY = SELECT_CREATED_DATA_BY_PROJECT_QUERY + " AND " + DATESTART_COLUMN + " >= '%s' AND " + DATEEND_COLUMN + " <= '%s'";
     //search "created" data by user, project, and date range
     public static final String SELECT_CREATED_DATA_BY_USER_DATE_RANGE_AND_PROJECT_QUERY = SELECT_CREATED_DATA_BY_RANGE_AND_USER_QUERY + " AND " + PROJECTNUMBER_COLUMN + " = '%s'";
 }

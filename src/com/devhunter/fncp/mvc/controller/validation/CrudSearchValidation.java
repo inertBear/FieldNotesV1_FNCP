@@ -19,6 +19,8 @@ public class CrudSearchValidation {
     public CrudSearchValidation() {
     }
 
+    //TODO: [FNCP-007] add comments
+
     public static boolean validate(String ticketNumber) {
         String error = "";
         try {
@@ -38,17 +40,32 @@ public class CrudSearchValidation {
     }
 
     public static boolean isDateRangeValid(String startDate, String endDate) {
-        //no start date or end date, it is valid
-        if (hasDateRange(startDate, endDate)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                //if start date is before end date, it is valid
-                System.out.println(sdf.parse(startDate).before(sdf.parse(endDate)));
-            } catch (ParseException e) {
-                JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Error Parsing date for validation");
+
+        //if they are the same, then its empty or only one day is selected
+        if (!startDate.equals(endDate)) {
+            //if we have both dates, check for validity
+            if (!startDate.isEmpty() && !endDate.isEmpty()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    //if start date is before end date, it is valid
+                    System.out.println(sdf.parse(startDate).before(sdf.parse(endDate)));
+                } catch (ParseException e) {
+                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Error Parsing date for validation");
+                    return false;
+                }
+                return true;
+            } else {
+                //missing one of the dates
                 return false;
             }
+        } else {
+            if(hasDateRange(startDate, endDate)){
+                //there are values and they span one day
+                return true;
+            } else {
+                //neither date has been entered
+                return true;
+            }
         }
-        return true;
     }
 }
