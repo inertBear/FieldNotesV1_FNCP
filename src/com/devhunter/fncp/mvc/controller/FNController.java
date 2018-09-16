@@ -7,8 +7,8 @@
 
 package com.devhunter.fncp.mvc.controller;
 
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.FieldNote;
-import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
 import com.devhunter.fncp.utilities.FNUtil;
 
 import java.sql.ResultSet;
@@ -99,11 +99,11 @@ public class FNController {
      * search for users.
      *
      * @param query
-     * @return ArrayList<FNEntity> allUsers
+     * @return ArrayList<FNUser> allUsers
      */
-    protected ArrayList<FNEntity> searchUser(String query) {
+    protected ArrayList<FNUser> searchUser(String query) {
 
-        ArrayList<FNEntity> entities = new ArrayList<>();
+        ArrayList<FNUser> entities = new ArrayList<>();
 
         try {
             ResultSet resultSet = mStatement.executeQuery(query);

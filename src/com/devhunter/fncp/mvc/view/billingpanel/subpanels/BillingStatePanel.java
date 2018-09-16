@@ -8,6 +8,9 @@
 package com.devhunter.fncp.mvc.view.billingpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNSqlConstants;
+import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.BillingState;
+import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.FNBillingStateMachine;
 import com.devhunter.fncp.mvc.controller.validation.CrudSearchValidation;
 import com.devhunter.fncp.mvc.controller.sql.billing.FNBillingController;
 import com.devhunter.fncp.mvc.model.FieldNote;
@@ -27,12 +30,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class BillingStateCreatedPanel {
+public class BillingStatePanel {
 
     // Panels
-    private static BillingStateCreatedPanel sInstance;
+    private static BillingStatePanel sInstance;
     private static FNPanel mSearchDataPanel;
     private static FNPanel mSearchTextFieldPanel;
+    // Billing State
+    private static BillingState mBillingState;
     // TextFields
     private FNTextField mSearchUsername;
     private FNTextField mSearchProjectNumber;
@@ -51,7 +56,7 @@ public class BillingStateCreatedPanel {
     // searchData results
     private ArrayList<FieldNote> mFieldNotes;
 
-    private BillingStateCreatedPanel() {
+    private BillingStatePanel() {
         // create Panels
         mSearchDataPanel = new FNPanel();
         mSearchTextFieldPanel = new FNPanel();
@@ -79,9 +84,9 @@ public class BillingStateCreatedPanel {
         init();
     }
 
-    public static BillingStateCreatedPanel getInstance() {
+    public static BillingStatePanel getInstance() {
         if (sInstance == null) {
-            sInstance = new BillingStateCreatedPanel();
+            sInstance = new BillingStatePanel();
         }
         return sInstance;
     }
@@ -122,15 +127,15 @@ public class BillingStateCreatedPanel {
             mSearchDataOutput.setVisible(true);
             mSearchDataOutput.setText(null);
 
+            //initialize BillingStates of new FieldNotes to "created" on each search
+            FNBillingStateMachine.getInstance().initializeStates();
+
             String username = mSearchUsername.getText();
             String projectName = mSearchProjectNumber.getText();
             String startDate = mDatePickerSearchStart.getJFormattedTextField().getText();
             String endDate = mDatePickerSearchEnd.getJFormattedTextField().getText();
 
             FNBillingController conn = new FNBillingController();
-
-            //TODO: pull this out, let all three panels call this when they are searching
-            //TODO: The state they search for will be passed in and handed down to the search
 
             // if start date is valid
             if (CrudSearchValidation.isDateRangeValid(startDate, endDate)) {
@@ -140,33 +145,33 @@ public class BillingStateCreatedPanel {
                     if (!username.isEmpty()) {
                         // if there is a project name
                         if (!projectName.isEmpty()) {
-                            mFieldNotes = conn.searchDataByUsernameProjectAndDateRange(username, projectName, startDate, endDate);
+                            mFieldNotes = conn.searchDataByUsernameProjectAndDateRange(mBillingState, username, projectName, startDate, endDate);
                         } else {
                             // searchData by user name and date range
-                            mFieldNotes = conn.searchDataByUsernameAndDateRange(username, startDate, endDate);
+                            mFieldNotes = conn.searchDataByUsernameAndDateRange(mBillingState, username, startDate, endDate);
                         }
                     } else if (!projectName.isEmpty()) {
                         // searchData by project name and date range
-                        mFieldNotes = conn.searchDataByProjectAndDateRange(projectName, startDate, endDate);
+                        mFieldNotes = conn.searchDataByProjectAndDateRange(mBillingState, projectName, startDate, endDate);
                     } else {
                         // searchData by date range
-                        mFieldNotes = conn.searchDataByDateRange(startDate, endDate);
+                        mFieldNotes = conn.searchDataByDateRange(mBillingState, startDate, endDate);
                     }
                 } else {
                     // if there is a username
                     if (!username.isEmpty()) {
                         // if there is a project name
                         if (!projectName.isEmpty()) {
-                            mFieldNotes = conn.searchDataByUsernameAndProject(username, projectName);
+                            mFieldNotes = conn.searchDataByUsernameAndProject(mBillingState, username, projectName);
                         } else {
                             // searchData by user name
-                            mFieldNotes = conn.searchDataByUsername(username);
+                            mFieldNotes = conn.searchDataByUsername(mBillingState, username);
                         }
                     } else if (!projectName.isEmpty()) {
-                        mFieldNotes = conn.searchDataByProject(projectName);
+                        mFieldNotes = conn.searchDataByProject(mBillingState, projectName);
                     } else {
                         // searchData all user names, project names, and date ranges
-                        mFieldNotes = conn.searchAllData(String state);
+                        mFieldNotes = conn.searchAllData(mBillingState);
                     }
                 }
 
@@ -175,6 +180,10 @@ public class BillingStateCreatedPanel {
                 }
             }
         });
+    }
+
+    public static void setBillingState(BillingState state) {
+        mBillingState = state;
     }
 
     public static JPanel getView() {

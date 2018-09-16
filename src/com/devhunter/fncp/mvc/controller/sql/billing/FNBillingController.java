@@ -7,19 +7,15 @@
 
 package com.devhunter.fncp.mvc.controller.sql.billing;
 
-import com.devhunter.fncp.constants.FNSqlConstants;
 import com.devhunter.fncp.constants.queries.FNBillingQueries;
 import com.devhunter.fncp.mvc.controller.FNController;
-import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.FNBillingStateMachine;
+import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.BillingState;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.utilities.SqlInterpolate;
 
 import java.util.ArrayList;
 
 public class FNBillingController extends FNController {
-
-    //TODO: [FNCP-007] addData functionality for Billed and Completed states (
-    // Q: will that go here, or should I make separate classes for them?)
 
     public FNBillingController() {
         super();
@@ -35,8 +31,8 @@ public class FNBillingController extends FNController {
      *
      * @return ArrayList<FieldNote> fieldNotes
      */
-    public ArrayList<FieldNote> searchAllData() {
-        final String selectQuery = SqlInterpolate.interpolate(FNBillingQueries.SELECT_BILLING_QUERY, FNSqlConstants.BILLING_STATE_CREATED);
+    public ArrayList<FieldNote> searchAllData(BillingState state) {
+        final String selectQuery = SqlInterpolate.interpolateBilling(FNBillingQueries.SELECT_BILLING_QUERY, state);
         return searchData(selectQuery);
     }
 
@@ -47,8 +43,8 @@ public class FNBillingController extends FNController {
      * @param userName
      * @return ArrayList<FieldNote> fieldNotes
      */
-    public ArrayList<FieldNote> searchDataByUsername(String userName) {
-        final String selectQuery = SqlInterpolate.interpolate(FNBillingQueries.SELECT_BILLING_BY_USER_QUERY, userName);
+    public ArrayList<FieldNote> searchDataByUsername(BillingState state, String userName) {
+        final String selectQuery = SqlInterpolate.interpolateBilling(FNBillingQueries.SELECT_BILLING_BY_USER_QUERY, state, userName);
         return searchData(selectQuery);
     }
 
@@ -56,8 +52,8 @@ public class FNBillingController extends FNController {
      * @param projectName
      * @return
      */
-    public ArrayList<FieldNote> searchDataByProject(String projectName) {
-        final String selectQuery = SqlInterpolate.interpolate(FNBillingQueries.SELECT_BILLING_BY_PROJECT_QUERY, projectName);
+    public ArrayList<FieldNote> searchDataByProject(BillingState state, String projectName) {
+        final String selectQuery = SqlInterpolate.interpolateBilling(FNBillingQueries.SELECT_BILLING_BY_PROJECT_QUERY, state, projectName);
         return searchData(selectQuery);
     }
 
@@ -69,8 +65,8 @@ public class FNBillingController extends FNController {
      * @param endDate
      * @return ArrayList<FieldNote> fieldNotes
      */
-    public ArrayList<FieldNote> searchDataByDateRange(String startDate, String endDate) {
-        final String selectQuery = SqlInterpolate.interpolate(FNBillingQueries.SELECT_BILLING_BY_RANGE_QUERY, startDate, endDate);
+    public ArrayList<FieldNote> searchDataByDateRange(BillingState state, String startDate, String endDate) {
+        final String selectQuery = SqlInterpolate.interpolateBilling(FNBillingQueries.SELECT_BILLING_BY_RANGE_QUERY, state, startDate, endDate);
         return searchData(selectQuery);
     }
 
@@ -83,8 +79,34 @@ public class FNBillingController extends FNController {
      * @param endDate   endDate
      * @return ArrayList<FieldNote> fieldNotes
      */
-    public ArrayList<FieldNote> searchDataByUsernameAndDateRange(String username, String startDate, String endDate) {
-        final String selectQuery = SqlInterpolate.interpolate(FNBillingQueries.SELECT_BILLING_BY_RANGE_AND_USER_QUERY, username, startDate, endDate);
+    public ArrayList<FieldNote> searchDataByUsernameAndDateRange(BillingState state, String username, String startDate, String endDate) {
+        final String selectQuery = SqlInterpolate.interpolateBilling(FNBillingQueries.SELECT_BILLING_BY_USER_AND_RANGE_QUERY, state, username, startDate, endDate);
+        return searchData(selectQuery);
+    }
+
+    /**
+     * Used when searching for FieldNotes created within a specific time frame by a
+     * project name, and Billing state = "created"
+     *
+     * @param project
+     * @param startDate
+     * @param endDate
+     * @returnArrayList<FieldNote>
+     */
+    public ArrayList<FieldNote> searchDataByProjectAndDateRange(BillingState state, String project, String startDate, String endDate) {
+        final String selectQuery = SqlInterpolate.interpolateBilling(FNBillingQueries.SELECT_BILLING_BY_PROJECT_AND_DATE_RANGE_QUERY, state, project, startDate, endDate);
+        return searchData(selectQuery);
+    }
+
+    /**
+     * Used when searching for FieldNotes by a username, project name, and Billing state = "created"
+     *
+     * @param username
+     * @param project
+     * @return ArrayList<FieldNote>
+     */
+    public ArrayList<FieldNote> searchDataByUsernameAndProject(BillingState state, String username, String project) {
+        final String selectQuery = SqlInterpolate.interpolateBilling(FNBillingQueries.SELECT_BILLING_BY_USER_AND_PROJECT_QUERY, state, username, project);
         return searchData(selectQuery);
     }
 
@@ -98,34 +120,8 @@ public class FNBillingController extends FNController {
      * @param endDate
      * @return ArrayList<FieldNote>
      */
-    public ArrayList<FieldNote> searchDataByUsernameProjectAndDateRange(String username, String project, String startDate, String endDate) {
-        final String selectQuery = SqlInterpolate.interpolate(FNBillingQueries.SELECT_BILLING_BY_USER_DATE_RANGE_AND_PROJECT_QUERY, username, startDate, endDate, project);
-        return searchData(selectQuery);
-    }
-
-    /**
-     * Used when searching for FieldNotes created within a specific time frame by a
-     * project name, and Billing state = "created"
-     *
-     * @param project
-     * @param startDate
-     * @param endDate
-     * @returnArrayList<FieldNote>
-     */
-    public ArrayList<FieldNote> searchDataByProjectAndDateRange(String project, String startDate, String endDate) {
-        final String selectQuery = SqlInterpolate.interpolate(FNBillingQueries.SELECT_BILLING_BY_PROJECT_AND_DATE_RANGE_QUERY, project, startDate, endDate);
-        return searchData(selectQuery);
-    }
-
-    /**
-     * Used when searching for FieldNotes by a username, project name, and Billing state = "created"
-     *
-     * @param username
-     * @param project
-     * @return ArrayList<FieldNote>
-     */
-    public ArrayList<FieldNote> searchDataByUsernameAndProject(String username, String project) {
-        final String selectQuery = SqlInterpolate.interpolate(FNBillingQueries.SELECT_BILLING_BY_USER_AND_PROJECT_QUERY, username, project);
+    public ArrayList<FieldNote> searchDataByUsernameProjectAndDateRange(BillingState state, String username, String project, String startDate, String endDate) {
+        final String selectQuery = SqlInterpolate.interpolateBilling(FNBillingQueries.SELECT_BILLING_BY_USER_DATE_RANGE_AND_PROJECT_QUERY, state, username, project, startDate, endDate);
         return searchData(selectQuery);
     }
 }

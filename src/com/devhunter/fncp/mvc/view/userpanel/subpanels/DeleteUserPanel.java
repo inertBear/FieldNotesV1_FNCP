@@ -10,18 +10,16 @@ package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.validation.FNUserValidation;
 import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.model.fnview.FNTextField;
-import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class DeleteUserPanel extends FNPanel {
 
@@ -74,7 +72,7 @@ public class DeleteUserPanel extends FNPanel {
 
         mButtonDelete.addActionListener(e -> {
             // the existence of the user is validated by the server
-            FNEntity user = FNUtil.getInstance().getEntityByUserName(mDeleteUser.getText());
+            FNUser user = FNUtil.getInstance().getEntityByUserName(mDeleteUser.getText());
             if (!user.getUsername().equals("UNKNOWN")) {
                 if (FNUserValidation.validate(user)) {
                     // send user to controller for CUD event

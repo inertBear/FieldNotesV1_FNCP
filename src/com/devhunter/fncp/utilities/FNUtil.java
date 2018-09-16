@@ -11,8 +11,8 @@ import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.constants.FNSqlConstants;
 import com.devhunter.fncp.constants.FNUserConstants;
 import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.FieldNote;
-import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -34,7 +34,7 @@ import java.util.Date;
 public class FNUtil {
 
     private static FNUtil sInstance;
-    private static FNEntity mCurrentUser;
+    private static FNUser mCurrentUser;
     private SpinnerListModel mLocationModel;
     private SpinnerListModel mBillableModel;
     private SimpleDateFormat mFormatter;
@@ -101,17 +101,17 @@ public class FNUtil {
     }
 
     /**
-     * retrieve a specific FNEntity from the list of users
+     * retrieve a specific FNUser from the list of users
      *
      * @return user
      */
-    public FNEntity getEntityByUserName(String username) {
+    public FNUser getEntityByUserName(String username) {
         FNUserController userController = new FNUserController();
-        FNEntity user = userController.searchUsersByUsername(username);
+        FNUser user = userController.searchUsersByUsername(username);
         if (user.getUsername().equalsIgnoreCase(username)) {
             return user;
         }
-        return new FNEntity.FNEntityBuilder().buildEmptyFNEntity();
+        return new FNUser.FNEntityBuilder().buildEmptyFNEntity();
     }
 
     /**
@@ -142,14 +142,12 @@ public class FNUtil {
                         .setLocation(resultSet.getString(FNSqlConstants.LOCATION_COLUMN))
                         .setGPSCoords(resultSet.getString(FNSqlConstants.GPSCOORDS_COLUMN))
                         .setBillingType(resultSet.getString(FNSqlConstants.BILLING_COLUMN))
+                        .setBillingState(resultSet.getString(FNSqlConstants.BILLING_STATE_COLUMN))
                         .build();
 
                 fieldNotes.add(fieldNote);
             }
             resultSet.close();
-        } else {
-            FieldNote fieldNote = new FieldNote.FieldNoteBuilder().buildEmptyFieldNote();
-            fieldNotes.add(fieldNote);
         }
         return fieldNotes;
     }
@@ -161,13 +159,13 @@ public class FNUtil {
      * @return ArrayList<FieldNote>
      * @throws SQLException
      */
-    public static ArrayList<FNEntity> retrieveUsers(ResultSet resultSet) throws SQLException {
+    public static ArrayList<FNUser> retrieveUsers(ResultSet resultSet) throws SQLException {
 
-        ArrayList<FNEntity> users = new ArrayList<>();
+        ArrayList<FNUser> users = new ArrayList<>();
 
         if (resultSet != null) {
             while (resultSet.next()) {
-                FNEntity user = new FNEntity.FNEntityBuilder()
+                FNUser user = new FNUser.FNEntityBuilder()
                         .setId(resultSet.getInt(FNSqlConstants.USER_ID_COLUMN))
                         .setUsername(resultSet.getString(FNSqlConstants.USER_USERNAME_COLUMN))
                         .setPassword(resultSet.getString(FNSqlConstants.USER_PASSWORD_COLUMN))
@@ -180,7 +178,7 @@ public class FNUtil {
         }
 
         if (users.isEmpty()) {
-            FNEntity user = new FNEntity.FNEntityBuilder().buildEmptyFNEntity();
+            FNUser user = new FNUser.FNEntityBuilder().buildEmptyFNEntity();
             users.add(user);
         }
         return users;
@@ -212,6 +210,18 @@ public class FNUtil {
     }
 
     /**
+     * allow apostrophes in descriptions
+     *
+     * @return string
+     */
+    public static String allowApostrophe(String string) {
+        if (string.contains("'")) {
+            return string.replace("'", "''");
+        }
+        return string;
+    }
+
+    /**
      * get the approved FieldNotes billing locations
      *
      * @return SpinnerModel of approved Locations
@@ -240,8 +250,6 @@ public class FNUtil {
         try {
             now = mFormatter.parse(timeStamp);
         } catch (ParseException e) {
-            // TODO Auto-generated catch block, need to create a method of error
-            // handling throughout all of FieldNotes
             e.printStackTrace();
         }
         return now;

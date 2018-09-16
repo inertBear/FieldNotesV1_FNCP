@@ -7,6 +7,7 @@
 
 package com.devhunter.fncp.utilities;
 
+import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.BillingState;
 import com.devhunter.fncp.mvc.model.FieldNote;
 
 /**
@@ -40,6 +41,27 @@ public class SqlInterpolate {
 
     public static String interpolate(String queryTemplate, FieldNote fieldNote, String ticketNumber) {
         return String.format(queryTemplate, fieldNote.getUserName(), fieldNote.getWellName(), fieldNote.getDateStart(), fieldNote.getTimeStart(), fieldNote.getMileageStart(), fieldNote.getDescription(),
-                fieldNote.getMileageEnd(), fieldNote.getDateEnd(), fieldNote.getTimeEnd(), fieldNote.getProjectNumber(), fieldNote.getLocation(), fieldNote.getGPSCoords(), fieldNote.getBillingType(), ticketNumber);
+                fieldNote.getMileageEnd(), fieldNote.getDateEnd(), fieldNote.getTimeEnd(), fieldNote.getProjectNumber(), fieldNote.getLocation(), fieldNote.getGPSCoords(), fieldNote.getBillingType(),
+                fieldNote.getBillingState(), ticketNumber);
+    }
+
+    public static String interpolateBilling(String queryTemplate, BillingState state) {
+        return String.format(queryTemplate, state.getState());
+    }
+
+    public static String interpolateBilling(String queryTemplate, BillingState state, String variable1) {
+        return String.format(queryTemplate, state.getState(), variable1);
+    }
+
+    public static String interpolateBilling(String queryTemplate, BillingState state, String variable1, String variable2) {
+        return String.format(queryTemplate, state.getState(), variable1, variable2);
+    }
+
+    public static String interpolateBilling(String queryTemplate, BillingState state, String variable1, String variable2, String variable3) {
+        return String.format(queryTemplate, state.getState(), variable1, variable2, variable3);
+    }
+
+    public static String interpolateBilling(String queryTemplate, BillingState state, String variable1, String variable2, String variable3, String variable4) {
+        return String.format(queryTemplate, state.getState(), variable1, variable2, variable3, variable4);
     }
 }

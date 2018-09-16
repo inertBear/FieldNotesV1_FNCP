@@ -9,7 +9,7 @@ import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.constants.FNUserConstants;
 import com.devhunter.fncp.mvc.controller.validation.FNUserValidation;
 import com.devhunter.fncp.mvc.controller.sql.FNUserController;
-import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
@@ -148,8 +148,8 @@ public class AddUserPanel extends FNPanel {
 
         mButtonAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Create FNEntity
-                FNEntity.FNEntityBuilder entity = new FNEntity.FNEntityBuilder();
+                // Create FNUser
+                FNUser.FNEntityBuilder entity = new FNUser.FNEntityBuilder();
                 entity.setUsername(mAddUser.getText());
                 entity.setPassword(mAddPassword.getText());
 
@@ -160,7 +160,7 @@ public class AddUserPanel extends FNPanel {
                 } else {
                     entity.setType(FNUserConstants.REGULAR_USER);
                 }
-                FNEntity user = entity.build();
+                FNUser user = entity.build();
 
                 // validate USER
                 if (FNUserValidation.validate(user)) {

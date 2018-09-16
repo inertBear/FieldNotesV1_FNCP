@@ -14,13 +14,11 @@ import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.model.fnview.FNTextField;
-import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SearchUserPanel extends FNPanel {
@@ -37,7 +35,7 @@ public class SearchUserPanel extends FNPanel {
     private FNButton mButtonSearch;
     private FNButton mButtonExport;
     // ArrayLists
-    private ArrayList<FNEntity> mUsers;
+    private ArrayList<FNUser> mUsers;
 
     private static final String ID = "ID: ";
     private static final String USERNAME = "Username: ";
@@ -102,8 +100,8 @@ public class SearchUserPanel extends FNPanel {
             if (mSearchUser.getText().trim().isEmpty()) {
                 mUsers = conn.searchAllUsers();
 
-                for (FNEntity each : mUsers) {
-                    //TODO: [FNCP-023] create static print user method in FNEntity EX: public static void printUser(where to print)
+                for (FNUser each : mUsers) {
+                    //TODO: [FNCP-023] create static print user method in FNUser EX: public static void printUser(where to print)
                     mSearchUserOutput.append(ID + each.getId() + "\n");
                     mSearchUserOutput.append(USERNAME + each.getUsername() + "\n");
                     mSearchUserOutput.append(PASSWORD + each.getPassword() + "\n");
@@ -111,7 +109,7 @@ public class SearchUserPanel extends FNPanel {
                 }
             } else {
                 String username = mSearchUser.getText();
-                FNEntity user = conn.searchUsersByUsername(username);
+                FNUser user = conn.searchUsersByUsername(username);
                 mSearchUserOutput.setText(ID + user.getId() + "\n");
                 mSearchUserOutput.append(USERNAME + user.getUsername() + "\n");
                 mSearchUserOutput.append(PASSWORD + user.getPassword() + "\n");

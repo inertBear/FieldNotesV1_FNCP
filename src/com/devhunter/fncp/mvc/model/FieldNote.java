@@ -126,6 +126,10 @@ public class FieldNote {
         this.mBillingState = state;
     }
 
+    public void setDescription(String description) {
+        this.mDescription = description;
+    }
+
     /**
      * FieldNoteBuilder
      */

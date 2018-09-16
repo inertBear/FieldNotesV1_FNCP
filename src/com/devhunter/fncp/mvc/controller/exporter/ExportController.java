@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.controller.exporter;
 
-import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.FieldNote;
 
 import java.io.File;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class ExportController {
 
-    public boolean writeUserToCSVFile(ArrayList<FNEntity> users) {
+    public boolean writeUserToCSVFile(ArrayList<FNUser> users) {
 
         PrintWriter writer;
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
@@ -39,7 +39,7 @@ public class ExportController {
         builder.append("Password");
         builder.append(System.getProperty("line.separator"));
 
-        for (FNEntity each : users) {
+        for (FNUser each : users) {
             builder.append(each.getId());
             builder.append(",");
             builder.append(stripCommas(each.getUsername()));

@@ -8,6 +8,7 @@
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNSqlConstants;
 import com.devhunter.fncp.mvc.controller.validation.FNValidation;
 import com.devhunter.fncp.mvc.controller.sql.FNDataController;
 import com.devhunter.fncp.mvc.model.*;
@@ -199,6 +200,7 @@ public class AddDataPanel extends FNPanel {
                         .setLocation((String) mSpinnerNewDataLocation.getValue())
                         .setGPSCoords(mTextNewDataGPS.getText())
                         .setBillingType((String) mSpinnerNewDataBillable.getValue())
+                        .setBillingState(FNSqlConstants.BILLING_STATE_CREATED)
                         .build();
                 // validate FieldNote
                 if (FNValidation.validate(fieldNote)) {

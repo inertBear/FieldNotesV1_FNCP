@@ -8,10 +8,12 @@
 package com.devhunter.fncp.mvc.view.billingpanel;
 
 import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNSqlConstants;
+import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.BillingState;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
-import com.devhunter.fncp.mvc.view.billingpanel.subpanels.BillingStateCreatedPanel;
+import com.devhunter.fncp.mvc.view.billingpanel.subpanels.BillingStatePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,29 +49,39 @@ public class FNBillingPanel extends FNPanel {
 
         sBillingControlPanel.setVisible(false);
 
-        BillingStateCreatedPanel.getInstance();
-        //BillingCurrentPanel.getInstance();
-        //BillingCompletedPanel.getInstance();
+        BillingStatePanel.getInstance();
 
         mBtnUnbilled.addActionListener(e -> {
             resetGui();
-            FNControlPanel.getFieldNotesFrame().add(BillingStateCreatedPanel.getView(), BorderLayout.CENTER);
+            FNControlPanel.getFieldNotesFrame().add(BillingStatePanel.getView(), BorderLayout.CENTER);
+            BillingStatePanel.setBillingState(new BillingState(FNSqlConstants.BILLING_STATE_CREATED));
+
             sBillingControlPanel.setVisible(true);
-            BillingStateCreatedPanel.getView().setVisible(true);
+            BillingStatePanel.getView().setVisible(true);
 
             FNControlPanel.getFieldNotesFrame().repaint();
             FNControlPanel.getFieldNotesFrame().revalidate();
         });
 
         mBtnBilled.addActionListener(e -> {
-            //TODO: [FNCP-007] implement Billed Tab
+            resetGui();
+            FNControlPanel.getFieldNotesFrame().add(BillingStatePanel.getView(), BorderLayout.CENTER);
+            BillingStatePanel.setBillingState(new BillingState(FNSqlConstants.BILLING_STATE_BILLED));
+
+            sBillingControlPanel.setVisible(true);
+            BillingStatePanel.getView().setVisible(true);
 
             FNControlPanel.getFieldNotesFrame().repaint();
             FNControlPanel.getFieldNotesFrame().revalidate();
         });
 
         mBtnCompleted.addActionListener(e -> {
-            //TODO: [FNCP-007] implement Complete Tab
+            resetGui();
+            FNControlPanel.getFieldNotesFrame().add(BillingStatePanel.getView(), BorderLayout.CENTER);
+            BillingStatePanel.setBillingState(new BillingState(FNSqlConstants.BILLING_STATE_COMPLETE));
+
+            sBillingControlPanel.setVisible(true);
+            BillingStatePanel.getView().setVisible(true);
 
             FNControlPanel.getFieldNotesFrame().repaint();
             FNControlPanel.getFieldNotesFrame().revalidate();
@@ -82,9 +94,7 @@ public class FNBillingPanel extends FNPanel {
     private void resetGui() {
         sBillingControlPanel.setVisible(false);
 
-        BillingStateCreatedPanel.hideView();
-        //BillingCurrentPanel.hideView();
-        //BillingCompletePanel.hideView();
+        BillingStatePanel.hideView();
     }
 
     public static JPanel getView() {

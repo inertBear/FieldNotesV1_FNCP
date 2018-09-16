@@ -10,8 +10,10 @@ package com.devhunter.fncp.mvc.controller.sql;
 import com.devhunter.fncp.constants.queries.FNDataQueries;
 import com.devhunter.fncp.mvc.controller.FNController;
 import com.devhunter.fncp.mvc.model.FieldNote;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.SqlInterpolate;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -106,10 +108,28 @@ public class FNDataController extends FNController {
      * @param fieldNote
      * @return boolean
      */
-    public boolean updateFieldNote(FieldNote fieldNote, String ticketNumber) {
-
-        final String updateQuery = SqlInterpolate.interpolate(FNDataQueries.UPDATE_DATA_QUERY, fieldNote, ticketNumber);
+    public boolean updateFieldNote(FieldNote fieldNote) {
+        final String updateQuery = SqlInterpolate.interpolate(FNDataQueries.UPDATE_DATA_QUERY, fieldNote, fieldNote.getTicketNumber());
         return updateData(updateQuery);
+    }
+
+    /**
+     * Update a list of FieldNotes
+     *
+     * @param fieldNotes
+     * @return boolean
+     */
+    public boolean updateFieldNote(ArrayList<FieldNote> fieldNotes) {
+        boolean wasSuccessful;
+        for (FieldNote each : fieldNotes) {
+            wasSuccessful = updateFieldNote(each);
+            if (!wasSuccessful) {
+                JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                        "Syntax Error in Ticket Number " + each.getTicketNumber() + ". It has not been updated");
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -119,7 +139,6 @@ public class FNDataController extends FNController {
      * @return boolean
      */
     public boolean deleteFieldNote(String ticketNumber) {
-
         final String deleteQuery = SqlInterpolate.interpolate(FNDataQueries.DELETE_DATA_QUERY, ticketNumber);
         return deleteData(deleteQuery);
     }

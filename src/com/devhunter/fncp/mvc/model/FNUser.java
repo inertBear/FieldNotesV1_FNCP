@@ -3,9 +3,9 @@
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.devhunter.fncp.mvc.model.fnuser;
+package com.devhunter.fncp.mvc.model;
 
-public class FNEntity {
+public class FNUser {
 
     //TODO: [FNCP-022] create an Entity factory to create the entity type by the String "type" passed in
 
@@ -15,7 +15,7 @@ public class FNEntity {
     //TODO: [FNCP-022] convert this to Char array
     private String mPassword;
 
-    private FNEntity(int id, String username, String password, String type) {
+    private FNUser(int id, String username, String password, String type) {
         mId = id;
         mUsername = username;
         mPassword = password;
@@ -87,12 +87,12 @@ public class FNEntity {
             return this;
         }
 
-        public FNEntity build() {
-            return new FNEntity(mId, mUsername, mPassword, mType);
+        public FNUser build() {
+            return new FNUser(mId, mUsername, mPassword, mType);
         }
 
-        public FNEntity buildEmptyFNEntity() {
-            return new FNEntity(0, null, null, null);
+        public FNUser buildEmptyFNEntity() {
+            return new FNUser(0, null, null, null);
         }
     }
 }

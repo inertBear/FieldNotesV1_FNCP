@@ -30,7 +30,7 @@ public class FNDataQueries {
     //updateData data
     public static final String UPDATE_DATA_QUERY = "UPDATE " + DATA_TABLE + " SET " + USER_COLUMN + " = '%s', " + WELLNAME_COLUMN + " = '%s', " + DATESTART_COLUMN + " = '%s', " + TIMESTART_COLUMN + " = '%s', " +
             MILEAGESTART_COLUMN + " = '%s', " + DESCRIPTION_COLUMN + " = '%s', " + MILEAGEEND_COLUMN + " = '%s', " + DATEEND_COLUMN + " = '%s', " + TIMEEND_COLUMN + " = '%s', " + PROJECTNUMBER_COLUMN + " = '%s', " +
-            LOCATION_COLUMN + " = '%s', " + GPSCOORDS_COLUMN + " = '%s', " + BILLING_COLUMN + " = '%s' WHERE " + TICKET_COLUMN + " = '%s'";
+            LOCATION_COLUMN + " = '%s', " + GPSCOORDS_COLUMN + " = '%s', " + BILLING_COLUMN + " = '%s', " + BILLING_STATE_COLUMN + " = '%s' WHERE " + TICKET_COLUMN + " = '%s'";
     //deleteData data
     public static final String DELETE_DATA_QUERY = "DELETE FROM " + DATA_TABLE + " WHERE " + TICKET_COLUMN + " = '%s'";
 }

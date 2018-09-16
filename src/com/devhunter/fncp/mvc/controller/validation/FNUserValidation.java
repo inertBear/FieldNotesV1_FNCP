@@ -5,7 +5,7 @@
 
 package com.devhunter.fncp.mvc.controller.validation;
 
-import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
@@ -22,7 +22,7 @@ public class FNUserValidation {
     public FNUserValidation() {
     }
 
-    public static boolean validate(FNEntity user) {
+    public static boolean validate(FNUser user) {
         String error = "";
         try {
             if (user.getUsername().equals("")) {

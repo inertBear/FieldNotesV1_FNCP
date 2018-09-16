@@ -9,7 +9,7 @@ import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.validation.FNUserValidation;
 import com.devhunter.fncp.mvc.controller.sql.FNLoginController;
 import com.devhunter.fncp.mvc.controller.sql.FNUserController;
-import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
@@ -76,8 +76,8 @@ public class ChangeUserPasswordPanel extends FNPanel {
 
             mButtonChangePassword.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    // Create FNEntity -- with new password
-                    FNEntity user = FNUtil.getInstance().getEntityByUserName(mChangePassUsername.getText());
+                    // Create FNUser -- with new password
+                    FNUser user = FNUtil.getInstance().getEntityByUserName(mChangePassUsername.getText());
                     user.setPassword(mNewUserPass.getText());
                     changePassword(user);
                 }
@@ -102,8 +102,8 @@ public class ChangeUserPasswordPanel extends FNPanel {
                     // if they supply their current password
                     FNLoginController action = new FNLoginController();
                     if (action.SQLLogin(FNUtil.getInstance().getCurrentUsername(), mCurrentPass.getText())) {
-                        // Create FNEntity with new password
-                        FNEntity user = new FNEntity.FNEntityBuilder()
+                        // Create FNUser with new password
+                        FNUser user = new FNUser.FNEntityBuilder()
                                 .setUsername(FNUtil.getInstance().getCurrentUsername())
                                 .setPassword(mNewUserPass.getText())
                                 .setType(null)
@@ -129,7 +129,7 @@ public class ChangeUserPasswordPanel extends FNPanel {
      *
      * @param entity
      */
-    private void changePassword(FNEntity entity) {
+    private void changePassword(FNUser entity) {
         if (!entity.getUsername().equals("UNKNOWN")) {
             // Validate UserName and password
             if (FNUserValidation.validate(entity)) {

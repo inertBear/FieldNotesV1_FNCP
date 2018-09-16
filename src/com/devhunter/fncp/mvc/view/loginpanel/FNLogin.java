@@ -13,6 +13,7 @@ import com.devhunter.fncp.mvc.controller.sql.FNLoginController;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -123,7 +124,7 @@ public class FNLogin extends FNPanel {
 
             if (username != null) {
                 String password = mLoginPassword.getText();
-                // send FNEntity to controller for login validation
+                // send FNUser to controller for login validation
                 boolean result;
                 FNLoginController action = new FNLoginController();
                 result = action.SQLLogin(username, password);
