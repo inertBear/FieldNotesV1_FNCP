@@ -7,26 +7,20 @@
 
 package com.devhunter.fncp.mvc.controller.sql;
 
-import com.devhunter.fncp.constants.FNQueries;
-import com.devhunter.fncp.constants.FNSqlConstants;
-import com.devhunter.fncp.mvc.controller.FNBridgeService;
+import com.devhunter.fncp.constants.queries.FNLoginQueries;
+import com.devhunter.fncp.mvc.controller.FNController;
 import com.devhunter.fncp.mvc.view.loginpanel.FNLogin;
 import com.devhunter.fncp.utilities.SqlInterpolate;
 
 import javax.swing.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class FNLoginController {
-
-    private Statement mStatement;
+public class FNLoginController extends FNController {
 
     public FNLoginController() {
-        mStatement = FNBridgeService.getInstance().getSQLBridgeStatement();
+        super();
     }
-
-    //TODO: extend FNController class
 
     /**
      * This method is called when a user clicks on the login button from the
@@ -42,7 +36,7 @@ public class FNLoginController {
     public boolean SQLLogin(String username, String password) {
         boolean isLoggedIn = false;
         if (mStatement != null) {
-            String query = SqlInterpolate.interpolate(FNQueries.LOGIN_QUERY, username, password);
+            String query = SqlInterpolate.interpolate(FNLoginQueries.LOGIN_QUERY, username, password);
             try {
                 ResultSet resultSet = mStatement.executeQuery(query);
                 isLoggedIn = resultSet.next();

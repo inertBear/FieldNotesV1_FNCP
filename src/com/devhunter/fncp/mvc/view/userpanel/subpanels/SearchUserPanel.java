@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class SearchUserPanel extends FNPanel {
 
     // Panels
-    public static SearchUserPanel mInstance;
+    private static SearchUserPanel mInstance;
     private static FNPanel mSearchUserPanel;
     private static FNPanel mSearchTextFieldPanel;
     // TextFields
@@ -67,7 +67,7 @@ public class SearchUserPanel extends FNPanel {
         return mInstance;
     }
 
-    void init() {
+    private void init() {
         // Panel Layouts
         BorderLayout searchUserLayout = new BorderLayout();
         mSearchUserPanel.setLayout(searchUserLayout);
@@ -94,44 +94,40 @@ public class SearchUserPanel extends FNPanel {
         FNControlPanel.getFieldNotesFrame().repaint();
         FNControlPanel.getFieldNotesFrame().revalidate();
 
-        mButtonSearch.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                mSearchUserOutput.setVisible(true);
-                mSearchUserOutput.setText(null);
-                FNUserController conn = new FNUserController();
+        mButtonSearch.addActionListener(e -> {
+            mSearchUserOutput.setVisible(true);
+            mSearchUserOutput.setText(null);
+            FNUserController conn = new FNUserController();
 
-                if (mSearchUser.getText().trim().isEmpty()) {
-                    mUsers = conn.mySQLSearchUser();
+            if (mSearchUser.getText().trim().isEmpty()) {
+                mUsers = conn.searchAllUsers();
 
-                    for (FNEntity each : mUsers) {
-                        //TODO: [FNCP-023] create static print user method in FNEntity EX: public static void printUser(where to print)
-                        mSearchUserOutput.append(ID + each.getId() + "\n");
-                        mSearchUserOutput.append(USERNAME + each.getUsername() + "\n");
-                        mSearchUserOutput.append(PASSWORD + each.getPassword() + "\n");
-                        mSearchUserOutput.append(USER_TYPE + each.getType() + "\n\n");
-                    }
-                } else {
-                    String username = mSearchUser.getText();
-                    FNEntity user = conn.mySQLSearchUser(username);
-                    mSearchUserOutput.setText(ID + user.getId() + "\n");
-                    mSearchUserOutput.append(USERNAME + user.getUsername() + "\n");
-                    mSearchUserOutput.append(PASSWORD + user.getPassword() + "\n");
-                    mSearchUserOutput.append(USER_TYPE + user.getType() + "\n\n");
+                for (FNEntity each : mUsers) {
+                    //TODO: [FNCP-023] create static print user method in FNEntity EX: public static void printUser(where to print)
+                    mSearchUserOutput.append(ID + each.getId() + "\n");
+                    mSearchUserOutput.append(USERNAME + each.getUsername() + "\n");
+                    mSearchUserOutput.append(PASSWORD + each.getPassword() + "\n");
+                    mSearchUserOutput.append(USER_TYPE + each.getType() + "\n\n");
                 }
+            } else {
+                String username = mSearchUser.getText();
+                FNEntity user = conn.searchUsersByUsername(username);
+                mSearchUserOutput.setText(ID + user.getId() + "\n");
+                mSearchUserOutput.append(USERNAME + user.getUsername() + "\n");
+                mSearchUserOutput.append(PASSWORD + user.getPassword() + "\n");
+                mSearchUserOutput.append(USER_TYPE + user.getType() + "\n\n");
             }
         });
 
         // When user trys to export CSV file to user desktop
-        mButtonExport.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        mButtonExport.addActionListener(e -> {
 
-                ExportController exporter = new ExportController();
-                boolean exportSuccessCode = exporter.writeUserToCSVFile(mUsers);
-                if (exportSuccessCode) {
-                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
-                } else {
-                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
-                }
+            ExportController exporter = new ExportController();
+            boolean exportSuccessCode = exporter.writeUserToCSVFile(mUsers);
+            if (exportSuccessCode) {
+                JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
+            } else {
+                JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
             }
         });
     }

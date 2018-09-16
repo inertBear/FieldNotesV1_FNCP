@@ -19,8 +19,12 @@ public class CrudSearchValidation {
     public CrudSearchValidation() {
     }
 
-    //TODO: [FNCP-007] add comments
-
+    /**
+     * confirms if a ticket number is present
+     *
+     * @param ticketNumber
+     * @return
+     */
     public static boolean validate(String ticketNumber) {
         String error = "";
         try {
@@ -35,10 +39,24 @@ public class CrudSearchValidation {
         return true;
     }
 
+    /**
+     * confirms if a date range has been supplied
+     *
+     * @param start
+     * @param end
+     * @return
+     */
     public static boolean hasDateRange(String start, String end) {
         return !start.isEmpty() && !end.isEmpty();
     }
 
+    /**
+     * confirms if a date range is valid
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
     public static boolean isDateRangeValid(String startDate, String endDate) {
 
         //if they are the same, then its empty or only one day is selected
@@ -59,7 +77,7 @@ public class CrudSearchValidation {
                 return false;
             }
         } else {
-            if(hasDateRange(startDate, endDate)){
+            if (hasDateRange(startDate, endDate)) {
                 //there are values and they span one day
                 return true;
             } else {

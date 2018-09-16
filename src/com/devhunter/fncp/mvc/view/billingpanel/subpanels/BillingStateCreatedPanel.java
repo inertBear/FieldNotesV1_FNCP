@@ -9,7 +9,7 @@ package com.devhunter.fncp.mvc.view.billingpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.validation.CrudSearchValidation;
-import com.devhunter.fncp.mvc.controller.sql.FNBillingController;
+import com.devhunter.fncp.mvc.controller.sql.billing.FNBillingController;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
@@ -36,7 +36,7 @@ public class BillingStateCreatedPanel {
     // TextFields
     private FNTextField mSearchUsername;
     private FNTextField mSearchProjectNumber;
-    // TextArea - search results
+    // TextArea - searchData results
     private JTextArea mSearchDataOutput;
     // DatePicker
     private UtilDateModel mSearchStartModel;
@@ -48,7 +48,7 @@ public class BillingStateCreatedPanel {
     // Buttons
     private FNButton mBtnSearch;
     private FNButton mButtonExport;
-    // search results
+    // searchData results
     private ArrayList<FieldNote> mFieldNotes;
 
     private BillingStateCreatedPanel() {
@@ -73,7 +73,7 @@ public class BillingStateCreatedPanel {
 
         // TODO: [FNCP-007] rewrite display of searched FieldNotes :: create TextAreas
         mSearchDataOutput = new JTextArea(28, 32);
-        //search results
+        //searchData results
         mFieldNotes = new ArrayList<>();
 
         init();
@@ -129,6 +129,9 @@ public class BillingStateCreatedPanel {
 
             FNBillingController conn = new FNBillingController();
 
+            //TODO: pull this out, let all three panels call this when they are searching
+            //TODO: The state they search for will be passed in and handed down to the search
+
             // if start date is valid
             if (CrudSearchValidation.isDateRangeValid(startDate, endDate)) {
                 // if there is a date
@@ -137,33 +140,33 @@ public class BillingStateCreatedPanel {
                     if (!username.isEmpty()) {
                         // if there is a project name
                         if (!projectName.isEmpty()) {
-                            mFieldNotes = conn.searchCreatedDataByUsernameProjectAndDateRange(username, projectName, startDate, endDate);
+                            mFieldNotes = conn.searchDataByUsernameProjectAndDateRange(username, projectName, startDate, endDate);
                         } else {
-                            // search by user name and date range
-                            mFieldNotes = conn.searchCreatedDataByUsernameAndDateRange(username, startDate, endDate);
+                            // searchData by user name and date range
+                            mFieldNotes = conn.searchDataByUsernameAndDateRange(username, startDate, endDate);
                         }
                     } else if (!projectName.isEmpty()) {
-                        // search by project name and date range
-                        mFieldNotes = conn.searchCreatedDataByProjectAndDateRange(projectName, startDate, endDate);
+                        // searchData by project name and date range
+                        mFieldNotes = conn.searchDataByProjectAndDateRange(projectName, startDate, endDate);
                     } else {
-                        // search by date range
-                        mFieldNotes = conn.searchCreatedDataByDateRange(startDate, endDate);
+                        // searchData by date range
+                        mFieldNotes = conn.searchDataByDateRange(startDate, endDate);
                     }
                 } else {
                     // if there is a username
                     if (!username.isEmpty()) {
                         // if there is a project name
                         if (!projectName.isEmpty()) {
-                            mFieldNotes = conn.searchCreatedDataByUsernameAndProject(username, projectName);
+                            mFieldNotes = conn.searchDataByUsernameAndProject(username, projectName);
                         } else {
-                            // search by user name
-                            mFieldNotes = conn.searchCreatedDataByUsername(username);
+                            // searchData by user name
+                            mFieldNotes = conn.searchDataByUsername(username);
                         }
                     } else if (!projectName.isEmpty()) {
-                        mFieldNotes = conn.searchCreatedDataByProject(projectName);
+                        mFieldNotes = conn.searchDataByProject(projectName);
                     } else {
-                        // search all user names, project names, and date ranges
-                        mFieldNotes = conn.searchAllCreatedData();
+                        // searchData all user names, project names, and date ranges
+                        mFieldNotes = conn.searchAllData(String state);
                     }
                 }
 

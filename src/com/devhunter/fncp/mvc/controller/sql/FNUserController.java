@@ -7,15 +7,11 @@
 
 package com.devhunter.fncp.mvc.controller.sql;
 
-import com.devhunter.fncp.constants.FNQueries;
-import com.devhunter.fncp.constants.FNSqlConstants;
-import com.devhunter.fncp.mvc.controller.FNBridgeService;
+import com.devhunter.fncp.constants.queries.FNUserQueries;
+import com.devhunter.fncp.mvc.controller.FNController;
 import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
 import com.devhunter.fncp.utilities.SqlInterpolate;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -25,178 +21,95 @@ import java.util.ArrayList;
  * relate to the actual storing, alteration, and retrieving of FNEntity
  * data.
  */
-public class FNUserController {
-
-    //TODO: extend FNController class
-
-    private Statement mStatement;
-    private ResultSet mResultSet;
+public class FNUserController extends FNController {
 
     public FNUserController() {
-        mStatement = FNBridgeService.getInstance().getSQLBridgeStatement();
+        super();
     }
 
     /**
-     * Used when searching for a specific user within FieldNotes. Returns an
-     * FNEntity of the user searched
+     * search for all users within FieldNotes.
      *
-     * @param username
-     * @return ArrayList<FnEntity> searchResults
+     * @return ArrayList<FNEntity>
      */
-    public FNEntity mySQLSearchUser(String username) {
+    public ArrayList<FNEntity> searchAllUsers() {
 
-        //TODO: [FNCP-022] create an Entity factory to create the entity type by the String "type" passed in
-        FNEntity entity = new FNEntity();
-        String query = SqlInterpolate.interpolate(FNQueries.SELECT_USER_QUERY, username);
-
-        try {
-            mResultSet = mStatement.executeQuery(query);
-
-            if (mResultSet != null) {
-                if (mResultSet.next()) {
-                    // move iterator back to beginning of result set
-                    mResultSet.beforeFirst();
-                    while (mResultSet.next()) {
-                        entity.setID(Integer.parseInt(mResultSet.getString(FNSqlConstants.USER_ID_COLUMN)));
-                        entity.setUsername(mResultSet.getString(FNSqlConstants.USER_USERNAME_COLUMN));
-                        entity.setPassword(mResultSet.getString(FNSqlConstants.USER_PASSWORD_COLUMN));
-                        entity.setType(mResultSet.getString((FNSqlConstants.USER_TYPE_COLUMN)));
-                    }
-                }
-                mResultSet.close();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("sql exception: Search Failed");
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-            System.out.println("No user data found for that value");
-        }
-        return entity;
+        String selectQuery = FNUserQueries.SELECT_ALL_USER_QUERY;
+        return searchUser(selectQuery);
     }
 
     /**
-     * Used when search for all users within FieldNotes. The users are returned in
-     * an ArrayList containing all the FNEntities
+     * search for a specific user within FieldNotes.
      *
-     * @return ArrayList<FNEntity> allUsers
+     * @param username to search for
+     * @return ArrayList<FnEntity>
      */
-    public ArrayList<FNEntity> mySQLSearchUser() {
+    public FNEntity searchUsersByUsername(String username) {
 
-        ArrayList<FNEntity> allUsers = new ArrayList<>();
-        String query = FNQueries.SELECT_ALL_USER_QUERY;
-
-        try {
-            mResultSet = mStatement.executeQuery(query);
-
-            if (mResultSet != null) {
-                while (mResultSet.next()) {
-                    // create a new fnuser
-                    FNEntity user = new FNEntity();
-                    // assign the user data from the result row
-                    user.setID(Integer.parseInt(mResultSet.getString(FNSqlConstants.USER_ID_COLUMN)));
-                    user.setUsername(mResultSet.getString(FNSqlConstants.USER_USERNAME_COLUMN));
-                    user.setPassword(mResultSet.getString(FNSqlConstants.USER_PASSWORD_COLUMN));
-                    user.setType(mResultSet.getString(FNSqlConstants.USER_TYPE_COLUMN));
-                    //add this user to the list of users
-                    allUsers.add(user);
-                }
-                mResultSet.close();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("sql exception: Search Failed");
-        }
-        return allUsers;
+        String selectQuery = SqlInterpolate.interpolate(FNUserQueries.SELECT_USER_QUERY, username);
+        return searchUser(selectQuery).get(0);
     }
 
-
     /**
-     * Adds a User to the Database. validates and rejects duplicate UserNames
+     * add a user to FieldNotes
      *
      * @param user
-     * @return int responseCode, (2 if the UserName already exists, 1 for success, 0
-     * for error)
-     * <p>
-     * TODO: [FNCP-024] substitute responseCode for Tuple<boolean, message>
+     * @return
      */
     public int addUser(FNEntity user) {
-
-        String searchQuery = SqlInterpolate.interpolate(FNQueries.SELECT_USER_QUERY, user.getUsername());
-        String addQuery = SqlInterpolate.interpolate(FNQueries.ADD_USER_QUERY, user.getUsername(), user.getPassword(), user.getType());
-
+        //TODO: [FNCP-024] substitute responseCode for Tuple<boolean, message>
+        FNEntity entity = searchUsersByUsername(user.getUsername());
         int responseCode;
-        try {
-            mResultSet = mStatement.executeQuery(searchQuery);
-            if (mResultSet.next()) {
-                responseCode = 2;
-            } else {
-                mStatement.executeUpdate(addQuery);
-                responseCode = 1;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("sql exception: Add User Failed");
-            responseCode = 0;
+
+        if (entity.getUsername() != null) {
+            //then the user already exists
+            responseCode = 2;
+        } else {
+            String addQuery = SqlInterpolate.interpolate(FNUserQueries.ADD_USER_QUERY, user.getUsername(), user.getPassword(), user.getType());
+            responseCode = addUser(addQuery);
         }
         return responseCode;
     }
 
     /**
-     * Deletes a FNEntity from the Database. Validates user existence
+     * delete a registered user from FieldNotes
      *
      * @param user
-     * @return int deleteUserResponseCode, (1 for success, 2 if the user did not
-     * exist, 0 for error)
+     * @return
      */
     public int deleteUser(FNEntity user) {
+        //TODO: [FNCP-024] substitute responseCode for Tuple<boolean, message>
+        FNEntity entity = searchUsersByUsername(user.getUsername());
+        int responseCode;
 
-        String searchQuery = SqlInterpolate.interpolate(FNQueries.SELECT_USER_QUERY, user.getUsername());
-        String deleteQuery = SqlInterpolate.interpolate(FNQueries.DELETE_USER_QUERY, user.getUsername());
-
-        int deleteUserResponseCode;
-        try {
-            mResultSet = mStatement.executeQuery(searchQuery);
-            if (mResultSet.next()) {
-                mStatement.executeUpdate(deleteQuery);
-                deleteUserResponseCode = 1;
-            } else {
-                deleteUserResponseCode = 2;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            deleteUserResponseCode = 0;
+        if (entity.getUsername() != null) {
+            String deleteQuery = SqlInterpolate.interpolate(FNUserQueries.DELETE_USER_QUERY, user.getUsername());
+            responseCode = deleteUser(deleteQuery);
+        } else {
+            //then the user doesn't exist
+            responseCode = 2;
         }
-        return deleteUserResponseCode;
+        return responseCode;
     }
 
     /**
-     * Change the password of a user in the database. validates and rejects nonexistent UserNames
+     * update a registered user's password
      *
      * @param user (contains the CURRENT user and NEW password)
-     * @return int changePassResponseCode, (1 if success, 2 if UserName does not
-     * exist, 0 if error)
+     * @return
      */
     public int updatePassword(FNEntity user) {
+        //TODO: [FNCP-024] substitute responseCode for Tuple<boolean, message>
+        FNEntity entity = searchUsersByUsername(user.getUsername());
+        int responseCode;
 
-        String searchQuery = SqlInterpolate.interpolate(FNQueries.SELECT_USER_QUERY, user.getUsername());
-        String updatePasswordQuery = SqlInterpolate.interpolate(FNQueries.UPDATE_USER_PASSWORD_QUERY, user.getPassword(), user.getUsername());
-
-        int changePassResponseCode;
-        try {
-            mResultSet = mStatement.executeQuery(searchQuery);
-            if (mResultSet.next()) {
-                mStatement.executeUpdate(updatePasswordQuery);
-                changePassResponseCode = 1;
-            } else {
-                changePassResponseCode = 2;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            changePassResponseCode = 0;
+        if (entity.getUsername() != null) {
+            String updateQuery = SqlInterpolate.interpolate(FNUserQueries.UPDATE_USER_PASSWORD_QUERY, user.getPassword(), user.getUsername());
+            responseCode = updatePassword(updateQuery);
+        } else {
+            //then the user doesn't exist
+            responseCode = 2;
         }
-        return changePassResponseCode;
+        return responseCode;
     }
 }

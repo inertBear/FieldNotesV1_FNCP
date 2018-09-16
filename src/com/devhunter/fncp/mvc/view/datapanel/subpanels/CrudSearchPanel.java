@@ -13,7 +13,7 @@ import com.devhunter.fncp.utilities.FNUtil;
 
 
 /**
- * This class will be called when trying to edit or delete a ticket in the Data Functions. Clicking the "Edit Data" or "Delete Data"
+ * This class will be called when trying to edit or deleteData a ticket in the Data Functions. Clicking the "Edit Data" or "Delete Data"
  * button from the FNDataPanel will navigate the user here as well as provde a reference to the function that will be done on
  * the data (do i really want this class to worry about what will be done with the data? NO.)so that it can be sent to the proper
  * view....
@@ -25,6 +25,8 @@ import com.devhunter.fncp.utilities.FNUtil;
  *
  */
 public class CrudSearchPanel extends FNPanel {
+
+	//TODO: this class needs to be worked out...
 
 	// Panels
 	private static CrudSearchPanel sInstance;
@@ -53,7 +55,6 @@ public class CrudSearchPanel extends FNPanel {
 	}
 	
 	void init() {
-		//TODO: REFACTOR
 		mCrudSearchPanel.setBorder(new LineBorder(FNUtil.getInstance().getPrimaryColor(), 5, true));
 
 		JLabel editDatalbl = new JLabel("Ticket Number:");
@@ -73,14 +74,12 @@ public class CrudSearchPanel extends FNPanel {
 		mCrudSearchPanel.add(btnSearchForEdit);
 
 		mCrudSearchPanel.setVisible(false);
-	
-	
-//		// TODO: Move Controller Code
+
 //		btnSearchForEdit.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent e) {
 //				if (mCrudSearch.getText().trim().isEmpty()) {
 //					JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
-//							"Please enter search information");
+//							"Please enter searchData information");
 //				} else {
 //					mFlexTicketNumber = mCrudSearch.getText();
 //					ArrayList<String> editDataSearchResults = new ArrayList<String>();
@@ -96,17 +95,17 @@ public class CrudSearchPanel extends FNPanel {
 //						JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
 //								"No Data Found in Database");
 //						resetGui();
-//						FNControlPanel.getFieldNotesFrame().add(mEditDataSearchPanel, BorderLayout.CENTER);
+//						FNControlPanel.getFieldNotesFrame().addData(mEditDataSearchPanel, BorderLayout.CENTER);
 //						FNDataPanel.getView().setVisible(true);
 //						mCrudSearch.setVisible(true);
 //	
 //						FNControlPanel.getFieldNotesFrame().repaint();
 //						FNControlPanel.getFieldNotesFrame().revalidate();
 //					} else {
-//						//clear search
+//						//clear searchData
 //						resetGui();
 //						//show EditMainPanel or DeleteMainPanel
-//						FNControlPanel.getFieldNotesFrame().add(mEditFNMainPanel, BorderLayout.CENTER);
+//						FNControlPanel.getFieldNotesFrame().addData(mEditFNMainPanel, BorderLayout.CENTER);
 //						//show data panel
 //						FNDataPanel.getView().setVisible(true);
 //						// show eith the EditPanel or DeltePanel

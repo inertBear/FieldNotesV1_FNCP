@@ -26,10 +26,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * This class holds all of the common View characteristics including colors, borders, and Dimensions. 
- * These can be accessed from anywhere in FieldNotes and ensures that all dimensions, colors, and 
+ * This class holds all of the common View characteristics including colors, borders, and Dimensions.
+ * These can be accessed from anywhere in FieldNotes and ensures that all dimensions, colors, and
  * borders stay the same throughout the entire project.
- *
  */
 
 public class FNUtil {
@@ -50,7 +49,7 @@ public class FNUtil {
 
     /**
      * This class has been established as a singleton to disallow the creation of multiple Utility objects.
-     *
+     * <p>
      * TODO: include utilities for Thread control- i.e. UI VS background threading
      */
     private FNUtil() {
@@ -76,6 +75,7 @@ public class FNUtil {
 
     /**
      * set logged in user
+     *
      * @param username
      */
     public void setCurrentUser(String username) {
@@ -84,6 +84,7 @@ public class FNUtil {
 
     /**
      * get the UserName of the currently logged in User.
+     *
      * @return String, user name
      */
     public String getCurrentUsername() {
@@ -92,6 +93,7 @@ public class FNUtil {
 
     /**
      * does user have admin access
+     *
      * @return true or false
      */
     public boolean hasAdminAccess() {
@@ -105,13 +107,11 @@ public class FNUtil {
      */
     public FNEntity getEntityByUserName(String username) {
         FNUserController userController = new FNUserController();
-        ArrayList<FNEntity> allUsers = userController.mySQLSearchUser();
-        for (FNEntity user : allUsers) {
-            if (user.getUsername().equalsIgnoreCase(username)) {
-                return user;
-            }
+        FNEntity user = userController.searchUsersByUsername(username);
+        if (user.getUsername().equalsIgnoreCase(username)) {
+            return user;
         }
-        return new FNEntity();
+        return new FNEntity.FNEntityBuilder().buildEmptyFNEntity();
     }
 
     /**
@@ -152,6 +152,38 @@ public class FNUtil {
             fieldNotes.add(fieldNote);
         }
         return fieldNotes;
+    }
+
+    /**
+     * Retreive the FNEntities from within a ResultSet
+     *
+     * @param resultSet
+     * @return ArrayList<FieldNote>
+     * @throws SQLException
+     */
+    public static ArrayList<FNEntity> retrieveUsers(ResultSet resultSet) throws SQLException {
+
+        ArrayList<FNEntity> users = new ArrayList<>();
+
+        if (resultSet != null) {
+            while (resultSet.next()) {
+                FNEntity user = new FNEntity.FNEntityBuilder()
+                        .setId(resultSet.getInt(FNSqlConstants.USER_ID_COLUMN))
+                        .setUsername(resultSet.getString(FNSqlConstants.USER_USERNAME_COLUMN))
+                        .setPassword(resultSet.getString(FNSqlConstants.USER_PASSWORD_COLUMN))
+                        .setType(resultSet.getString(FNSqlConstants.USER_TYPE_COLUMN))
+                        .build();
+
+                users.add(user);
+            }
+            resultSet.close();
+        }
+
+        if (users.isEmpty()) {
+            FNEntity user = new FNEntity.FNEntityBuilder().buildEmptyFNEntity();
+            users.add(user);
+        }
+        return users;
     }
 
     /**
@@ -254,7 +286,7 @@ public class FNUtil {
 
     /**
      * get large TextField dimension, used for the TextFields holding FieldNote Values
-     * for example: in the add, edit, delete panels
+     * for example: in the addData, edit, deleteData panels
      *
      * @return large TextField Dimension
      */
@@ -264,6 +296,7 @@ public class FNUtil {
 
     /**
      * get login panel Dimension
+     *
      * @return login panel Dimension
      */
     public Dimension getLoginPanelDimension() {
@@ -272,6 +305,7 @@ public class FNUtil {
 
     /**
      * get a standard button dimension
+     *
      * @return standard button Dimension
      */
     public Dimension getStandardButtonDimension() {
@@ -289,6 +323,7 @@ public class FNUtil {
 
     /**
      * get the standard FieldNotes window border
+     *
      * @return standard LineBorder (blue)
      */
     public LineBorder getLineBorder() {
@@ -297,6 +332,7 @@ public class FNUtil {
 
     /**
      * get the standard rigid area for padding
+     *
      * @return standard rigid area
      */
     public Dimension getStandardRigidArea() {

@@ -181,9 +181,9 @@ public class DeleteDataPanel extends FNPanel {
                 // CRUDSearch Validation
                 if (CrudSearchValidation.validate(mCRUDSearch.getText())) {
                     mFlexTicketNumber = mCRUDSearch.getText();
-                    // send Ticket Number to controller for CRUD search
+                    // send Ticket Number to controller for CRUD searchData
                     FNDataController conn = new FNDataController();
-                    FieldNote result = conn.mySQLSearchDataByTicketNumber(mFlexTicketNumber);
+                    FieldNote result = conn.searchDataByTicketNumber(mFlexTicketNumber);
                     // if the returned value has a ticket number, then it is a valid FieldNote
                     if (result.getTicketNumber() == null) {
                         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
@@ -193,7 +193,7 @@ public class DeleteDataPanel extends FNPanel {
                         FNControlPanel.getFieldNotesFrame().repaint();
                         FNControlPanel.getFieldNotesFrame().revalidate();
                     } else {
-                        // show search bar and field note data
+                        // show searchData bar and field note data
                         mDeleteFNDataPanel.setVisible(true);
                         mCRUDSearch.setText(mFlexTicketNumber);
 
@@ -215,15 +215,15 @@ public class DeleteDataPanel extends FNPanel {
                         FNControlPanel.getFieldNotesFrame().revalidate();
                     }
                 } else {
-                    //Validation failed - Do nothing and allow them to search again
+                    //Validation failed - Do nothing and allow them to searchData again
                 }
             }
         });
 
         buttonDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //  Verify the user meant to delete a ticket
-                int res = JOptionPane.showConfirmDialog(null, "Are you want to permenantly delete this note?", "",
+                //  Verify the user meant to deleteData a ticket
+                int res = JOptionPane.showConfirmDialog(null, "Are you want to permenantly deleteData this note?", "",
                         JOptionPane.YES_NO_OPTION);
                 switch (res) {
                     case JOptionPane.YES_OPTION:
@@ -238,7 +238,7 @@ public class DeleteDataPanel extends FNPanel {
                         }
                         break;
                     case JOptionPane.NO_OPTION:
-                        // DO NOTHING - cancel the delete
+                        // DO NOTHING - cancel the deleteData
                         break;
                 }
                 resetGui();

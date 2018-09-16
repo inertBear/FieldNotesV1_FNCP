@@ -52,7 +52,7 @@ public class DeleteUserPanel extends FNPanel {
         return mInstance;
     }
 
-    void init() {
+    private void init() {
         // Panel Layouts
         BorderLayout deleteUserPanelLayout = new BorderLayout();
         mDeleteUserPanel.setLayout(deleteUserPanelLayout);
@@ -72,31 +72,29 @@ public class DeleteUserPanel extends FNPanel {
         FNControlPanel.getFieldNotesFrame().repaint();
         FNControlPanel.getFieldNotesFrame().revalidate();
 
-        mButtonDelete.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // the existence of the user is validated by the server
-                FNEntity user = FNUtil.getInstance().getEntityByUserName(mDeleteUser.getText());
-                if (!user.getUsername().equals("UNKNOWN")) {
-                    if (FNUserValidation.validate(user)) {
-                        // send user to controller for CUD event
-                        FNUserController conn = new FNUserController();
-                        int resultCode = conn.deleteUser(user);
-                        // code 1 == success, code 2 == already exists, code 3 == failure
-                        if (resultCode == 1) {
-                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
-                                    "User deleted from Field Notes");
-                        } else if (resultCode == 2) {
-                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
-                                    "UserName does not exist");
-                        } else {
-                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
-                                    "Connection Error - USER NOT DELETED");
-                        }
+        mButtonDelete.addActionListener(e -> {
+            // the existence of the user is validated by the server
+            FNEntity user = FNUtil.getInstance().getEntityByUserName(mDeleteUser.getText());
+            if (!user.getUsername().equals("UNKNOWN")) {
+                if (FNUserValidation.validate(user)) {
+                    // send user to controller for CUD event
+                    FNUserController conn = new FNUserController();
+                    int resultCode = conn.deleteUser(user);
+                    // code 1 == success, code 2 == already exists, code 3 == failure
+                    if (resultCode == 1) {
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                                "User deleted from Field Notes");
+                    } else if (resultCode == 2) {
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                                "UserName does not exist");
+                    } else {
+                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                                "Connection Error - USER NOT DELETED");
                     }
-                } else {
-                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
-                            "UserName does not exist");
                 }
+            } else {
+                JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
+                        "UserName does not exist");
             }
         });
     }

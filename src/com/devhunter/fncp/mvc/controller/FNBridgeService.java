@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.controller;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNStorage;
 import com.mysql.jdbc.CommunicationsException;
 
 import java.sql.Connection;
@@ -33,7 +33,8 @@ public class FNBridgeService {
     private FNBridgeService() {
         try {
             Class.forName(JDBC_DRIVER_CLASSNAME);
-            Connection mConnection = DriverManager.getConnection(FNConstants.CONNECTION_URL, FNConstants.FIELDNOTES_DATABASE_USERNAME, FNConstants.FIELDNOTES_DATABASE_PASSWORD);
+            Connection mConnection = DriverManager.getConnection(FNStorage.CONNECTION_URL,
+                    FNStorage.FIELDNOTES_DATABASE_USERNAME, FNStorage.FIELDNOTES_DATABASE_PASSWORD);
             mStatement = mConnection.createStatement();
         } catch (CommunicationsException e) {
             e.printStackTrace();
@@ -54,7 +55,7 @@ public class FNBridgeService {
         return sInstance;
     }
 
-    public Statement getSQLBridgeStatement() {
+    Statement getSQLBridgeStatement() {
         if (mStatement == null) {
             throw new IllegalStateException("SQLBridgeStatement is NULL");
         }

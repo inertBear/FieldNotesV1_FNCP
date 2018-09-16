@@ -24,15 +24,12 @@ import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 public class FNValidation {
 
-    private static SimpleDateFormat dateFormat;
-    private static SimpleDateFormat timeFormat;
-
     public FNValidation() {
     }
 
     public static boolean validate(FieldNote fn) {
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        timeFormat = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         String error = "";
         try {
             if (fn.getUserName().equals("")) {
@@ -73,17 +70,17 @@ public class FNValidation {
             } else if (fn.getLocation().equals("here") || fn.getLocation().equals("there") || fn.getLocation().equals("anywhere")) {
                 //"v0.0.1 pre-Legacy", hand entered (here, there, anywhere) locations for test
                 //FIXME: user FNValidationUpdater to set location to ""
-                error = "Legacy data detected - please update Location";
+                error = "Legacy data detected - please updateData Location";
                 throw new IllegalArgumentException();
             } else if (fn.getLocation().equals("office") || fn.getLocation().equals("field") || fn.getLocation().equals("shop")) {
                 //"v0.1.0 Legacy", hand entered locations that may not match case sensitive formatting
-                error = "Legacy formatting error detected - please update location to" + fn.getLocation().toUpperCase();
+                error = "Legacy formatting error detected - please updateData location to" + fn.getLocation().toUpperCase();
                 throw new IllegalArgumentException();
             }
 
             if (fn.getGPSCoords().equals("")) {
                 error = "No GPS provided";
-                //FIXME: update gps location to "no provided" using FNValidationUpdater
+                //FIXME: updateData gps location to "no provided" using FNValidationUpdater
             } else if (fn.getGPSCoords().contains(",")) {
                 //FIXME: currently filtered out by CVS export blanket comma stripper, need to implement gps formatting here
             }
@@ -93,7 +90,7 @@ public class FNValidation {
                 throw new IllegalArgumentException();
             } else if (fn.getLocation().equals("turnkey") || fn.getLocation().equals("billable") || fn.getLocation().equals("nonbillable")) {
                 //"v0.1.0 Legacy", hand entered locations that may not match case sensitive formatting
-                error = "Formatting error detected - please update billing to" + fn.getBillingType().toUpperCase();
+                error = "Formatting error detected - please updateData billing to" + fn.getBillingType().toUpperCase();
                 throw new IllegalArgumentException();
             }
 

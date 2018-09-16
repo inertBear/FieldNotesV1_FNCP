@@ -6,12 +6,10 @@
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNUserConstants;
 import com.devhunter.fncp.mvc.controller.validation.FNUserValidation;
 import com.devhunter.fncp.mvc.controller.sql.FNUserController;
-import com.devhunter.fncp.mvc.model.fnuser.FNAdmin;
 import com.devhunter.fncp.mvc.model.fnuser.FNEntity;
-import com.devhunter.fncp.mvc.model.fnuser.FNTestUser;
-import com.devhunter.fncp.mvc.model.fnuser.FNUser;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
@@ -76,7 +74,7 @@ public class AddUserPanel extends FNPanel {
         userButtonGroup.add(mTestCheckbox);
         //set fnuser by default
         mUserCheckbox.setSelected(true);
-        //add checkboxes to panel
+        //addData checkboxes to panel
         mCheckBoxPanel.add(new FNLabel("as User:"));
         mCheckBoxPanel.add(mUserCheckbox);
         mCheckBoxPanel.add(new FNLabel("as Admin:"));
@@ -151,14 +149,18 @@ public class AddUserPanel extends FNPanel {
         mButtonAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Create FNEntity
-                FNEntity user;
+                FNEntity.FNEntityBuilder entity = new FNEntity.FNEntityBuilder();
+                entity.setUsername(mAddUser.getText());
+                entity.setPassword(mAddPassword.getText());
+
                 if (mAdminCheckbox.isSelected()) {
-                    user = new FNAdmin(mAddUser.getText(), mAddPassword.getText());
+                    entity.setType(FNUserConstants.ADMIN_USER);
                 } else if (mTestCheckbox.isSelected()) {
-                    user = new FNTestUser(mAddUser.getText(), mAddPassword.getText());
+                    entity.setType(FNUserConstants.TEST_USER);
                 } else {
-                    user = new FNUser(mAddUser.getText(), mAddPassword.getText());
+                    entity.setType(FNUserConstants.REGULAR_USER);
                 }
+                FNEntity user = entity.build();
 
                 // validate USER
                 if (FNUserValidation.validate(user)) {

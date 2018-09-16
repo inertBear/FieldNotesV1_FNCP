@@ -12,7 +12,6 @@ import com.devhunter.fncp.mvc.model.FieldNote;
 /**
  * This class combines the variables used in SQL queries with the static queries for easy reuse.
  */
-
 public class SqlInterpolate {
 
     //TODO: take a list of Strings format until end of list

@@ -16,7 +16,15 @@ package com.devhunter.fncp.constants;
  */
 public class FNSqlConstants {
 
+    // database table: user
+    public static final String LOGIN_TABLE = "rhl_login";
+    public static final String USER_ID_COLUMN = "rhl_login_id";
+    public static final String USER_USERNAME_COLUMN = "rhl_username";
+    public static final String USER_PASSWORD_COLUMN = "rhl_password";
+    public static final String USER_TYPE_COLUMN = "rhl_user_type";
+
     // database table: data
+    public static final String DATA_TABLE = "data";
     public static final String TICKET_COLUMN = "ticketNumber";
     public static final String USER_COLUMN = "userName";
     public static final String WELLNAME_COLUMN = "wellName";
@@ -33,16 +41,10 @@ public class FNSqlConstants {
     public static final String BILLING_COLUMN = "billing";
     public static final String BILLING_STATE_COLUMN = "state";
 
-    // database table: user
-    public static final String LOGIN_TABLE = "rhl_login";
-    public static final String USER_ID_COLUMN = "rhl_login_id";
-    public static final String USER_USERNAME_COLUMN = "rhl_username";
-    public static final String USER_PASSWORD_COLUMN = "rhl_password";
-    public static final String USER_TYPE_COLUMN = "rhl_user_type";
-    //database table: data
-    static final String DATA_TABLE = "data";
-    static final String BILLING_STATE_NOT_SET = BILLING_STATE_COLUMN + " IS NULL";
-    static final String BILLING_STATE_CREATED = "created";
+    //database table: date: state column
+    public static final String BILLING_STATE_IS_NULL = BILLING_STATE_COLUMN + " IS NULL";
+    public static final String BILLING_STATE_NOT_SET = "";
+    public static final String BILLING_STATE_CREATED = "created";
     public static final String BILLING_STATE_BILLED = "billed";
     public static final String BILLING_STATE_COMPLETE = "complete";
 }

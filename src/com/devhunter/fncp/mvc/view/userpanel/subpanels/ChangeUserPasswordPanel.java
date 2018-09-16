@@ -102,11 +102,12 @@ public class ChangeUserPasswordPanel extends FNPanel {
                     // if they supply their current password
                     FNLoginController action = new FNLoginController();
                     if (action.SQLLogin(FNUtil.getInstance().getCurrentUsername(), mCurrentPass.getText())) {
-                        // Create FNEntity -- with new password
-                        FNEntity user = new FNEntity();
-                        user.setUsername(FNUtil.getInstance().getCurrentUsername());
-                        user.setPassword(mNewUserPass.getText());
-
+                        // Create FNEntity with new password
+                        FNEntity user = new FNEntity.FNEntityBuilder()
+                                .setUsername(FNUtil.getInstance().getCurrentUsername())
+                                .setPassword(mNewUserPass.getText())
+                                .setType(null)
+                                .build();
                         changePassword(user);
                     } else {
                         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Current Password was incorrect");
@@ -132,7 +133,7 @@ public class ChangeUserPasswordPanel extends FNPanel {
         if (!entity.getUsername().equals("UNKNOWN")) {
             // Validate UserName and password
             if (FNUserValidation.validate(entity)) {
-                // send user to controller for database update
+                // send user to controller for database updateData
                 FNUserController conn = new FNUserController();
                 int changePasswordResultCode = conn.updatePassword(entity);
                 // code 1 == success, code 2 == already exists, code 3 ==

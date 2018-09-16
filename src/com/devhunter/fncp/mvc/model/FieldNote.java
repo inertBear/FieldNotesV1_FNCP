@@ -31,13 +31,14 @@ public class FieldNote {
     private String mLocation;
     private String mGPSCoords;
     private String mBillingType;
+    private String mBillingState;
 
     private boolean mIsTicketMobile;
 
     private FieldNote(final String userName, final String ticketNumber, final String dateStart, final String dateEnd,
                       final String timeStart, final String timeEnd, final String mileageStart, final String mileageEnd,
                       final String projectNumber, final String wellName, final String description, final String location,
-                      final String gps, final String billingType) {
+                      final String gps, final String billingType, final String billingState) {
 
         this.mUserName = userName;
         this.mTicketNumber = ticketNumber;
@@ -54,6 +55,7 @@ public class FieldNote {
         this.mLocation = location;
         this.mGPSCoords = gps;
         this.mBillingType = billingType;
+        this.mBillingState = billingState;
     }
 
     public String getUserName() {
@@ -112,19 +114,21 @@ public class FieldNote {
         return this.mBillingType;
     }
 
+    public String getBillingState() {
+        return this.mBillingState;
+    }
+
     public boolean getIsMobile() {
         return this.mIsTicketMobile;
     }
 
-    /**
-     * FieldNoteBuilder is used to create a FieldNote object. This is accomplished
-     * by creating a new FieldNoteBuilder and calling all the set methods in order
-     * to populate the required fields
-     *
-     * @author devHunter Jan 21, 2018
-     *
-     */
+    public void setBillingState(String state) {
+        this.mBillingState = state;
+    }
 
+    /**
+     * FieldNoteBuilder
+     */
     public static class FieldNoteBuilder {
 
         private String mNewUserName;
@@ -142,6 +146,7 @@ public class FieldNote {
         private String mNewLocation;
         private String mNewGPSCoords;
         private String mNewBillingType;
+        private String mNewBillingState;
 
         public FieldNoteBuilder() {
         }
@@ -216,14 +221,21 @@ public class FieldNote {
             return this;
         }
 
+        public FieldNoteBuilder setBillingState(String mNewBillingState) {
+            this.mNewBillingState = mNewBillingState;
+            return this;
+        }
+
         public FieldNote build() {
             return new FieldNote(mNewUserName, mNewTicketNumber, mNewDateStart, mNewDateEnd, mNewTimeStart, mNewTimeEnd,
                     mNewMileageStart, mNewMileageEnd, mNewProjectNumber, mNewWellName, mNewDescription, mNewLocation,
-                    mNewGPSCoords, mNewBillingType);
+                    mNewGPSCoords, mNewBillingType, mNewBillingState);
         }
 
         public FieldNote buildEmptyFieldNote() {
-            return new FieldNote(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            return new FieldNote(null, null, null, null, null,
+                    null, null, null, null, null, null,
+                    null, null, null, null);
         }
     }
 }

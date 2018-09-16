@@ -209,9 +209,9 @@ public class EditDataPanel extends FNPanel {
                 if (CrudSearchValidation.validate(mCRUDSearch.getText())) {
                     //mCrudSearchPanel.setVisible(false);
                     mFlexTicketNumber = mCRUDSearch.getText();
-                    // send Ticket Number to controller for CRUD search
+                    // send Ticket Number to controller for CRUD searchData
                     FNDataController conn = new FNDataController();
-                    FieldNote searchResult = conn.mySQLSearchDataByTicketNumber(mFlexTicketNumber);
+                    FieldNote searchResult = conn.searchDataByTicketNumber(mFlexTicketNumber);
                     // if the returned value has a ticket number, then it is a valid FieldNote
                     if (searchResult.getTicketNumber() == null) {
                         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "No Data Found in Database");

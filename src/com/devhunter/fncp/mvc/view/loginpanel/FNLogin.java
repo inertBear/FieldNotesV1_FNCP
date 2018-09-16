@@ -117,31 +117,29 @@ public class FNLogin extends FNPanel {
         JRootPane rootPane = SwingUtilities.getRootPane(mButtonLogin);
         rootPane.setDefaultButton(mButtonLogin);
 
-        mButtonLogin.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                mLoginPanel.setVisible(false);
-                String username = mLoginUsername.getText();
+        mButtonLogin.addActionListener(e -> {
+            mLoginPanel.setVisible(false);
+            String username = mLoginUsername.getText();
 
-                if (username != null) {
-                    String password = mLoginPassword.getText();
-                    // send FNEntity to controller for login validation
-                    boolean result;
-                    FNLoginController action = new FNLoginController();
-                    result = action.SQLLogin(username, password);
-                    if (result) {
-                        FNUtil.getInstance().setCurrentUser(username);
-                        FNControlPanel.getInstance();
-                        //mLoginFrame.dispatchEvent(new WindowEvent(mLoginFrame, WindowEvent.WINDOW_CLOSING));
-                    } else {
-                        JOptionPane.showMessageDialog(mLoginFrame, "Invalid username or password");
-                        mLoginPanel.setVisible(true);
-                        mLoginPassword.setText("");
-                    }
+            if (username != null) {
+                String password = mLoginPassword.getText();
+                // send FNEntity to controller for login validation
+                boolean result;
+                FNLoginController action = new FNLoginController();
+                result = action.SQLLogin(username, password);
+                if (result) {
+                    FNUtil.getInstance().setCurrentUser(username);
+                    FNControlPanel.getInstance();
+                    //mLoginFrame.dispatchEvent(new WindowEvent(mLoginFrame, WindowEvent.WINDOW_CLOSING));
                 } else {
-                    JOptionPane.showMessageDialog(mLoginFrame, "Please enter a username");
+                    JOptionPane.showMessageDialog(mLoginFrame, "Invalid username or password");
                     mLoginPanel.setVisible(true);
                     mLoginPassword.setText("");
                 }
+            } else {
+                JOptionPane.showMessageDialog(mLoginFrame, "Please enter a username");
+                mLoginPanel.setVisible(true);
+                mLoginPassword.setText("");
             }
         });
     }

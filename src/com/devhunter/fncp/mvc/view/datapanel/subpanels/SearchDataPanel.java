@@ -9,7 +9,6 @@ package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
-import com.devhunter.fncp.mvc.controller.sql.FNBillingController;
 import com.devhunter.fncp.mvc.controller.sql.FNDataController;
 import com.devhunter.fncp.mvc.model.*;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 /**
- * Determines how the user will search for data and parses data into a JTextField
+ * Determines how the user will searchData for data and parses data into a JTextField
  */
 
 public class SearchDataPanel extends FNPanel {
@@ -43,7 +42,7 @@ public class SearchDataPanel extends FNPanel {
     private static FNPanel mSearchTextFieldPanel;
     // TextFields
     private FNTextField mTextDataUsername;
-    // TextArea - search results
+    // TextArea - searchData results
     private JTextArea mSearchDataOutput;
     // DatePicker
     private UtilDateModel mSearchStartModel;
@@ -55,7 +54,7 @@ public class SearchDataPanel extends FNPanel {
     // Buttons
     private FNButton mButtonSearch;
     private FNButton mButtonExport;
-    // search results
+    // searchData results
     private ArrayList<FieldNote> mFieldNotes;
 
     private SearchDataPanel() {
@@ -78,7 +77,7 @@ public class SearchDataPanel extends FNPanel {
         // create Buttons
         mButtonSearch = new FNButton(FNConstants.BUTTON_SEARCH);
         mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
-        //search results
+        //searchData results
         mFieldNotes = new ArrayList<>();
         init();
     }
@@ -111,7 +110,7 @@ public class SearchDataPanel extends FNPanel {
         mSearchEndProperties.put("text.month", "Month");
         mSearchEndProperties.put("text.year", "Year");
 
-        // NO-ADMIN USERS: can only search their own data
+        // NO-ADMIN USERS: can only searchData their own data
         if (!FNUtil.getInstance().hasAdminAccess()) {
             mTextDataUsername.setText(FNUtil.getInstance().getCurrentUsername());
             mTextDataUsername.setEditable(false);
@@ -147,20 +146,20 @@ public class SearchDataPanel extends FNPanel {
                     // if both are empty
                 } else if (mTextDataUsername.getText().trim().isEmpty()
                         && mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
-                    // search all names and dates
-                    mFieldNotes = conn.mySQLSearchData();
+                    // searchData all names and dates
+                    mFieldNotes = conn.searchAllData();
                     FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
 
-                    // if user search bar has a name, but no dates are selected
+                    // if user searchData bar has a name, but no dates are selected
                 } else if (!mTextDataUsername.getText().trim().isEmpty() && mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
-                    // search specific name and all dates
+                    // searchData specific name and all dates
                     String username = mTextDataUsername.getText();
-                    mFieldNotes = conn.mySQLSearchData(username);
+                    mFieldNotes = conn.searchDataByUsername(username);
                     FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
 
                     // if no user, but dates are selected
                 } else if (mTextDataUsername.getText().trim().isEmpty() && !mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
-                    // search by selected dates, independent of username
+                    // searchData by selected dates, independent of username
                     mSearchDataOutput.setEnabled(true);
                     mSearchDataOutput.setVisible(true);
                     mSearchDataOutput.setText(null);
@@ -172,7 +171,7 @@ public class SearchDataPanel extends FNPanel {
                             String startDate = mDatePickerSearchStart.getJFormattedTextField().getText();
                             String endDate = mDatePickerSearchEnd.getJFormattedTextField().getText();
 
-                            mFieldNotes = conn.mySQLSearchDataByDateRange(startDate, endDate);
+                            mFieldNotes = conn.searchDataByDateRange(startDate, endDate);
                             FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
 
                         } catch (StringIndexOutOfBoundsException e1) {
@@ -181,7 +180,7 @@ public class SearchDataPanel extends FNPanel {
                     }
                     //if there is a user AND a date range
                 } else if (!mTextDataUsername.getText().trim().isEmpty() && !mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
-                    // search by user name and date
+                    // searchData by user name and date
                     if (mDatePickerSearchStart.getJFormattedTextField().getText().trim().isEmpty() || mDatePickerSearchEnd.getJFormattedTextField().getText().trim().isEmpty()) {
                         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a date range");
                     } else {
@@ -190,7 +189,7 @@ public class SearchDataPanel extends FNPanel {
                             String startDate = mDatePickerSearchStart.getJFormattedTextField().getText();
                             String endDate = mDatePickerSearchEnd.getJFormattedTextField().getText();
 
-                            mFieldNotes = conn.mySQLSearchDataByUserAndDateRange(username, startDate, endDate);
+                            mFieldNotes = conn.searchDataByUserAndDateRange(username, startDate, endDate);
                             FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
 
                         } catch (StringIndexOutOfBoundsException e1) {

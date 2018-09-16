@@ -414,10 +414,10 @@ public class DatePicker extends JPanel {
 		// frame.setPreferredSize(new Dimension(275, 90));
 		// frame.setLocation(HotelApplication.xGUI(), HotelApplication.yGUI());
 		// pane.setLayout(new FlowLayout(FlowLayout.LEFT));
-		// pane.add(new JLabel("Date: "));
+		// pane.addData(new JLabel("Date: "));
 		final JTextField testDate = new JTextField(10);
 
-		// pane.add(testDate);
+		// pane.addData(testDate);
 		final DatePicker dp = new DatePicker();
 		// ImageIcon ii = dp.getImage();
 		// System.out.println(ii.getIconWidth());
@@ -425,8 +425,8 @@ public class DatePicker extends JPanel {
 		// final JButton datePicker = new JButton(ii);
 		// JButton okButton = new JButton("Ok");
 
-		// pane.add(datePicker);//button
-		// pane.add(okButton);//button
+		// pane.addData(datePicker);//button
+		// pane.addData(okButton);//button
 
 		// datePicker.setPreferredSize(new Dimension(30, 24));
 		// datePicker.setMargin(new Insets(0,0,0,0));
