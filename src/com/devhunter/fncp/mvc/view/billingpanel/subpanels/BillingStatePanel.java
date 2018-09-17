@@ -19,7 +19,18 @@ import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.model.fnview.FNTextField;
+import com.devhunter.fncp.mvc.model.listview.FNListView;
 import com.devhunter.fncp.utilities.FNUtil;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -41,8 +52,6 @@ public class BillingStatePanel {
     // TextFields
     private FNTextField mSearchUsername;
     private FNTextField mSearchProjectNumber;
-    // TextArea - searchData results
-    private JTextArea mSearchDataOutput;
     // DatePicker
     private UtilDateModel mSearchStartModel;
     private Properties mSearchStartProperties;
@@ -53,6 +62,8 @@ public class BillingStatePanel {
     // Buttons
     private FNButton mBtnSearch;
     private FNButton mButtonExport;
+    // ListView - searchData results
+    private FNListView mListView;
     // searchData results
     private ArrayList<FieldNote> mFieldNotes;
 
@@ -75,10 +86,9 @@ public class BillingStatePanel {
         // create Buttons
         mBtnSearch = new FNButton(FNConstants.BUTTON_SEARCH);
         mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
-
-        // TODO: [FNCP-007] rewrite display of searched FieldNotes :: create TextAreas
-        mSearchDataOutput = new JTextArea(28, 32);
-        //searchData results
+        // create ListView
+        mListView = new FNListView();
+        // create ArrayList
         mFieldNotes = new ArrayList<>();
 
         init();
@@ -91,13 +101,14 @@ public class BillingStatePanel {
         return sInstance;
     }
 
-    private void init() {
+    public void init() {
+
         // Panel Layouts
         mSearchDataPanel.setLayout(new BorderLayout());
         mSearchTextFieldPanel.setLayout(new GridLayout(0, 2));
-        // ScrollPane/TextArea
-        JScrollPane dataSearchScroll = new JScrollPane(mSearchDataOutput);
-        mSearchDataOutput.setEditable(false);
+        // JavaFX ListView panel
+        mListView = new FNListView();
+
         // Set DatePicker Properties
         mSearchStartProperties.put("text.today", "Today");
         mSearchStartProperties.put("text.month", "Month");
@@ -119,14 +130,10 @@ public class BillingStatePanel {
         mSearchTextFieldPanel.add(mBtnSearch);
         // Add Views to Main Panel
         mSearchDataPanel.add(mSearchTextFieldPanel, BorderLayout.NORTH);
-        mSearchDataPanel.add(dataSearchScroll, BorderLayout.CENTER);
+        mSearchDataPanel.add(mListView);
         mSearchDataPanel.add(mButtonExport, BorderLayout.SOUTH);
 
         mBtnSearch.addActionListener(e -> {
-            mSearchDataOutput.setEnabled(true);
-            mSearchDataOutput.setVisible(true);
-            mSearchDataOutput.setText(null);
-
             //initialize BillingStates of new FieldNotes to "created" on each search
             FNBillingStateMachine.getInstance().initializeStates();
 
@@ -176,7 +183,8 @@ public class BillingStatePanel {
                 }
 
                 if (!mFieldNotes.isEmpty()) {
-                    FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
+                    // add all FieldNotes to ListView
+                    mListView.addItems(mFieldNotes);
                 }
             }
         });
@@ -204,7 +212,7 @@ public class BillingStatePanel {
         if (FNUtil.getInstance().hasAdminAccess()) {
             mSearchUsername.setText(null);
         }
-        mSearchDataOutput.setText(null);
+        mListView.removeItems();
 
         LocalDate now = LocalDate.now();
 

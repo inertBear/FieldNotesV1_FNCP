@@ -98,7 +98,7 @@ public class ExportController {
             builder.append(",");
             builder.append(stripCommas(each.getUserName()));
             builder.append(",");
-            builder.append(stripCommas(each.getProjectNumber()));
+            builder.append(stripCommas(each.getProject()));
             builder.append(",");
             builder.append(stripCommas(each.getWellName()));
             builder.append(",");

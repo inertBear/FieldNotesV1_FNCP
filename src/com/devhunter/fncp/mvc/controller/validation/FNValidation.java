@@ -45,10 +45,10 @@ public class FNValidation {
                 throw new IllegalArgumentException();
             }
 
-            if (fn.getProjectNumber().equals("")) {
+            if (fn.getProject().equals("")) {
                 error = "Please enter a Project Number";
                 throw new IllegalArgumentException();
-            } else if (fn.getProjectNumber().contains(",")) {
+            } else if (fn.getProject().contains(",")) {
                 error = "Please do not use ',' in Project Numbers.";
                 throw new IllegalArgumentException();
             }

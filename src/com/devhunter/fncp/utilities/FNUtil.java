@@ -194,7 +194,7 @@ public class FNUtil {
         for (FieldNote each : fieldNotes) {
             textArea.append(FNConstants.CRUD_SEARCH_TICKET_NUMBER + " " + each.getTicketNumber() + "\n");
             textArea.append(FNConstants.FN_USERNAME_LABEL + " " + each.getUserName() + "\n");
-            textArea.append(FNConstants.FN_PROJECT_LABEL + " " + each.getProjectNumber() + "\n");
+            textArea.append(FNConstants.FN_PROJECT_LABEL + " " + each.getProject() + "\n");
             textArea.append(FNConstants.FN_WELLNAME_LABEL + " " + each.getWellName() + "\n");
             textArea.append(FNConstants.FN_LOCATION_LABEL + " " + each.getLocation() + "\n");
             textArea.append(FNConstants.FN_BILLING_LABEL + " " + each.getBillingType() + "\n");

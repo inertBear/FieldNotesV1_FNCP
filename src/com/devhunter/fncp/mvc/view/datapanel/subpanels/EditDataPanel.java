@@ -232,7 +232,7 @@ public class EditDataPanel extends FNPanel {
                             mTextEditDataMileageEnd.setText(searchResult.getMileageEnd());
                             mEditTicketEndDatePicker.getJFormattedTextField().setText(searchResult.getDateEnd());
                             mEditTicketTimeEnd.setTime(parseTime(searchResult.getTimeEnd()));
-                            mTextEditDataProject.setText(searchResult.getProjectNumber());
+                            mTextEditDataProject.setText(searchResult.getProject());
                             mSpinnerEditDataLocation.setValue(matchCase(searchResult.getLocation()));
                             mTextEditDataGPS.setText(searchResult.getGPSCoords());
                             mSpinnerEditDataBillable.setValue(matchCase(searchResult.getBillingType()));
@@ -270,7 +270,7 @@ public class EditDataPanel extends FNPanel {
                 if (FNValidation.validate(fieldNote)) {
                     // send to controller for CUD Event
                     FNDataController conn = new FNDataController();
-                    boolean result = conn.updateFieldNote(fieldNote, mFlexTicketNumber);
+                    boolean result = conn.updateFieldNote(fieldNote);
 
                     // code 1 == success, code 0 == failure
                     if (result) {

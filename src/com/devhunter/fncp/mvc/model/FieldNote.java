@@ -90,7 +90,7 @@ public class FieldNote {
         return this.mMileageEnd;
     }
 
-    public String getProjectNumber() {
+    public String getProject() {
         return this.mProjectNumber;
     }
 

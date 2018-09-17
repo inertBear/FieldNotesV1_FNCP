@@ -206,7 +206,7 @@ public class DeleteDataPanel extends FNPanel {
                         mTextDeleteDataMileageEnd.setText(result.getMileageEnd());
                         mTextDeleteDataDateEnd.setText(result.getDateEnd());
                         mTextDeleteDataTimeEnd.setText(result.getTimeEnd());
-                        mTextDeleteDataProject.setText(result.getProjectNumber());
+                        mTextDeleteDataProject.setText(result.getProject());
                         mTextDeleteDataLocation.setText(matchCase(result.getLocation()));
                         mTextDeleteDataGPS.setText(result.getGPSCoords());
                         mTextDeleteDataBillable.setText(matchCase(result.getBillingType()));

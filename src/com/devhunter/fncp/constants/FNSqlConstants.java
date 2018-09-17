@@ -46,4 +46,6 @@ public class FNSqlConstants {
     public static final String BILLING_STATE_CREATED = "created";
     public static final String BILLING_STATE_BILLED = "billed";
     public static final String BILLING_STATE_COMPLETE = "complete";
+
+    public static final String IS_BILLABLE = "Billable";
 }

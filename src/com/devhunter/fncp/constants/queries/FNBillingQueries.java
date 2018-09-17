@@ -18,7 +18,7 @@ public class FNBillingQueries {
     public static final String SELECT_NULL_BILLING_QUERY = "SELECT * FROM " + DATA_TABLE + " WHERE " + BILLING_STATE_IS_NULL;
 
     //searchData all "created" data
-    public static final String SELECT_BILLING_QUERY = "SELECT * FROM " + DATA_TABLE + " WHERE " + BILLING_STATE_COLUMN + " = '%s'";
+    public static final String SELECT_BILLING_QUERY = "SELECT * FROM " + DATA_TABLE + " WHERE " + BILLING_COLUMN + " = '" + IS_BILLABLE + "' AND " + BILLING_STATE_COLUMN + " = '%s'";
     //searchData "created" data by user
     public static final String SELECT_BILLING_BY_USER_QUERY = SELECT_BILLING_QUERY + " AND " + USER_COLUMN + " = '%s'";
     //searchData "created" data by date range

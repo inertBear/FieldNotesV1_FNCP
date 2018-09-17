@@ -36,12 +36,12 @@ public class SqlInterpolate {
 
     public static String interpolate(String queryTemplate, FieldNote fieldNote) {
         return String.format(queryTemplate, fieldNote.getUserName(), fieldNote.getWellName(), fieldNote.getDateStart(), fieldNote.getTimeStart(), fieldNote.getMileageStart(), fieldNote.getDescription(),
-                fieldNote.getMileageEnd(), fieldNote.getDateEnd(), fieldNote.getTimeEnd(), fieldNote.getProjectNumber(), fieldNote.getLocation(), fieldNote.getGPSCoords(), fieldNote.getBillingType());
+                fieldNote.getMileageEnd(), fieldNote.getDateEnd(), fieldNote.getTimeEnd(), fieldNote.getProject(), fieldNote.getLocation(), fieldNote.getGPSCoords(), fieldNote.getBillingType());
     }
 
     public static String interpolate(String queryTemplate, FieldNote fieldNote, String ticketNumber) {
         return String.format(queryTemplate, fieldNote.getUserName(), fieldNote.getWellName(), fieldNote.getDateStart(), fieldNote.getTimeStart(), fieldNote.getMileageStart(), fieldNote.getDescription(),
-                fieldNote.getMileageEnd(), fieldNote.getDateEnd(), fieldNote.getTimeEnd(), fieldNote.getProjectNumber(), fieldNote.getLocation(), fieldNote.getGPSCoords(), fieldNote.getBillingType(),
+                fieldNote.getMileageEnd(), fieldNote.getDateEnd(), fieldNote.getTimeEnd(), fieldNote.getProject(), fieldNote.getLocation(), fieldNote.getGPSCoords(), fieldNote.getBillingType(),
                 fieldNote.getBillingState(), ticketNumber);
     }
 
