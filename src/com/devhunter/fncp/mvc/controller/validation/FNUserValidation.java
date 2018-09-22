@@ -3,18 +3,18 @@
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.devhunter.fncp.mvc.controller;
+package com.devhunter.fncp.mvc.controller.validation;
 
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
 
 /**
  * This class will be responsible for user function validation
- * 	0) login validation
- * 	2) no short or weak passwords (5-6 characters)
- * 	3) validate admin privledges
+ * 0) login validation
+ * 2) no short or weak passwords (5-6 characters)
+ * 3) validate admin privledges
  */
 
 public class FNUserValidation {
@@ -22,7 +22,7 @@ public class FNUserValidation {
     public FNUserValidation() {
     }
 
-    public static boolean validate(FNEntity user) {
+    public static boolean validate(FNUser user) {
         String error = "";
         try {
             if (user.getUsername().equals("")) {

@@ -8,9 +8,13 @@
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.CrudSearchValidation;
-import com.devhunter.fncp.mvc.controller.sql.SQLDataController;
+import com.devhunter.fncp.mvc.controller.validation.CrudSearchValidation;
+import com.devhunter.fncp.mvc.controller.sql.FNDataController;
 import com.devhunter.fncp.mvc.model.*;
+import com.devhunter.fncp.mvc.model.fnview.FNButton;
+import com.devhunter.fncp.mvc.model.fnview.FNLabel;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNTextField;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 
@@ -177,9 +181,9 @@ public class DeleteDataPanel extends FNPanel {
                 // CRUDSearch Validation
                 if (CrudSearchValidation.validate(mCRUDSearch.getText())) {
                     mFlexTicketNumber = mCRUDSearch.getText();
-                    // send Ticket Number to controller for CRUD search
-                    SQLDataController conn = new SQLDataController();
-                    FieldNote result = conn.mySQLSearchDataByTicketNumber(mFlexTicketNumber);
+                    // send Ticket Number to controller for CRUD searchData
+                    FNDataController conn = new FNDataController();
+                    FieldNote result = conn.searchDataByTicketNumber(mFlexTicketNumber);
                     // if the returned value has a ticket number, then it is a valid FieldNote
                     if (result.getTicketNumber() == null) {
                         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
@@ -189,7 +193,7 @@ public class DeleteDataPanel extends FNPanel {
                         FNControlPanel.getFieldNotesFrame().repaint();
                         FNControlPanel.getFieldNotesFrame().revalidate();
                     } else {
-                        // show search bar and field note data
+                        // show searchData bar and field note data
                         mDeleteFNDataPanel.setVisible(true);
                         mCRUDSearch.setText(mFlexTicketNumber);
 
@@ -202,7 +206,7 @@ public class DeleteDataPanel extends FNPanel {
                         mTextDeleteDataMileageEnd.setText(result.getMileageEnd());
                         mTextDeleteDataDateEnd.setText(result.getDateEnd());
                         mTextDeleteDataTimeEnd.setText(result.getTimeEnd());
-                        mTextDeleteDataProject.setText(result.getProjectNumber());
+                        mTextDeleteDataProject.setText(result.getProject());
                         mTextDeleteDataLocation.setText(matchCase(result.getLocation()));
                         mTextDeleteDataGPS.setText(result.getGPSCoords());
                         mTextDeleteDataBillable.setText(matchCase(result.getBillingType()));
@@ -211,20 +215,20 @@ public class DeleteDataPanel extends FNPanel {
                         FNControlPanel.getFieldNotesFrame().revalidate();
                     }
                 } else {
-                    //Validation failed - Do nothing and allow them to search again
+                    //Validation failed - Do nothing and allow them to searchData again
                 }
             }
         });
 
         buttonDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //  Verify the user meant to delete a ticket
-                int res = JOptionPane.showConfirmDialog(null, "Are you want to permenantly delete this note?", "",
+                //  Verify the user meant to deleteData a ticket
+                int res = JOptionPane.showConfirmDialog(null, "Are you want to permenantly deleteData this note?", "",
                         JOptionPane.YES_NO_OPTION);
                 switch (res) {
                     case JOptionPane.YES_OPTION:
                         // send to controller for CUD Event
-                        SQLDataController conn = new SQLDataController();
+                        FNDataController conn = new FNDataController();
                         boolean result = conn.deleteFieldNote(mFlexTicketNumber);
                         // code 1 == success, code 0 == failure
                         if (result) {
@@ -234,7 +238,7 @@ public class DeleteDataPanel extends FNPanel {
                         }
                         break;
                     case JOptionPane.NO_OPTION:
-                        // DO NOTHING - cancel the delete
+                        // DO NOTHING - cancel the deleteData
                         break;
                 }
                 resetGui();
@@ -249,6 +253,7 @@ public class DeleteDataPanel extends FNPanel {
 
     /**
      * updates the old billing codes and locations as they are viewed.
+     *
      * @param value
      * @return
      */

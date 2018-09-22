@@ -9,24 +9,22 @@ package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
-import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
-import com.devhunter.fncp.mvc.model.FNButton;
-import com.devhunter.fncp.mvc.model.FNLabel;
-import com.devhunter.fncp.mvc.model.FNPanel;
-import com.devhunter.fncp.mvc.model.FNTextField;
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
+import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.model.fnview.FNButton;
+import com.devhunter.fncp.mvc.model.fnview.FNLabel;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNTextField;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SearchUserPanel extends FNPanel {
 
     // Panels
-    public static SearchUserPanel mInstance;
+    private static SearchUserPanel mInstance;
     private static FNPanel mSearchUserPanel;
     private static FNPanel mSearchTextFieldPanel;
     // TextFields
@@ -37,7 +35,7 @@ public class SearchUserPanel extends FNPanel {
     private FNButton mButtonSearch;
     private FNButton mButtonExport;
     // ArrayLists
-    private ArrayList<FNEntity> mUsers;
+    private ArrayList<FNUser> mUsers;
 
     private static final String ID = "ID: ";
     private static final String USERNAME = "Username: ";
@@ -67,7 +65,7 @@ public class SearchUserPanel extends FNPanel {
         return mInstance;
     }
 
-    void init() {
+    private void init() {
         // Panel Layouts
         BorderLayout searchUserLayout = new BorderLayout();
         mSearchUserPanel.setLayout(searchUserLayout);
@@ -94,44 +92,40 @@ public class SearchUserPanel extends FNPanel {
         FNControlPanel.getFieldNotesFrame().repaint();
         FNControlPanel.getFieldNotesFrame().revalidate();
 
-        mButtonSearch.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                mSearchUserOutput.setVisible(true);
-                mSearchUserOutput.setText(null);
-                SQLUserController conn = new SQLUserController();
+        mButtonSearch.addActionListener(e -> {
+            mSearchUserOutput.setVisible(true);
+            mSearchUserOutput.setText(null);
+            FNUserController conn = new FNUserController();
 
-                if (mSearchUser.getText().trim().isEmpty()) {
-                    mUsers = conn.mySQLSearchUser();
+            if (mSearchUser.getText().trim().isEmpty()) {
+                mUsers = conn.searchAllUsers();
 
-                    for (FNEntity each : mUsers) {
-                        //TODO: [FNCP-023] create static print user method in FNEntity EX: public static void printUser(where to print)
-                        mSearchUserOutput.append(ID + each.getId() + "\n");
-                        mSearchUserOutput.append(USERNAME + each.getUsername() + "\n");
-                        mSearchUserOutput.append(PASSWORD + each.getPassword() + "\n");
-                        mSearchUserOutput.append(USER_TYPE + each.getType() + "\n\n");
-                    }
-                } else {
-                    String username = mSearchUser.getText();
-                    FNEntity user = conn.mySQLSearchUser(username);
-                    mSearchUserOutput.setText(ID + user.getId() + "\n");
-                    mSearchUserOutput.append(USERNAME + user.getUsername() + "\n");
-                    mSearchUserOutput.append(PASSWORD + user.getPassword() + "\n");
-                    mSearchUserOutput.append(USER_TYPE + user.getType() + "\n\n");
+                for (FNUser each : mUsers) {
+                    //TODO: [FNCP-023] create static print user method in FNUser EX: public static void printUser(where to print)
+                    mSearchUserOutput.append(ID + each.getId() + "\n");
+                    mSearchUserOutput.append(USERNAME + each.getUsername() + "\n");
+                    mSearchUserOutput.append(PASSWORD + each.getPassword() + "\n");
+                    mSearchUserOutput.append(USER_TYPE + each.getType() + "\n\n");
                 }
+            } else {
+                String username = mSearchUser.getText();
+                FNUser user = conn.searchUsersByUsername(username);
+                mSearchUserOutput.setText(ID + user.getId() + "\n");
+                mSearchUserOutput.append(USERNAME + user.getUsername() + "\n");
+                mSearchUserOutput.append(PASSWORD + user.getPassword() + "\n");
+                mSearchUserOutput.append(USER_TYPE + user.getType() + "\n\n");
             }
         });
 
         // When user trys to export CSV file to user desktop
-        mButtonExport.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        mButtonExport.addActionListener(e -> {
 
-                ExportController exporter = new ExportController();
-                boolean exportSuccessCode = exporter.writeUserToCSVFile(mUsers);
-                if (exportSuccessCode) {
-                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
-                } else {
-                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
-                }
+            ExportController exporter = new ExportController();
+            boolean exportSuccessCode = exporter.writeUserToCSVFile(mUsers);
+            if (exportSuccessCode) {
+                JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
+            } else {
+                JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
             }
         });
     }

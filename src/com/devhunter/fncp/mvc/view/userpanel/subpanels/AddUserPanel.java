@@ -6,13 +6,11 @@
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.FNUserValidation;
-import com.devhunter.fncp.mvc.controller.sql.SQLUserController;
-import com.devhunter.fncp.mvc.model.*;
-import com.devhunter.fncp.mvc.model.FNUser.FNAdmin;
-import com.devhunter.fncp.mvc.model.FNUser.FNEntity;
-import com.devhunter.fncp.mvc.model.FNUser.FNTestUser;
-import com.devhunter.fncp.mvc.model.FNUser.FNUser;
+import com.devhunter.fncp.constants.FNUserConstants;
+import com.devhunter.fncp.mvc.controller.validation.FNUserValidation;
+import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.model.FNUser;
+import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
@@ -74,9 +72,9 @@ public class AddUserPanel extends FNPanel {
         userButtonGroup.add(mUserCheckbox);
         userButtonGroup.add(mAdminCheckbox);
         userButtonGroup.add(mTestCheckbox);
-        //set FNUser by default
+        //set fnuser by default
         mUserCheckbox.setSelected(true);
-        //add checkboxes to panel
+        //addData checkboxes to panel
         mCheckBoxPanel.add(new FNLabel("as User:"));
         mCheckBoxPanel.add(mUserCheckbox);
         mCheckBoxPanel.add(new FNLabel("as Admin:"));
@@ -150,20 +148,24 @@ public class AddUserPanel extends FNPanel {
 
         mButtonAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Create FNEntity
-                FNEntity user;
+                // Create FNUser
+                FNUser.FNEntityBuilder entity = new FNUser.FNEntityBuilder();
+                entity.setUsername(mAddUser.getText());
+                entity.setPassword(mAddPassword.getText());
+
                 if (mAdminCheckbox.isSelected()) {
-                    user = new FNAdmin(mAddUser.getText(), mAddPassword.getText());
+                    entity.setType(FNUserConstants.ADMIN_USER);
                 } else if (mTestCheckbox.isSelected()) {
-                    user = new FNTestUser(mAddUser.getText(), mAddPassword.getText());
+                    entity.setType(FNUserConstants.TEST_USER);
                 } else {
-                    user = new FNUser(mAddUser.getText(), mAddPassword.getText());
+                    entity.setType(FNUserConstants.REGULAR_USER);
                 }
+                FNUser user = entity.build();
 
                 // validate USER
                 if (FNUserValidation.validate(user)) {
                     // send user to controller for CUD event
-                    SQLUserController conn = new SQLUserController();
+                    FNUserController conn = new FNUserController();
                     int resultCode = conn.addUser(user);
                     // code 1 == success, code 2 == user already exists, code 3 == failure
                     if (resultCode == 1) {

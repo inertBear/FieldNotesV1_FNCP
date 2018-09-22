@@ -16,15 +16,6 @@ package com.devhunter.fncp.constants;
  */
 
 public class FNConstants {
-    // entity data
-    public static final String ENTITY_NAME = "RHL";
-    public static final int ENTITY_ID = 1;
-    // Database connection information
-    private static final String AWS_DATABASE_ENDPOINT = "fieldnotes-rhl-restore.ckzbugsctcko.us-west-2.rds.amazonaws.com:3306";
-    private static final String FIELDNOTES_DATABASE_NAME = "FieldNotes_RHL";
-    public static final String FIELDNOTES_DATABASE_USERNAME = "FNAdmin";
-    public static final String FIELDNOTES_DATABASE_PASSWORD = "Nashv1ll3$";
-    public static final String CONNECTION_URL = "jdbc:mysql://" + FNConstants.AWS_DATABASE_ENDPOINT + "/" + FNConstants.FIELDNOTES_DATABASE_NAME;
     // approved work locations
     public static String[] APPROVED_BILLING_LOCATIONS = {"", "Office", "Field", "Shop"};
     // approved billing codes
@@ -55,6 +46,11 @@ public class FNConstants {
     public static String DATA_ADD_BUTTON = "Add Data";
     public static String DATA_DELETE_BUTTON = "Delete Data";
     public static String DATA_EDIT_BUTTON = "Edit Data";
+    // Billing Panel Strings
+    public static String BILLING_CONTROLS_BUTTON = "Billing Controls";
+    public static String UNBILLED_DATA = "Created";
+    public static String BILLED_DATA = "Billed";
+    public static String COMPLETED_DATA = "Completed";
     // CRUD Search Panel Strings
     public static String CRUD_SEARCH_TICKET_NUMBER = "Ticket Number:";
     // User Maintenance Strings
@@ -75,6 +71,7 @@ public class FNConstants {
     public static String FN_LOCATION_LABEL = "Location Code:";
     public static String FN_BILLING_LABEL = "Billing Code:";
     public static String FN_GPS_LABEL = "GPS: ";
+    public static String FN_BILLING_STATE_LABEL = "State: ";
     // Button Strings
     public static String BUTTON_LOGIN = "Login";
     public static String BUTTON_SUBMIT = "Submit";

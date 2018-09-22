@@ -8,8 +8,8 @@
 package com.devhunter.fncp.mvc.view.userpanel;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.model.FNButton;
-import com.devhunter.fncp.mvc.model.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNButton;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.mvc.view.userpanel.subpanels.AddUserPanel;
 import com.devhunter.fncp.mvc.view.userpanel.subpanels.ChangeUserPasswordPanel;
@@ -19,8 +19,6 @@ import com.devhunter.fncp.utilities.FNUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class FNUserPanel extends FNPanel {
 
@@ -57,7 +55,6 @@ public class FNUserPanel extends FNPanel {
         sUserControlPanel.add(mBtnUserPassword);
         sUserControlPanel.setVisible(false);
 
-        //FUTURE TODO: use lazy loading to reduce startup time
         // Initialize User Search Panel
         SearchUserPanel.getInstance();
         // Initialize Add User Panel
@@ -68,55 +65,51 @@ public class FNUserPanel extends FNPanel {
         ChangeUserPasswordPanel.getInstance();
 
         // when user navigates to Search User TAB
-        mBtnUserSearch.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                resetGui();
-                FNControlPanel.getFieldNotesFrame().add(SearchUserPanel.getView(), BorderLayout.CENTER);
-                sUserControlPanel.setVisible(true);
-                SearchUserPanel.getView().setVisible(true);
+        mBtnUserSearch.addActionListener(e -> {
+            resetGui();
+            mBtnUserSearch.setBackground(FNUtil.getInstance().getPrimaryColor());
+            FNControlPanel.getFieldNotesFrame().add(SearchUserPanel.getView(), BorderLayout.CENTER);
+            sUserControlPanel.setVisible(true);
+            SearchUserPanel.getView().setVisible(true);
 
-                FNControlPanel.getFieldNotesFrame().repaint();
-                FNControlPanel.getFieldNotesFrame().revalidate();
-            }
+            FNControlPanel.getFieldNotesFrame().repaint();
+            FNControlPanel.getFieldNotesFrame().revalidate();
         });
 
         // When user navigates to Add User TAB
-        mBtnUserAdd.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                resetGui();
-                FNControlPanel.getFieldNotesFrame().add(AddUserPanel.getView(), BorderLayout.CENTER);
-                sUserControlPanel.setVisible(true);
-                AddUserPanel.getView().setVisible(true);
+        mBtnUserAdd.addActionListener(e -> {
+            resetGui();
+            mBtnUserAdd.setBackground(FNUtil.getInstance().getPrimaryColor());
+            FNControlPanel.getFieldNotesFrame().add(AddUserPanel.getView(), BorderLayout.CENTER);
+            sUserControlPanel.setVisible(true);
+            AddUserPanel.getView().setVisible(true);
 
-                FNControlPanel.getFieldNotesFrame().repaint();
-                FNControlPanel.getFieldNotesFrame().revalidate();
-            }
+            FNControlPanel.getFieldNotesFrame().repaint();
+            FNControlPanel.getFieldNotesFrame().revalidate();
         });
 
         // When user navigates to Delete User TAB
-        mBtnUserDelete.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                resetGui();
-                FNControlPanel.getFieldNotesFrame().add(DeleteUserPanel.getView(), BorderLayout.CENTER);
-                sUserControlPanel.setVisible(true);
-                DeleteUserPanel.getView().setVisible(true);
+        mBtnUserDelete.addActionListener(e -> {
+            resetGui();
+            mBtnUserDelete.setBackground(FNUtil.getInstance().getPrimaryColor());
+            FNControlPanel.getFieldNotesFrame().add(DeleteUserPanel.getView(), BorderLayout.CENTER);
+            sUserControlPanel.setVisible(true);
+            DeleteUserPanel.getView().setVisible(true);
 
-                FNControlPanel.getFieldNotesFrame().repaint();
-                FNControlPanel.getFieldNotesFrame().revalidate();
-            }
+            FNControlPanel.getFieldNotesFrame().repaint();
+            FNControlPanel.getFieldNotesFrame().revalidate();
         });
 
         // When user navigates to Change User Password TAB
-        mBtnUserPassword.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                resetGui();
-                FNControlPanel.getFieldNotesFrame().add(ChangeUserPasswordPanel.getView(), BorderLayout.CENTER);
-                sUserControlPanel.setVisible(true);
-                ChangeUserPasswordPanel.getView().setVisible(true);
+        mBtnUserPassword.addActionListener(e -> {
+            resetGui();
+            mBtnUserPassword.setBackground(FNUtil.getInstance().getPrimaryColor());
+            FNControlPanel.getFieldNotesFrame().add(ChangeUserPasswordPanel.getView(), BorderLayout.CENTER);
+            sUserControlPanel.setVisible(true);
+            ChangeUserPasswordPanel.getView().setVisible(true);
 
-                FNControlPanel.getFieldNotesFrame().repaint();
-                FNControlPanel.getFieldNotesFrame().revalidate();
-            }
+            FNControlPanel.getFieldNotesFrame().repaint();
+            FNControlPanel.getFieldNotesFrame().revalidate();
         });
     }
 
@@ -140,5 +133,11 @@ public class FNUserPanel extends FNPanel {
         AddUserPanel.hideView();
         DeleteUserPanel.hideView();
         ChangeUserPasswordPanel.hideView();
+
+        //reset button colors
+        mBtnUserSearch.setBackground(null);
+        mBtnUserAdd.setBackground(null);
+        mBtnUserDelete.setBackground(null);
+        mBtnUserPassword.setBackground(null);
     }
 }

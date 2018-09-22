@@ -9,10 +9,11 @@ package com.devhunter.fncp.mvc.view;
 
 import com.devhunter.fncp.FNInit;
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.model.FNButton;
-import com.devhunter.fncp.mvc.model.FNImageLabel;
-import com.devhunter.fncp.mvc.model.FNLabel;
-import com.devhunter.fncp.mvc.model.FNPanel;
+import com.devhunter.fncp.mvc.model.fnview.FNButton;
+import com.devhunter.fncp.mvc.model.fnview.FNImageLabel;
+import com.devhunter.fncp.mvc.model.fnview.FNLabel;
+import com.devhunter.fncp.mvc.model.fnview.FNPanel;
+import com.devhunter.fncp.mvc.view.billingpanel.FNBillingPanel;
 import com.devhunter.fncp.mvc.view.datapanel.FNDataPanel;
 import com.devhunter.fncp.mvc.view.userpanel.FNUserPanel;
 import com.devhunter.fncp.utilities.FNUtil;
@@ -20,8 +21,6 @@ import com.devhunter.fncp.utilities.FNUtil;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class FNControlPanel extends FNPanel {
 
@@ -32,6 +31,7 @@ public class FNControlPanel extends FNPanel {
     private FNPanel mControlPanel;
     private FNButton mControlPanelUserButton;
     private FNButton mControlPanelDataButton;
+    private FNButton mControlPanelBillingButton;
     private FNImageLabel mControlPanelImageLabel;
 
     private FNControlPanel() {
@@ -39,6 +39,7 @@ public class FNControlPanel extends FNPanel {
         mControlPanel = new FNPanel();
         mControlPanelUserButton = new FNButton(FNConstants.USER_CONTROLS_BUTTON);
         mControlPanelDataButton = new FNButton(FNConstants.DATA_CONTROLS_BUTTON);
+        mControlPanelBillingButton = new FNButton(FNConstants.BILLING_CONTROLS_BUTTON);
         init();
     }
 
@@ -68,18 +69,10 @@ public class FNControlPanel extends FNPanel {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(mMainControlFrame, "title image failed to load");
         }
-        mControlPanelImageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mControlPanelImageLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
         mControlPanelImageLabel.setBorder(null);
         FNLabel controlPanelLabel2 = new FNLabel(FNConstants.APPLICATION_SUB_NAME);
         controlPanelLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
         controlPanelLabel2.setAlignmentY(Component.CENTER_ALIGNMENT);
-        mControlPanelUserButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mControlPanelUserButton.setAlignmentY(Component.CENTER_ALIGNMENT);
-        mControlPanelDataButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mControlPanelDataButton.setAlignmentY(Component.CENTER_ALIGNMENT);
-
-        // TODO: export to EXCEL should only be visible after running a search
 
         mControlPanel.add(mControlPanelImageLabel);
         mControlPanel.add(Box.createVerticalGlue());
@@ -87,39 +80,68 @@ public class FNControlPanel extends FNPanel {
         mControlPanel.add(Box.createVerticalGlue());
         mControlPanel.add(mControlPanelDataButton);
         mControlPanel.add(Box.createVerticalGlue());
+        // ADMIN ACCESS
+        if (FNUtil.getInstance().hasAdminAccess()) {
+            mControlPanel.add(mControlPanelBillingButton);
+            mControlPanel.add(Box.createVerticalGlue());
+        }
+
         mControlPanel.setVisible(true);
 
         mMainControlFrame.add(mControlPanel, BorderLayout.WEST);
         mMainControlFrame.repaint();
         mMainControlFrame.revalidate();
 
-        // FUTURE TODO: apply lazy loading to these panels to reduce startup time
         FNUserPanel.getInstance();
         FNDataPanel.getInstance();
+        FNBillingPanel.getInstance();
 
         // when user navigates to the USER MENU
-        mControlPanelUserButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                FNDataPanel.hideView();
-                FNUserPanel.showView();
+        mControlPanelUserButton.addActionListener(e -> {
+            resetGui();
+            FNUserPanel.showView();
 
-                mMainControlFrame.add(FNUserPanel.getView(), BorderLayout.NORTH);
-                mMainControlFrame.repaint();
-                mMainControlFrame.revalidate();
-            }
+            mControlPanelUserButton.setBackground(FNUtil.getInstance().getPrimaryColor());
+
+            mMainControlFrame.add(FNUserPanel.getView(), BorderLayout.NORTH);
+            mMainControlFrame.repaint();
+            mMainControlFrame.revalidate();
         });
 
         // when user navigates to DATA MENU
-        mControlPanelDataButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                FNUserPanel.hideView();
-                FNDataPanel.showView();
+        mControlPanelDataButton.addActionListener(e -> {
+            resetGui();
+            FNDataPanel.showView();
 
-                mMainControlFrame.add(FNDataPanel.getView(), BorderLayout.NORTH);
-                mMainControlFrame.repaint();
-                mMainControlFrame.revalidate();
-            }
+            mControlPanelDataButton.setBackground(FNUtil.getInstance().getPrimaryColor());
+
+            mMainControlFrame.add(FNDataPanel.getView(), BorderLayout.NORTH);
+            mMainControlFrame.repaint();
+            mMainControlFrame.revalidate();
         });
+
+        //when the admin nagivates to the BILLING MENU
+        mControlPanelBillingButton.addActionListener(e -> {
+            resetGui();
+            FNBillingPanel.showView();
+
+            mControlPanelBillingButton.setBackground(FNUtil.getInstance().getPrimaryColor());
+
+            mMainControlFrame.add(FNBillingPanel.getView(), BorderLayout.NORTH);
+            mMainControlFrame.repaint();
+            mMainControlFrame.revalidate();
+        });
+    }
+
+    private void resetGui() {
+        FNUserPanel.hideView();
+        FNDataPanel.hideView();
+        FNBillingPanel.hideView();
+
+        //reset button colors
+        mControlPanelUserButton.setBackground(null);
+        mControlPanelDataButton.setBackground(null);
+        mControlPanelBillingButton.setBackground(null);
     }
 
     public static JFrame getFieldNotesFrame() {

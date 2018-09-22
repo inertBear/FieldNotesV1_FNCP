@@ -5,9 +5,9 @@
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.devhunter.fncp.mvc.controller.sql;
+package com.devhunter.fncp.mvc.controller;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNStorage;
 import com.mysql.jdbc.CommunicationsException;
 
 import java.sql.Connection;
@@ -18,23 +18,23 @@ import java.sql.Statement;
 /**
  * gets an instance of the connection between the MySQL database and FieldNotes.
  * A statement is created and return for immediate reuse by the client
- *  creating a singleton instance will keep the jdbc.Driver from having
- *  to be loaded every time a call is made. The same instance of the
- *  connection can be called every time. This will increase efficiency
- *  for all connection activities except the initial call
+ * creating a singleton instance will keep the jdbc.Driver from having
+ * to be loaded every time a call is made. The same instance of the
+ * connection can be called every time. This will increase efficiency
+ * for all connection activities except the initial call
  */
-public class SQLBridgeService {
+public class FNBridgeService {
 
-    private static SQLBridgeService sInstance;
-    private static Connection mConnection = null;
+    private static FNBridgeService sInstance;
     private static Statement mStatement;
 
-    private static String JDBC_DRIVER_CLASSNAME = "com.mysql.jdbc.Driver";
+    private static final String JDBC_DRIVER_CLASSNAME = "com.mysql.jdbc.Driver";
 
-    private SQLBridgeService() {
+    private FNBridgeService() {
         try {
             Class.forName(JDBC_DRIVER_CLASSNAME);
-            mConnection = DriverManager.getConnection(FNConstants.CONNECTION_URL, FNConstants.FIELDNOTES_DATABASE_USERNAME, FNConstants.FIELDNOTES_DATABASE_PASSWORD);
+            Connection mConnection = DriverManager.getConnection(FNStorage.CONNECTION_URL,
+                    FNStorage.FIELDNOTES_DATABASE_USERNAME, FNStorage.FIELDNOTES_DATABASE_PASSWORD);
             mStatement = mConnection.createStatement();
         } catch (CommunicationsException e) {
             e.printStackTrace();
@@ -48,14 +48,14 @@ public class SQLBridgeService {
         }
     }
 
-    public static SQLBridgeService getInstance() {
+    public static FNBridgeService getInstance() {
         if (sInstance == null) {
-            sInstance = new SQLBridgeService();
+            sInstance = new FNBridgeService();
         }
         return sInstance;
     }
 
-    public Statement getSQLBridgeStatement() {
+    Statement getSQLBridgeStatement() {
         if (mStatement == null) {
             throw new IllegalStateException("SQLBridgeStatement is NULL");
         }

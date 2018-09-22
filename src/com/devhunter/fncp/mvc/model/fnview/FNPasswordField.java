@@ -1,4 +1,4 @@
-package com.devhunter.fncp.mvc.model;
+package com.devhunter.fncp.mvc.model.fnview;
 
 import com.devhunter.fncp.utilities.FNUtil;
 
