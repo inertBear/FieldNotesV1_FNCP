@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class FNBillingStateMachine {
 
-    //TODO: implement FNBillingStateMachine
+    //TODO: [FNCP-007] implement FNBillingStateMachine
 
     public static FNBillingStateMachine sInstance;
 
@@ -61,4 +61,25 @@ public class FNBillingStateMachine {
         FNDataController dataCon = new FNDataController();
         return dataCon.updateFieldNote(fieldNote);
     }
+
+    /**
+     * get the state that a FieldNote can move to
+     *
+     * @param currentState
+     * @return BillingState
+     */
+
+    public BillingState getNextState(BillingState currentState) {
+        switch (currentState.getState()) {
+            case FNSqlConstants.BILLING_STATE_CREATED:
+                return new BillingState(FNSqlConstants.BILLING_STATE_BILLED);
+            case FNSqlConstants.BILLING_STATE_BILLED:
+                return new BillingState(FNSqlConstants.BILLING_STATE_COMPLETE);
+            case FNSqlConstants.BILLING_STATE_COMPLETE:
+                throw new IllegalStateException("No states available after 'Complete'");
+            default:
+                throw new IllegalStateException("Unknown State");
+        }
+    }
 }
+
