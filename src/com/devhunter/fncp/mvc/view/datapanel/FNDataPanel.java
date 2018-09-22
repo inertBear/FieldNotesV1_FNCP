@@ -19,8 +19,6 @@ import com.devhunter.fncp.utilities.FNUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class FNDataPanel extends FNPanel {
 
@@ -65,6 +63,7 @@ public class FNDataPanel extends FNPanel {
 
         mBtnDataSearch.addActionListener(e -> {
             resetGui();
+            mBtnDataSearch.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(SearchDataPanel.getView(), BorderLayout.CENTER);
             sDataControlPanel.setVisible(true);
             SearchDataPanel.getView().setVisible(true);
@@ -75,6 +74,7 @@ public class FNDataPanel extends FNPanel {
 
         mBtnDataAdd.addActionListener(e -> {
             resetGui();
+            mBtnDataAdd.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(AddDataPanel.getView(), BorderLayout.CENTER);
             sDataControlPanel.setVisible(true);
             AddDataPanel.getView().setVisible(true);
@@ -85,6 +85,7 @@ public class FNDataPanel extends FNPanel {
 
         mBtnDataDeleteSearch.addActionListener(e -> {
             resetGui();
+            mBtnDataDeleteSearch.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(DeleteDataPanel.getView(), BorderLayout.CENTER);
             sDataControlPanel.setVisible(true);
             DeleteDataPanel.getView().setVisible(true);
@@ -95,6 +96,7 @@ public class FNDataPanel extends FNPanel {
 
         mBtnDataEditSearch.addActionListener(e -> {
             resetGui();
+            mBtnDataEditSearch.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(EditDataPanel.getView(), BorderLayout.CENTER);
             sDataControlPanel.setVisible(true);
             EditDataPanel.getView().setVisible(true);
@@ -114,6 +116,12 @@ public class FNDataPanel extends FNPanel {
         AddDataPanel.hideView();
         DeleteDataPanel.hideView();
         EditDataPanel.hideView();
+
+        //reset button colors
+        mBtnDataSearch.setBackground(null);
+        mBtnDataAdd.setBackground(null);
+        mBtnDataDeleteSearch.setBackground(null);
+        mBtnDataEditSearch.setBackground(null);
     }
 
     public static JPanel getView() {

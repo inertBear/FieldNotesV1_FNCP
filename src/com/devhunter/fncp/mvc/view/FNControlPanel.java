@@ -21,8 +21,6 @@ import com.devhunter.fncp.utilities.FNUtil;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class FNControlPanel extends FNPanel {
 
@@ -100,9 +98,10 @@ public class FNControlPanel extends FNPanel {
 
         // when user navigates to the USER MENU
         mControlPanelUserButton.addActionListener(e -> {
-            FNDataPanel.hideView();
+            resetGui();
             FNUserPanel.showView();
-            FNBillingPanel.hideView();
+
+            mControlPanelUserButton.setBackground(FNUtil.getInstance().getPrimaryColor());
 
             mMainControlFrame.add(FNUserPanel.getView(), BorderLayout.NORTH);
             mMainControlFrame.repaint();
@@ -111,9 +110,10 @@ public class FNControlPanel extends FNPanel {
 
         // when user navigates to DATA MENU
         mControlPanelDataButton.addActionListener(e -> {
-            FNUserPanel.hideView();
+            resetGui();
             FNDataPanel.showView();
-            FNBillingPanel.hideView();
+
+            mControlPanelDataButton.setBackground(FNUtil.getInstance().getPrimaryColor());
 
             mMainControlFrame.add(FNDataPanel.getView(), BorderLayout.NORTH);
             mMainControlFrame.repaint();
@@ -122,14 +122,26 @@ public class FNControlPanel extends FNPanel {
 
         //when the admin nagivates to the BILLING MENU
         mControlPanelBillingButton.addActionListener(e -> {
-            FNUserPanel.hideView();
-            FNDataPanel.hideView();
+            resetGui();
             FNBillingPanel.showView();
+
+            mControlPanelBillingButton.setBackground(FNUtil.getInstance().getPrimaryColor());
 
             mMainControlFrame.add(FNBillingPanel.getView(), BorderLayout.NORTH);
             mMainControlFrame.repaint();
             mMainControlFrame.revalidate();
         });
+    }
+
+    private void resetGui() {
+        FNUserPanel.hideView();
+        FNDataPanel.hideView();
+        FNBillingPanel.hideView();
+
+        //reset button colors
+        mControlPanelUserButton.setBackground(null);
+        mControlPanelDataButton.setBackground(null);
+        mControlPanelBillingButton.setBackground(null);
     }
 
     public static JFrame getFieldNotesFrame() {

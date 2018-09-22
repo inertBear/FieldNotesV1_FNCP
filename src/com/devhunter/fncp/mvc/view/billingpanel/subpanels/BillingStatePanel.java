@@ -9,6 +9,7 @@ package com.devhunter.fncp.mvc.view.billingpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.constants.FNSqlConstants;
+import com.devhunter.fncp.mvc.controller.exporter.ExportController;
 import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.BillingState;
 import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.FNBillingStateMachine;
 import com.devhunter.fncp.mvc.controller.validation.CrudSearchValidation;
@@ -20,6 +21,7 @@ import com.devhunter.fncp.mvc.model.fnview.FNLabel;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.model.fnview.FNTextField;
 import com.devhunter.fncp.mvc.model.listview.FNListView;
+import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -37,6 +39,8 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -136,6 +140,8 @@ public class BillingStatePanel {
         mBtnSearch.addActionListener(e -> {
             //initialize BillingStates of new FieldNotes to "created" on each search
             FNBillingStateMachine.getInstance().initializeStates();
+            //clear the previous search
+            mListView.removeItems();
 
             String username = mSearchUsername.getText();
             String projectName = mSearchProjectNumber.getText();
@@ -185,6 +191,21 @@ public class BillingStatePanel {
                 if (!mFieldNotes.isEmpty()) {
                     // add all FieldNotes to ListView
                     mListView.addItems(mFieldNotes);
+                }
+            }
+        });
+
+        // export CSV file to User Desktop
+        mButtonExport.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // export controller
+                ExportController exporter = new ExportController();
+                boolean exportSuccess = exporter.writeBillingToCSVFile(mFieldNotes);
+
+                if (exportSuccess) {
+                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
+                } else {
+                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
                 }
             }
         });

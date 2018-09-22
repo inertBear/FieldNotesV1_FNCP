@@ -11,6 +11,7 @@ import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.constants.FNSqlConstants;
 import com.devhunter.fncp.constants.FNUserConstants;
 import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.controller.sql.billing.FNBillingController;
 import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.FieldNote;
 
@@ -207,6 +208,33 @@ public class FNUtil {
             textArea.append(FNConstants.FN_DESCRIPTION_LABEL + " " + each.getDescription() + "\n");
             textArea.append(FNConstants.FN_GPS_LABEL + " " + each.getGPSCoords() + "\n\n");
         }
+    }
+
+    /**
+     * return the contents of a FieldNote as a String value
+     *
+     * @param fieldNote
+     * @return String
+     */
+    public static String getFieldNoteAsString(FieldNote fieldNote) {
+        FNBillingController con = new FNBillingController();
+
+        return (FNConstants.CRUD_SEARCH_TICKET_NUMBER + " " + fieldNote.getTicketNumber() + "\n") +
+                FNConstants.FN_USERNAME_LABEL + " " + fieldNote.getUserName() + "\n" +
+                FNConstants.FN_PROJECT_LABEL + " " + fieldNote.getProject() + "\n" +
+                FNConstants.FN_WELLNAME_LABEL + " " + fieldNote.getWellName() + "\n" +
+                FNConstants.FN_LOCATION_LABEL + " " + fieldNote.getLocation() + "\n" +
+                FNConstants.FN_BILLING_LABEL + " " + fieldNote.getBillingType() + "\n" +
+                FNConstants.FN_DATE_START_LABEL + " " + fieldNote.getDateStart() + "\n" +
+                FNConstants.FN_DATE_END_LABEL + " " + fieldNote.getDateEnd() + "\n" +
+                FNConstants.FN_TIME_START_LABEL + " " + fieldNote.getTimeStart() + "\n" +
+                FNConstants.FN_TIME_END_LABEL + " " + fieldNote.getTimeEnd() + "\n" +
+                FNConstants.FN_MILEAGE_START_LABEL + " " + fieldNote.getMileageStart() + "\n" +
+                FNConstants.FN_MILEAGE_END_LABEL + " " + fieldNote.getMileageEnd() + "\n" +
+                FNConstants.FN_DESCRIPTION_LABEL + " " + fieldNote.getDescription() + "\n" +
+                FNConstants.FN_GPS_LABEL + " " + fieldNote.getGPSCoords() + "\n\n" +
+                FNConstants.FN_BILLING_STATE_LABEL + " " + fieldNote.getBillingState() + "\n\n" +
+                "Total hours:" + " " + con.calculateHours(fieldNote) + "\n";
     }
 
     /**

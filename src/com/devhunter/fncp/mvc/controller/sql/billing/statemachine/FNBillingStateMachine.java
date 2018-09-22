@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 public class FNBillingStateMachine {
 
-    //TODO: [FNCP-007] implement FNBillingStateMachine
-
     public static FNBillingStateMachine sInstance;
 
     private FNBillingStateMachine() {
@@ -27,24 +25,20 @@ public class FNBillingStateMachine {
     /**
      * Updates the billing state of all uninitialized FieldNotes to "created".
      */
-    public boolean initializeStates() {
+    public void initializeStates() {
         FNBillingController billCon = new FNBillingController();
         ArrayList<FieldNote> fieldNotes = billCon.searchNullStates();
         if (!fieldNotes.isEmpty()) {
             for (FieldNote each : fieldNotes) {
-                each.setDescription(FNUtil.allowApostrophe(each.getDescription()));
-                each.setBillingState(FNSqlConstants.BILLING_STATE_CREATED);
+                advanceState(each);
             }
-            FNDataController dataCon = new FNDataController();
-            return dataCon.updateFieldNote(fieldNotes);
         }
-        return true;
     }
 
     /**
      * Advance the BillingState of a FieldNote
      */
-    public boolean advanceState(FieldNote fieldNote) {
+    public void advanceState(FieldNote fieldNote) {
         //check current state
         switch (fieldNote.getBillingState()) {
             case FNSqlConstants.BILLING_STATE_CREATED:
@@ -53,13 +47,16 @@ public class FNBillingStateMachine {
             case FNSqlConstants.BILLING_STATE_BILLED:
                 fieldNote.setBillingState(FNSqlConstants.BILLING_STATE_COMPLETE);
                 break;
+            case FNSqlConstants.BILLING_STATE_COMPLETE:
+                break;
             default:
-                //if not set or completed
+                fieldNote.setBillingState(FNSqlConstants.BILLING_STATE_CREATED);
                 break;
         }
         //update FieldNote
+        fieldNote.setDescription(FNUtil.allowApostrophe(fieldNote.getDescription()));
         FNDataController dataCon = new FNDataController();
-        return dataCon.updateFieldNote(fieldNote);
+        dataCon.updateFieldNote(fieldNote);
     }
 
     /**
@@ -69,16 +66,16 @@ public class FNBillingStateMachine {
      * @return BillingState
      */
 
-    public BillingState getNextState(BillingState currentState) {
-        switch (currentState.getState()) {
+    public String getNextState(String currentState) {
+        switch (currentState) {
             case FNSqlConstants.BILLING_STATE_CREATED:
-                return new BillingState(FNSqlConstants.BILLING_STATE_BILLED);
+                return FNSqlConstants.BILLING_STATE_BILLED;
             case FNSqlConstants.BILLING_STATE_BILLED:
-                return new BillingState(FNSqlConstants.BILLING_STATE_COMPLETE);
+                return FNSqlConstants.BILLING_STATE_COMPLETE;
             case FNSqlConstants.BILLING_STATE_COMPLETE:
-                throw new IllegalStateException("No states available after 'Complete'");
+                return "No states available after 'Complete'";
             default:
-                throw new IllegalStateException("Unknown State");
+                return "Unknown State";
         }
     }
 }

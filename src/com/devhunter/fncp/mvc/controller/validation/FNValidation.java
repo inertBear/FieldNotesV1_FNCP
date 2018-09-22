@@ -7,19 +7,17 @@
 
 package com.devhunter.fncp.mvc.controller.validation;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
-import javax.swing.JOptionPane;
-
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
+
+import javax.swing.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * This class handles the validation of the FieldNote objects. It is responsible for ensuring that no
  * incomplete or incorrect values get from the User-end and into the database. FNValidation will
  * throw an IllegalArgumentException if the data is incomplete.
- *
  */
 
 public class FNValidation {
@@ -140,5 +138,58 @@ public class FNValidation {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Corrects a Date (date) so it can be displayed
+     * <p>
+     * NOTE: this is intended to allow older FieldNotes which may not have the correct formatting to pass validation
+     *
+     * @param date
+     * @return String
+     */
+    public static String validateDate(String date) {
+        final String legacyPattern = "\\d{1,2}-\\d{1,2}-\\d{2}";
+        final String correctPattern = "\\d{4}-\\d{2}-\\d{2}";
+        final SimpleDateFormat legacyFormat = new SimpleDateFormat("MM/dd/yy");
+        final SimpleDateFormat correctFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String validDate = null;
+        if (date.matches(correctPattern)) {
+            return date;
+        } else {
+            try {
+                validDate = correctFormat.format(legacyFormat.parse(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return validDate;
+    }
+
+    /**
+     * Corrects a Date (time) so it can be displayed
+     * <p>
+     * NOTE: this is intended to allow older FieldNotes which may not have the correct formatting to pass validation
+     *
+     * @param time
+     * @return String
+     */
+    public static String validateTime(String time) {
+        final String correctPattern = "\\d{1,2}:\\d{2}";
+        final SimpleDateFormat legacyFormat = new SimpleDateFormat("HHmm");
+        final SimpleDateFormat correctFormat = new SimpleDateFormat("HH:mm");
+
+        String validTime = null;
+        if (time.matches(correctPattern)) {
+            return time;
+        } else {
+            try {
+                validTime = correctFormat.format(legacyFormat.parse(time));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return validTime;
     }
 }

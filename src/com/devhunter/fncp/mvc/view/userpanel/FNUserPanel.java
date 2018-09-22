@@ -19,8 +19,6 @@ import com.devhunter.fncp.utilities.FNUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class FNUserPanel extends FNPanel {
 
@@ -69,6 +67,7 @@ public class FNUserPanel extends FNPanel {
         // when user navigates to Search User TAB
         mBtnUserSearch.addActionListener(e -> {
             resetGui();
+            mBtnUserSearch.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(SearchUserPanel.getView(), BorderLayout.CENTER);
             sUserControlPanel.setVisible(true);
             SearchUserPanel.getView().setVisible(true);
@@ -80,6 +79,7 @@ public class FNUserPanel extends FNPanel {
         // When user navigates to Add User TAB
         mBtnUserAdd.addActionListener(e -> {
             resetGui();
+            mBtnUserAdd.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(AddUserPanel.getView(), BorderLayout.CENTER);
             sUserControlPanel.setVisible(true);
             AddUserPanel.getView().setVisible(true);
@@ -91,6 +91,7 @@ public class FNUserPanel extends FNPanel {
         // When user navigates to Delete User TAB
         mBtnUserDelete.addActionListener(e -> {
             resetGui();
+            mBtnUserDelete.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(DeleteUserPanel.getView(), BorderLayout.CENTER);
             sUserControlPanel.setVisible(true);
             DeleteUserPanel.getView().setVisible(true);
@@ -102,6 +103,7 @@ public class FNUserPanel extends FNPanel {
         // When user navigates to Change User Password TAB
         mBtnUserPassword.addActionListener(e -> {
             resetGui();
+            mBtnUserPassword.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(ChangeUserPasswordPanel.getView(), BorderLayout.CENTER);
             sUserControlPanel.setVisible(true);
             ChangeUserPasswordPanel.getView().setVisible(true);
@@ -131,5 +133,11 @@ public class FNUserPanel extends FNPanel {
         AddUserPanel.hideView();
         DeleteUserPanel.hideView();
         ChangeUserPasswordPanel.hideView();
+
+        //reset button colors
+        mBtnUserSearch.setBackground(null);
+        mBtnUserAdd.setBackground(null);
+        mBtnUserDelete.setBackground(null);
+        mBtnUserPassword.setBackground(null);
     }
 }

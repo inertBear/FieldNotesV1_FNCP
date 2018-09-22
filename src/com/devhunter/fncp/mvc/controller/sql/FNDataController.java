@@ -34,7 +34,6 @@ public class FNDataController extends FNController {
      * @return ArrayList<FieldNote> fieldNotes
      */
     public ArrayList<FieldNote> searchAllData() {
-
         final String selectQuery = FNDataQueries.SELECT_DATA_QUERY;
         return searchData(selectQuery);
     }
@@ -46,7 +45,6 @@ public class FNDataController extends FNController {
      * @return ArrayList<FieldNote> fieldNotes
      */
     public ArrayList<FieldNote> searchDataByUsername(String userName) {
-
         final String selectQuery = SqlInterpolate.interpolate(FNDataQueries.SELECT_DATA_BY_USER_QUERY, userName);
         return searchData(selectQuery);
     }
@@ -59,7 +57,6 @@ public class FNDataController extends FNController {
      * @return ArrayList<FieldNote> fieldNotes
      */
     public ArrayList<FieldNote> searchDataByDateRange(String startDate, String endDate) {
-
         final String selectQuery = SqlInterpolate.interpolate(FNDataQueries.SELECT_DATA_BY_RANGE_QUERY, startDate, endDate);
         return searchData(selectQuery);
     }
@@ -73,7 +70,6 @@ public class FNDataController extends FNController {
      * @return ArrayList<FieldNote> fieldNotes
      */
     public ArrayList<FieldNote> searchDataByUserAndDateRange(String username, String startDate, String endDate) {
-
         final String selectQuery = SqlInterpolate.interpolate(FNDataQueries.SELECT_DATA_BY_RANGE_AND_USER_QUERY, username, startDate, endDate);
         return searchData(selectQuery);
     }
@@ -85,7 +81,6 @@ public class FNDataController extends FNController {
      * @return FieldNote fieldNote
      */
     public FieldNote searchDataByTicketNumber(String ticketNumber) {
-
         final String selectQuery = SqlInterpolate.interpolate(FNDataQueries.SELECT_DATA_BY_TICKET_QUERY, ticketNumber);
         return searchData(selectQuery).get(0);
     }
@@ -97,7 +92,6 @@ public class FNDataController extends FNController {
      * @return boolean
      */
     public boolean addFieldNote(FieldNote fieldNote) {
-
         final String addQuery = SqlInterpolate.interpolate(FNDataQueries.ADD_DATA_QUERY, fieldNote);
         return addData(addQuery);
     }

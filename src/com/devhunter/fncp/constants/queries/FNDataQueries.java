@@ -26,7 +26,7 @@ public class FNDataQueries {
     //addData data
     public static final String ADD_DATA_QUERY = "INSERT INTO " + DATA_TABLE + " (" + USER_COLUMN + ", " + WELLNAME_COLUMN + ", " + DATESTART_COLUMN + ", " + TIMESTART_COLUMN + "," + MILEAGESTART_COLUMN + ", " +
             DESCRIPTION_COLUMN + ", " + MILEAGEEND_COLUMN + ", " + DATEEND_COLUMN + ", " + TIMEEND_COLUMN + ", " + PROJECTNUMBER_COLUMN + ", " + LOCATION_COLUMN + "," + GPSCOORDS_COLUMN + ", " +
-            BILLING_COLUMN + ") VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+            BILLING_COLUMN + ", " + BILLING_STATE_COLUMN + ") VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
     //updateData data
     public static final String UPDATE_DATA_QUERY = "UPDATE " + DATA_TABLE + " SET " + USER_COLUMN + " = '%s', " + WELLNAME_COLUMN + " = '%s', " + DATESTART_COLUMN + " = '%s', " + TIMESTART_COLUMN + " = '%s', " +
             MILEAGESTART_COLUMN + " = '%s', " + DESCRIPTION_COLUMN + " = '%s', " + MILEAGEEND_COLUMN + " = '%s', " + DATEEND_COLUMN + " = '%s', " + TIMEEND_COLUMN + " = '%s', " + PROJECTNUMBER_COLUMN + " = '%s', " +

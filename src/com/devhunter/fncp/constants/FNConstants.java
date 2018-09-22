@@ -71,6 +71,7 @@ public class FNConstants {
     public static String FN_LOCATION_LABEL = "Location Code:";
     public static String FN_BILLING_LABEL = "Billing Code:";
     public static String FN_GPS_LABEL = "GPS: ";
+    public static String FN_BILLING_STATE_LABEL = "State: ";
     // Button Strings
     public static String BUTTON_LOGIN = "Login";
     public static String BUTTON_SUBMIT = "Submit";
