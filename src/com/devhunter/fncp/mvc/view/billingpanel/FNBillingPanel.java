@@ -51,7 +51,8 @@ public class FNBillingPanel extends FNPanel {
         sBillingControlPanel.setVisible(false);
 
         // initialize javafx toolkit
-        com.sun.javafx.application.PlatformImpl.startup(()->{});
+        com.sun.javafx.application.PlatformImpl.startup(() -> {
+        });
         BillingStatePanel.getInstance();
 
         mBtnUnbilled.addActionListener(e -> {

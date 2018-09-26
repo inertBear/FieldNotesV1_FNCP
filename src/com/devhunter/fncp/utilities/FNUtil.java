@@ -234,7 +234,8 @@ public class FNUtil {
                 FNConstants.FN_DESCRIPTION_LABEL + " " + fieldNote.getDescription() + "\n" +
                 FNConstants.FN_GPS_LABEL + " " + fieldNote.getGPSCoords() + "\n\n" +
                 FNConstants.FN_BILLING_STATE_LABEL + " " + fieldNote.getBillingState() + "\n\n" +
-                "Total hours:" + " " + con.calculateHours(fieldNote) + "\n";
+                "Total hours: " + con.calculateHours(fieldNote) + "\n" +
+                "Total mileage: " + con.calculateMilage(fieldNote) + "\n";
     }
 
     /**

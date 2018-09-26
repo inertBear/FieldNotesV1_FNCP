@@ -30,6 +30,9 @@ public class FNBillingStateMachine {
         ArrayList<FieldNote> fieldNotes = billCon.searchNullStates();
         if (!fieldNotes.isEmpty()) {
             for (FieldNote each : fieldNotes) {
+                if (each.getBillingState() == null) {
+                    each.setBillingState(FNSqlConstants.BILLING_STATE_NOT_SET);
+                }
                 advanceState(each);
             }
         }
@@ -49,6 +52,7 @@ public class FNBillingStateMachine {
                 break;
             case FNSqlConstants.BILLING_STATE_COMPLETE:
                 break;
+            case FNSqlConstants.BILLING_STATE_NOT_SET:
             default:
                 fieldNote.setBillingState(FNSqlConstants.BILLING_STATE_CREATED);
                 break;

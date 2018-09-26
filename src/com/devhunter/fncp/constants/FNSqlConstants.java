@@ -43,6 +43,7 @@ public class FNSqlConstants {
 
     //database table: date: state column
     public static final String BILLING_STATE_IS_NULL = BILLING_STATE_COLUMN + " IS NULL";
+    public static final String BILLING_STATE_NOT_SET = "not set";
     public static final String BILLING_STATE_CREATED = "created";
     public static final String BILLING_STATE_BILLED = "billed";
     public static final String BILLING_STATE_COMPLETE = "complete";

@@ -131,12 +131,21 @@ public class FNBillingController extends FNController {
     }
 
     /**
+     * calculate the number of miles included in a FieldNote
+     *
+     * @param fieldNote
+     * @return String
+     */
+    public String calculateMilage(FieldNote fieldNote) {
+        return String.valueOf(Integer.parseInt(fieldNote.getMileageEnd()) - Integer.parseInt(fieldNote.getMileageStart()));
+    }
+
+    /**
      * calculate the number of billable hours from a provided date/time range
      *
      * @param fieldNote
      * @return String
      */
-
     public String calculateHours(FieldNote fieldNote) {
         final String dateFormat = "yyyy-MM-dd";
         final String timeFormat = "HH:mm";
