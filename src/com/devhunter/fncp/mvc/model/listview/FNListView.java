@@ -30,6 +30,10 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+/**
+ * embedded Java FX ListView in a Swing application. All calls to this ListView must be done within a <i>Platform.runLAter(...)</i>
+ * block. For reference, this works a lot like an Android ListView.
+ */
 public class FNListView extends JFXPanel {
 
     private ListView<FNDataPreview> mListView;
@@ -69,16 +73,24 @@ public class FNListView extends JFXPanel {
                 dialogStage.setTitle("Ticket Number: " + ticketNumber);
                 dialogStage.initModality(Modality.WINDOW_MODAL);
 
-                Button btnChangeState = new Button(FNBillingStateMachine.getInstance().getNextState(fieldNote.getBillingState()));
+                //create the "Advance State" button
+                Button btnChangeState = new Button(FNBillingStateMachine.getInstance().getNextState(fieldNote.getBillingState()).toUpperCase());
                 btnChangeState.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
                         FNBillingStateMachine.getInstance().advanceState(fieldNote);
                         dialogStage.close();
+                        removeItem(mListView.getSelectionModel().getSelectedItem());
                     }
                 });
 
-                Button btnCancel = new Button("Cancel");
+                //Create the "Cancel/Close" button
+                Button btnCancel;
+                if (fieldNote.getBillingState().equals(FNSqlConstants.BILLING_STATE_COMPLETE)) {
+                    btnCancel = new Button("Cancel");
+                } else {
+                    btnCancel = new Button("Close");
+                }
                 btnCancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -86,12 +98,12 @@ public class FNListView extends JFXPanel {
                     }
                 });
 
-                //create Vbox (a Vbox is a single vertical column)
+                //create Vbox  NOTE:(a Vbox is just a simple, single vertical column, this may need to be refined)
                 VBox vbox;
                 if (!fieldNote.getBillingState().equals(FNSqlConstants.BILLING_STATE_COMPLETE)) {
-                    vbox = new VBox(new Text(FNUtil.getFieldNoteAsString(fieldNote)), btnChangeState, btnCancel);
+                    vbox = new VBox(5.0, new Text(FNUtil.getFieldNoteAsString(fieldNote)), btnChangeState, btnCancel);
                 } else {
-                    vbox = new VBox(new Text(FNUtil.getFieldNoteAsString(fieldNote)), btnCancel);
+                    vbox = new VBox(5.0, new Text(FNUtil.getFieldNoteAsString(fieldNote)), btnCancel);
                 }
                 vbox.setAlignment(Pos.CENTER);
                 vbox.setPadding(new Insets(15));
@@ -102,7 +114,7 @@ public class FNListView extends JFXPanel {
             }
         });
 
-        // define the structure of the cell
+        // define the structure of the "preview" cells
         mListView.setCellFactory(param -> new ListCell<FNDataPreview>() {
             @Override
             protected void updateItem(FNDataPreview preview, boolean empty) {
@@ -117,6 +129,11 @@ public class FNListView extends JFXPanel {
         });
     }
 
+    /**
+     * Add the items that will be displayed in the ListView
+     *
+     * @param fieldNotes
+     */
     public void addItems(ArrayList<FieldNote> fieldNotes) {
         Platform.runLater(new Runnable() {
             @Override
@@ -129,6 +146,23 @@ public class FNListView extends JFXPanel {
         });
     }
 
+    /**
+     * Remove an item from the ListView
+     *
+     * @param item
+     */
+    private void removeItem(FNDataPreview item) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mListView.getItems().remove(item);
+            }
+        });
+    }
+
+    /**
+     * remove ALL items from the ListView
+     */
     public void removeItems() {
         Platform.runLater(new Runnable() {
             @Override
