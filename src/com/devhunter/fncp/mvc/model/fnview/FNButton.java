@@ -17,7 +17,6 @@ public class FNButton extends JButton {
 
 	public FNButton(String buttonText) {
 		setText(buttonText);
-		setBorder(FNUtil.getInstance().getLineBorder());
 		setPreferredSize(FNUtil.getInstance().getStandardButtonDimension());
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 		setAlignmentY(Component.CENTER_ALIGNMENT);

@@ -364,7 +364,7 @@ public class FNUtil {
      * @return standard LineBorder (blue)
      */
     public LineBorder getLineBorder() {
-        return new LineBorder(getPrimaryColor(), 2, true);
+        return new LineBorder(getPrimaryColor(), 1, true);
     }
 
     /**
