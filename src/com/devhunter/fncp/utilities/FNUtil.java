@@ -9,7 +9,6 @@ package com.devhunter.fncp.utilities;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.constants.FNSqlConstants;
-import com.devhunter.fncp.constants.FNUserConstants;
 import com.devhunter.fncp.mvc.controller.sql.FNUserController;
 import com.devhunter.fncp.mvc.controller.sql.billing.FNBillingController;
 import com.devhunter.fncp.mvc.model.FNUser;
@@ -35,7 +34,11 @@ import java.util.Date;
 public class FNUtil {
 
     private static FNUtil sInstance;
-    private static FNUser mCurrentUser;
+    private static String mCurrentUsername;
+    private static String mCurrentPassword;
+    private static String mCurrentUserType;
+    private static String mCurrentProductKey;
+    private static boolean mCurrentAdminAccess;
     private SpinnerListModel mLocationModel;
     private SpinnerListModel mBillableModel;
     private SimpleDateFormat mFormatter;
@@ -79,8 +82,8 @@ public class FNUtil {
      *
      * @param username
      */
-    public void setCurrentUser(String username) {
-        mCurrentUser = getEntityByUserName(username);
+    public void setCurrentUsername(String username) {
+        mCurrentUsername = username;
     }
 
     /**
@@ -89,16 +92,81 @@ public class FNUtil {
      * @return String, user name
      */
     public String getCurrentUsername() {
-        return mCurrentUser.getUsername();
+        return mCurrentUsername;
     }
 
     /**
-     * does user have admin access
+     * set logged in password
      *
-     * @return true or false
+     * @param password
      */
-    public boolean hasAdminAccess() {
-        return mCurrentUser.getType().equals(FNUserConstants.ADMIN_USER);
+    public void setCurrentPassword(String password) {
+        mCurrentPassword = password;
+    }
+
+    /**
+     * get the password of the currently logged in User.
+     *
+     * @return String, password
+     */
+    public String getCurrentPassword() {
+        return mCurrentPassword;
+    }
+
+    /**
+     * set product key for session
+     *
+     * @param productKey
+     */
+
+    public void setCurrentProductKey(String productKey) {
+        mCurrentProductKey = productKey;
+    }
+
+    /**
+     * get product key for session
+     *
+     * @return
+     */
+    public String getCurrentProductKey(){
+        return mCurrentProductKey;
+    }
+
+    /**
+     * set user type for session
+     *
+     * @param userType
+     */
+
+    public void setCurrentUserType(String userType) {
+        mCurrentUserType = userType;
+    }
+
+    /**
+     * get user type for session
+     *
+     * @return
+     */
+    public String getCurrentUserType(){
+        return mCurrentUserType;
+    }
+
+    /**
+     * set admin access for session
+     *
+     * @return
+     */
+    public void setAdminAccess(boolean hasAccess){
+        mCurrentAdminAccess = hasAccess;
+    }
+
+    /**
+     * get admin access for session
+     *
+     * @return
+     */
+    public boolean hasAdminAccess(){
+        return mCurrentAdminAccess;
     }
 
     /**

@@ -101,14 +101,16 @@ public class ChangeUserPasswordPanel extends FNPanel {
                 public void actionPerformed(ActionEvent e) {
                     // if they supply their current password
                     FNLoginController action = new FNLoginController();
-                    if (action.SQLLogin(FNUtil.getInstance().getCurrentUsername(), mCurrentPass.getText())) {
+                    if (FNUtil.getInstance().getCurrentPassword().equals(mCurrentPass.getText())) {
                         // Create FNUser with new password
                         FNUser user = new FNUser.FNEntityBuilder()
                                 .setUsername(FNUtil.getInstance().getCurrentUsername())
                                 .setPassword(mNewUserPass.getText())
-                                .setType(null)
+                                .setType(FNUtil.getInstance().getCurrentUserType())
                                 .build();
+
                         changePassword(user);
+
                     } else {
                         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Current Password was incorrect");
                     }
