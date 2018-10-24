@@ -3,6 +3,7 @@ package com.devhunter.fncp.mvc.view.loginpanel;
 import com.devhunter.fncp.FNInit;
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.JsonParser;
+import com.devhunter.fncp.mvc.controller.sql.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
@@ -91,7 +92,7 @@ public class FNRegister extends FNPanel {
                 // for test: 1159616266
                 String productKey = mProductKey.getText();
 
-                JSONObject response = register(productKey);
+                JSONObject response = FNUserController.register(productKey);
 
                 String status = response.getString("status");
                 String message = response.getString("message");
@@ -124,16 +125,5 @@ public class FNRegister extends FNPanel {
                 }
             }
         });
-    }
-
-    JSONObject register(String productKey) {
-        final String REGISTER_URL = "http://www.fieldnotesfn.com/FNA_test/FNA_register.php";
-
-        // convert to List of params
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("customerKey", productKey));
-
-        // make HTTP connection
-        return mJsonParser.createHttpRequest(REGISTER_URL, "POST", params);
     }
 }

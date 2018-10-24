@@ -10,6 +10,7 @@ package com.devhunter.fncp.mvc.view.loginpanel;
 import com.devhunter.fncp.FNInit;
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.JsonParser;
+import com.devhunter.fncp.mvc.controller.sql.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
@@ -41,7 +42,7 @@ public class FNLogin extends FNPanel {
     private FNTextField mLoginUsername;
     private JPasswordField mLoginPassword;
     private FNImageButton mButtonLogin;
-    private JsonParser mJsonParser;
+
 
     private FNLogin() {
         mLoginFrame = FNInit.getFieldNotesJFrame();
@@ -49,7 +50,6 @@ public class FNLogin extends FNPanel {
         mLoginCredentialPanel = new FNPanel();
         mLoginUsername = new FNTextField();
         mLoginPassword = new FNPasswordField();
-        mJsonParser = new JsonParser();
 
         init();
     }
@@ -119,9 +119,8 @@ public class FNLogin extends FNPanel {
             // get login info
             String username = mLoginUsername.getText();
             String password = mLoginPassword.getText();
-            String productKey = FNUtil.getInstance().getCurrentProductKey();
 
-            JSONObject loginResponse = login(username, password, productKey);
+            JSONObject loginResponse = FNUserController.login(username, password);
 
             String status = loginResponse.getString("status");
             String message = loginResponse.getString("message");
@@ -132,7 +131,7 @@ public class FNLogin extends FNPanel {
                 FNUtil.getInstance().setCurrentPassword(password);
 
                 //find out if user has Admin Access
-                if(hasAdminAccess(username)) {
+                if(FNUserController.hasAdminAccess(username)) {
                     FNUtil.getInstance().setAdminAccess(true);
                 } else {
                     FNUtil.getInstance().setAdminAccess(false);
@@ -151,49 +150,8 @@ public class FNLogin extends FNPanel {
         });
     }
 
-
     public static JFrame getFieldNotesLoginFrame() {
         return mLoginFrame;
-    }
-
-    private JSONObject login(String username, String password, String productKey) {
-        // set URL for web service
-        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FNA_login.php";
-
-        // convert to List of params
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("username", username));
-        params.add(new BasicNameValuePair("password", password));
-        params.add(new BasicNameValuePair("customerKey", productKey));
-
-        // make HTTP connection
-        return mJsonParser.createHttpRequest(postUrl, "POST", params);
-    }
-
-    private boolean hasAdminAccess(String username) {
-        //get productKey
-        String productKey = FNUtil.getInstance().getCurrentProductKey();
-
-        // set URL for web service
-        final String searchUrl = "http://www.fieldnotesfn.com/FNA_test/FN_searchUser.php";
-
-        // convert to List of params
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("username", username));
-        params.add(new BasicNameValuePair("customerKey", productKey));
-
-        // make HTTP connection
-        JSONObject response = mJsonParser.createHttpRequest(searchUrl, "POST", params);
-
-        //retrieve values from response
-        String status = response.getString("status");
-        String message = response.getString("message");
-
-        if(status.equals("success")){
-            FNUtil.getInstance().setCurrentUserType(message);
-            return message.equals("admin");
-        }
-        return false;
     }
 }
 
