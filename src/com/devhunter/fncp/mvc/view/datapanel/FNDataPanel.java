@@ -35,6 +35,7 @@ public class FNDataPanel extends FNPanel {
         mBtnDataAdd = new FNButton(FNConstants.DATA_ADD_BUTTON);
         mBtnDataDeleteSearch = new FNButton(FNConstants.DATA_DELETE_BUTTON);
         mBtnDataEditSearch = new FNButton(FNConstants.DATA_EDIT_BUTTON);
+
         init();
     }
 
@@ -46,7 +47,6 @@ public class FNDataPanel extends FNPanel {
     }
 
     private void init() {
-        // Initialize Data Control Panel
         sDataControlPanel.add(mBtnDataSearch);
         sDataControlPanel.add(mBtnDataAdd);
         // ADMIN ACCESS

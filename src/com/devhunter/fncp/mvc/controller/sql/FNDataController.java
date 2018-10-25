@@ -9,12 +9,18 @@ package com.devhunter.fncp.mvc.controller.sql;
 
 import com.devhunter.fncp.constants.queries.FNDataQueries;
 import com.devhunter.fncp.mvc.controller.FNController;
+import com.devhunter.fncp.mvc.controller.JsonParser;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
+import com.devhunter.fncp.utilities.FNUtil;
 import com.devhunter.fncp.utilities.SqlInterpolate;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class holds the methods for all the data changes from and into the
@@ -23,6 +29,8 @@ import java.util.ArrayList;
  * to the actual storing, alteration, and retrieving of FieldNote data.
  */
 public class FNDataController extends FNController {
+
+    private static JsonParser mJsonParser = new JsonParser();
 
     public FNDataController() {
         super();
@@ -91,9 +99,32 @@ public class FNDataController extends FNController {
      * @param fieldNote fieldNote
      * @return boolean
      */
-    public boolean addFieldNote(FieldNote fieldNote) {
-        final String addQuery = SqlInterpolate.interpolate(FNDataQueries.ADD_DATA_QUERY, fieldNote);
-        return addData(addQuery);
+    public static JSONObject addFieldNote(FieldNote fieldNote) {
+        //get productKey
+        String productKey = FNUtil.getInstance().getCurrentProductKey();
+
+        // set URL for web service
+        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FNA_addNote.php";
+
+        // convert to List of params
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("userName", fieldNote.getUserName()));
+        params.add(new BasicNameValuePair("wellName", fieldNote.getWellName()));
+        params.add(new BasicNameValuePair("timeStart", fieldNote.getTimeStart()));
+        params.add(new BasicNameValuePair("timeEnd", fieldNote.getTimeEnd()));
+        params.add(new BasicNameValuePair("dateStart", fieldNote.getDateStart()));
+        params.add(new BasicNameValuePair("dateEnd", fieldNote.getDateEnd()));
+        params.add(new BasicNameValuePair("mileageStart", fieldNote.getMileageStart()));
+        params.add(new BasicNameValuePair("mileageEnd", fieldNote.getMileageEnd()));
+        params.add(new BasicNameValuePair("description", fieldNote.getDescription()));
+        params.add(new BasicNameValuePair("projectNumber", fieldNote.getProject()));
+        params.add(new BasicNameValuePair("location", fieldNote.getLocation()));
+        params.add(new BasicNameValuePair("billing", fieldNote.getBillingType()));
+        params.add(new BasicNameValuePair("gps", fieldNote.getGPSCoords()));
+        params.add(new BasicNameValuePair("customerKey", productKey));
+
+        // make HTTP connection
+        return mJsonParser.createHttpRequest(postUrl, "POST", params);
     }
 
     /**

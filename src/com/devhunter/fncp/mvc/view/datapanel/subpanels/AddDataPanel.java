@@ -24,6 +24,7 @@ import lu.tudor.santec.jtimechooser.JTimeChooser;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,11 +37,9 @@ import java.util.Properties;
 public class AddDataPanel extends FNPanel {
 
     private static final long serialVersionUID = 1L;
-    // Panels
     public static AddDataPanel sInstance;
     public static FNPanel mAddFNMainPanel;
     public FNPanel mAddFNButtonPanel;
-    // TextFields
     private FNTextField mTextNewDataName;
     private FNTextField mTextNewDataWellName;
     private FNTextField mTextNewDataMileageStart;
@@ -50,13 +49,10 @@ public class AddDataPanel extends FNPanel {
     private FNTextField mTextNewDataTimeEnd;
     private FNTextField mTextNewDataProject;
     private FNTextField mTextNewDataGPS;
-    // Spinners
     private JSpinner mSpinnerNewDataLocation;
     private JSpinner mSpinnerNewDataBillable;
-    // TimeChoosers
     private final JTimeChooser mNewTicketTimeStart;
     private final JTimeChooser mNewTicketTimeEnd;
-    // DatePickers
     private UtilDateModel mNewTicketStartModel;
     private Properties mNewTicketStartProperties;
     private JDatePanelImpl mNewTicketStartDatePanel;
@@ -65,14 +61,11 @@ public class AddDataPanel extends FNPanel {
     private Properties mNewTicketEndProperties;
     private JDatePanelImpl mNewTicketEndDatePanel;
     private JDatePickerImpl mNewTicketEndDatePicker;
-    // Buttons
     private FNButton buttonSubmit;
 
     private AddDataPanel() {
-        // create Panels
         mAddFNMainPanel = new FNPanel();
         mAddFNButtonPanel = new FNPanel();
-        // create TextFields
         mTextNewDataName = new FNTextField();
         mTextNewDataWellName = new FNTextField();
         mTextNewDataMileageStart = new FNTextField();
@@ -82,13 +75,10 @@ public class AddDataPanel extends FNPanel {
         mTextNewDataTimeEnd = new FNTextField();
         mTextNewDataProject = new FNTextField();
         mTextNewDataGPS = new FNTextField();
-        // create Spinners
         mSpinnerNewDataLocation = new JSpinner(FNUtil.getInstance().getLocations());
         mSpinnerNewDataBillable = new JSpinner(FNUtil.getInstance().getBillable());
-        // create TimeChoosers
         mNewTicketTimeStart = new JTimeChooser(new Date());
         mNewTicketTimeEnd = new JTimeChooser(new Date());
-        // create DatePickers
         // FIXME: need to resize the JDatePicker's TextFields
         mNewTicketStartModel = new UtilDateModel();
         mNewTicketStartProperties = new Properties();
@@ -99,8 +89,8 @@ public class AddDataPanel extends FNPanel {
         mNewTicketEndProperties = new Properties();
         mNewTicketEndDatePanel = new JDatePanelImpl(mNewTicketEndModel, mNewTicketEndProperties);
         mNewTicketEndDatePicker = new JDatePickerImpl(mNewTicketEndDatePanel, new DateLabelFormatter());
-        // create Buttons
         buttonSubmit = new FNButton(FNConstants.BUTTON_SUBMIT);
+
         init();
     }
 
@@ -112,13 +102,12 @@ public class AddDataPanel extends FNPanel {
     }
 
     private void init() {
-        // Panels/Layouts
         GridLayout addFNDataPanelLayout = new GridLayout(0, 2);
         mAddFNMainPanel.setLayout(addFNDataPanelLayout);
         FlowLayout addFNButtonPanelLayout = new FlowLayout();
         mAddFNButtonPanel.setLayout(addFNButtonPanelLayout);
         mAddFNButtonPanel.setBorder(FNUtil.getInstance().getLineBorder());
-        // Labels
+
         FNLabel lblNewDataName = new FNLabel(FNConstants.FN_USERNAME_LABEL);
         FNLabel lblNewDataWellName = new FNLabel(FNConstants.FN_WELLNAME_LABEL);
         FNLabel lblNewDataDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
@@ -132,14 +121,17 @@ public class AddDataPanel extends FNPanel {
         FNLabel lblNewDataLocation = new FNLabel(FNConstants.FN_LOCATION_LABEL);
         FNLabel lblNewDataGPS = new FNLabel(FNConstants.FN_GPS_LABEL);
         FNLabel lblNewDataBillable = new FNLabel(FNConstants.FN_BILLING_LABEL);
+
         // Override TextField properties
         mTextNewDataName.setEditable(false);
         mTextNewDataName.setText(FNUtil.getInstance().getCurrentUsername());
+
         // Customize Spinner properties
         mSpinnerNewDataLocation.setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
         mSpinnerNewDataLocation.setEditor(new JSpinner.DefaultEditor(mSpinnerNewDataLocation));
         mSpinnerNewDataBillable.setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
         mSpinnerNewDataBillable.setEditor(new JSpinner.DefaultEditor(mSpinnerNewDataBillable));
+
         // Set DatePicker properties
         mNewTicketStartProperties.put("text.today", "Today");
         mNewTicketStartProperties.put("text.month", "Month");
@@ -177,6 +169,7 @@ public class AddDataPanel extends FNPanel {
         mAddFNMainPanel.add(mSpinnerNewDataBillable);
         mAddFNMainPanel.add(new FNLabel());
         mAddFNMainPanel.add(buttonSubmit);
+
         // Initial view settings
         mAddFNMainPanel.setVisible(false);
         FNControlPanel.getFieldNotesFrame().repaint();
@@ -195,7 +188,6 @@ public class AddDataPanel extends FNPanel {
                         .setMileageStart(mTextNewDataMileageStart.getText())
                         .setMileageEnd(mTextNewDataMileageEnd.getText())
                         .setDescription(mTextNewDataDescription.getText())
-                        .setWellName(mTextNewDataWellName.getText())
                         .setProjectNumber(mTextNewDataProject.getText())
                         .setLocation((String) mSpinnerNewDataLocation.getValue())
                         .setGPSCoords(mTextNewDataGPS.getText())
@@ -204,25 +196,25 @@ public class AddDataPanel extends FNPanel {
                         .build();
                 // validate FieldNote
                 if (FNValidation.validate(fieldNote)) {
-                    // send FieldNote to controller for CUD event
-                    FNDataController conn = new FNDataController();
-                    boolean result = conn.addFieldNote(fieldNote);
-
-                    // code 1 == success, code 0 == failure
-                    if (result) {
-                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "New Note Submitted");
-                        resetGui();
-                    } else {
-                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Connection Error: NEW NOTE WAS NOT SUBMITTED");
-                    }
-                } else {
-                    //Validation failed - Do nothing and allow then to make changes and send again
+                    addFieldNote(fieldNote);
                 }
             }
         });
     }
 
-    public String formatTime(String time) {
+    private void addFieldNote(FieldNote fieldNote) {
+        JSONObject addFieldNoteResponse = FNDataController.addFieldNote(fieldNote);
+        String status = addFieldNoteResponse.getString("status");
+        String addUserMessage = addFieldNoteResponse.getString("message");
+
+        if (status.equals("success")){
+            resetGui();
+        }
+
+        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), addUserMessage);
+    }
+
+    private String formatTime(String time) {
         return time.substring(0, 5);
     }
 
