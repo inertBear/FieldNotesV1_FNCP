@@ -9,21 +9,16 @@ package com.devhunter.fncp.mvc.view.loginpanel;
 
 import com.devhunter.fncp.FNInit;
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.JsonParser;
-import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class draws the login panel as a singleton. Successful login will create an instance of
@@ -131,7 +126,7 @@ public class FNLogin extends FNPanel {
                 FNUtil.getInstance().setCurrentPassword(password);
 
                 //find out if user has Admin Access
-                if(FNUserController.hasAdminAccess(username)) {
+                if (FNUserController.hasAdminAccess(username)) {
                     FNUtil.getInstance().setAdminAccess(true);
                 } else {
                     FNUtil.getInstance().setAdminAccess(false);

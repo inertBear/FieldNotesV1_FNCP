@@ -7,7 +7,6 @@
 
 package com.devhunter.fncp.mvc.controller;
 
-import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.utilities.FNUtil;
 
@@ -93,88 +92,5 @@ public class FNController {
             e.printStackTrace();
             return false;
         }
-    }
-
-    /**
-     * search for users.
-     *
-     * @param query
-     * @return ArrayList<FNUser> allUsers
-     */
-    protected ArrayList<FNUser> searchUser(String query) {
-
-        ArrayList<FNUser> entities = new ArrayList<>();
-
-        try {
-            ResultSet resultSet = mStatement.executeQuery(query);
-            entities = FNUtil.retrieveUsers(resultSet);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("sql exception: Search Failed");
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-            System.out.println("No user data found for that value");
-        }
-        return entities;
-    }
-
-    /**
-     * Add a User. Fails if username already exists
-     *
-     * @param query
-     * @return int responseCode, (2 if the UserName already exists, 1 for success, 0
-     * for error)
-     */
-    protected int addUser(String query) {
-        //TODO: [FNCP-024] substitute responseCode for Tuple<boolean, message>
-        int responseCode;
-        try {
-            mStatement.executeUpdate(query);
-            responseCode = 1;
-        } catch (SQLException e) {
-            System.out.println("sql exception: Add User Failed");
-            responseCode = 0;
-        }
-        return responseCode;
-    }
-
-    /**
-     * Deletes a User. Fails if username doesn't exist
-     *
-     * @param query
-     * @return int deleteUserResponseCode, (1 for success, 2 if the user did not
-     * exist, 0 for error)
-     */
-    protected int deleteUser(String query) {
-        //TODO: [FNCP-024] substitute responseCode for Tuple<boolean, message>
-        int responseCode;
-        try {
-            mStatement.executeUpdate(query);
-            responseCode = 1;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            responseCode = 0;
-        }
-        return responseCode;
-    }
-
-    /**
-     * Change the password of a user. Fails if username doesn't exist
-     *
-     * @param query
-     * @return int changePassResponseCode, (1 if success, 2 if UserName does not
-     * exist, 0 if error)
-     */
-    protected int updatePassword(String query) {
-        //TODO: [FNCP-024] substitute responseCode for Tuple<boolean, message>
-        int responseCode;
-        try {
-            mStatement.executeUpdate(query);
-            responseCode = 1;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            responseCode = 0;
-        }
-        return responseCode;
     }
 }

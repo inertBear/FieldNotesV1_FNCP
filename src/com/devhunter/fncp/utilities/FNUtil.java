@@ -9,9 +9,7 @@ package com.devhunter.fncp.utilities;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.constants.FNSqlConstants;
-import com.devhunter.fncp.mvc.controller.sql.FNUserController;
 import com.devhunter.fncp.mvc.controller.sql.billing.FNBillingController;
-import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.FieldNote;
 
 import javax.swing.*;
@@ -128,7 +126,7 @@ public class FNUtil {
      *
      * @return
      */
-    public String getCurrentProductKey(){
+    public String getCurrentProductKey() {
         return mCurrentProductKey;
     }
 
@@ -147,7 +145,7 @@ public class FNUtil {
      *
      * @return
      */
-    public String getCurrentUserType(){
+    public String getCurrentUserType() {
         return mCurrentUserType;
     }
 
@@ -156,7 +154,7 @@ public class FNUtil {
      *
      * @return
      */
-    public void setAdminAccess(boolean hasAccess){
+    public void setAdminAccess(boolean hasAccess) {
         mCurrentAdminAccess = hasAccess;
     }
 
@@ -165,22 +163,8 @@ public class FNUtil {
      *
      * @return
      */
-    public boolean hasAdminAccess(){
+    public boolean hasAdminAccess() {
         return mCurrentAdminAccess;
-    }
-
-    /**
-     * retrieve a specific FNUser from the list of users
-     *
-     * @return user
-     */
-    public FNUser getEntityByUserName(String username) {
-        FNUserController userController = new FNUserController();
-        FNUser user = userController.searchUsersByUsername(username);
-        if (user.getUsername().equalsIgnoreCase(username)) {
-            return user;
-        }
-        return new FNUser.FNEntityBuilder().buildEmptyFNEntity();
     }
 
     /**
@@ -219,38 +203,6 @@ public class FNUtil {
             resultSet.close();
         }
         return fieldNotes;
-    }
-
-    /**
-     * Retreive the FNEntities from within a ResultSet
-     *
-     * @param resultSet
-     * @return ArrayList<FieldNote>
-     * @throws SQLException
-     */
-    public static ArrayList<FNUser> retrieveUsers(ResultSet resultSet) throws SQLException {
-
-        ArrayList<FNUser> users = new ArrayList<>();
-
-        if (resultSet != null) {
-            while (resultSet.next()) {
-                FNUser user = new FNUser.FNEntityBuilder()
-                        .setId(resultSet.getInt(FNSqlConstants.USER_ID_COLUMN))
-                        .setUsername(resultSet.getString(FNSqlConstants.USER_USERNAME_COLUMN))
-                        .setPassword(resultSet.getString(FNSqlConstants.USER_PASSWORD_COLUMN))
-                        .setType(resultSet.getString(FNSqlConstants.USER_TYPE_COLUMN))
-                        .build();
-
-                users.add(user);
-            }
-            resultSet.close();
-        }
-
-        if (users.isEmpty()) {
-            FNUser user = new FNUser.FNEntityBuilder().buildEmptyFNEntity();
-            users.add(user);
-        }
-        return users;
     }
 
     /**

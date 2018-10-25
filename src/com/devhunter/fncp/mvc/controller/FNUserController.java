@@ -5,14 +5,10 @@
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.devhunter.fncp.mvc.controller.sql;
+package com.devhunter.fncp.mvc.controller;
 
-import com.devhunter.fncp.constants.queries.FNUserQueries;
-import com.devhunter.fncp.mvc.controller.FNController;
 import com.devhunter.fncp.mvc.controller.JsonParser;
-import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.utilities.FNUtil;
-import com.devhunter.fncp.utilities.SqlInterpolate;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -27,7 +23,7 @@ import java.util.List;
  * relate to the actual storing, alteration, and retrieving of FNUser
  * data.
  */
-public class FNUserController extends FNController {
+public class FNUserController {
 
     private static JsonParser mJsonParser = new JsonParser();
 
@@ -36,74 +32,78 @@ public class FNUserController extends FNController {
     }
 
     /**
-     * search for all users within FieldNotes.
+     * search for users within FieldNotes.
      *
      * @return ArrayList<FNUser>
      */
-    public ArrayList<FNUser> searchAllUsers() {
+    public static JSONObject searchUsers(String username) {
+        //get productKey
+        String productKey = FNUtil.getInstance().getCurrentProductKey();
 
-        String selectQuery = FNUserQueries.SELECT_ALL_USER_QUERY;
-        return searchUser(selectQuery);
-    }
+        // set URL for web service
+        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FN_searchUsers.php";
 
-    /**
-     * search for a specific user within FieldNotes.
-     *
-     * @param username to search for
-     * @return ArrayList<FnEntity>
-     */
-    public FNUser searchUsersByUsername(String username) {
+        // convert to List of params
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("username", username));
+        params.add(new BasicNameValuePair("customerKey", productKey));
 
-        String selectQuery = SqlInterpolate.interpolate(FNUserQueries.SELECT_USER_QUERY, username);
-        return searchUser(selectQuery).get(0);
+        // make HTTP connection
+        return mJsonParser.createHttpRequest(postUrl, "POST", params);
     }
 
     /**
      * add a user to FieldNotes
      *
-     * @param user
-     * @return
+     * @param username of added user
+     * @param password of added user
+     * @param type     of added user
+     * @return JSONObject that contains the response
      */
-    public int addUser(FNUser user) {
-        //TODO: [FNCP-024] substitute responseCode for Tuple<boolean, message>
-        FNUser entity = searchUsersByUsername(user.getUsername());
-        int responseCode;
+    public static JSONObject addUser(String username, String password, String type) {
+        //get productKey
+        String productKey = FNUtil.getInstance().getCurrentProductKey();
 
-        if (entity.getUsername() != null) {
-            //then the user already exists
-            responseCode = 2;
-        } else {
-            String addQuery = SqlInterpolate.interpolate(FNUserQueries.ADD_USER_QUERY, user.getUsername(), user.getPassword(), user.getType());
-            responseCode = addUser(addQuery);
-        }
-        return responseCode;
+        // set URL for web service
+        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FN_addUser.php";
+
+        // convert to List of params
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("username", username));
+        params.add(new BasicNameValuePair("password", password));
+        params.add(new BasicNameValuePair("type", type));
+        params.add(new BasicNameValuePair("customerKey", productKey));
+
+        // make HTTP connection
+        return mJsonParser.createHttpRequest(postUrl, "POST", params);
     }
 
     /**
      * delete a registered user from FieldNotes
      *
-     * @param user
-     * @return
+     * @param username of user to delete
+     * @return JSONObject with response from server
      */
-    public int deleteUser(FNUser user) {
-        //TODO: [FNCP-024] substitute responseCode for Tuple<boolean, message>
-        FNUser entity = searchUsersByUsername(user.getUsername());
-        int responseCode;
+    public static JSONObject deleteUser(String username) {
+        //get productKey
+        String productKey = FNUtil.getInstance().getCurrentProductKey();
 
-        if (entity.getUsername() != null) {
-            String deleteQuery = SqlInterpolate.interpolate(FNUserQueries.DELETE_USER_QUERY, user.getUsername());
-            responseCode = deleteUser(deleteQuery);
-        } else {
-            //then the user doesn't exist
-            responseCode = 2;
-        }
-        return responseCode;
+        // set URL for web service
+        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FN_deleteUser.php";
+
+        // convert to List of params
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("username", username));
+        params.add(new BasicNameValuePair("customerKey", productKey));
+
+        // make HTTP connection
+        return mJsonParser.createHttpRequest(postUrl, "POST", params);
     }
 
     /**
      * update a user's password
      *
-     * @param username user to udpate
+     * @param username    user to udpate
      * @param newPassword password to update to
      * @return JSON with update results
      */
@@ -176,7 +176,7 @@ public class FNUserController extends FNController {
         String productKey = FNUtil.getInstance().getCurrentProductKey();
 
         // set URL for web service
-        final String searchUrl = "http://www.fieldnotesfn.com/FNA_test/FN_searchUser.php";
+        final String searchUrl = "http://www.fieldnotesfn.com/FNA_test/FN_confirmAdmin.php";
 
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
@@ -190,7 +190,7 @@ public class FNUserController extends FNController {
         String status = response.getString("status");
         String message = response.getString("message");
 
-        if(status.equals("success")){
+        if (status.equals("success")) {
             FNUtil.getInstance().setCurrentUserType(message);
             return message.equals("admin");
         }

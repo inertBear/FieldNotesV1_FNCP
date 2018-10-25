@@ -3,14 +3,12 @@ package com.devhunter.fncp.mvc.view.loginpanel;
 import com.devhunter.fncp.FNInit;
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.JsonParser;
-import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.model.fnview.FNTextField;
 import com.devhunter.fncp.utilities.FNUtil;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -22,8 +20,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FNRegister extends FNPanel {
 

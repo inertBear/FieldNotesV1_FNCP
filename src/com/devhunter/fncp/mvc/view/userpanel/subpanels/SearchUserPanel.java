@@ -9,13 +9,15 @@ package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
-import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.controller.FNUserController;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.model.fnview.FNTextField;
-import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,18 +25,13 @@ import java.util.ArrayList;
 
 public class SearchUserPanel extends FNPanel {
 
-    // Panels
     private static SearchUserPanel mInstance;
     private static FNPanel mSearchUserPanel;
     private static FNPanel mSearchTextFieldPanel;
-    // TextFields
     private FNTextField mSearchUser;
-    // TextAreas
     private JTextArea mSearchUserOutput;
-    // Buttons
     private FNButton mButtonSearch;
     private FNButton mButtonExport;
-    // ArrayLists
     private ArrayList<FNUser> mUsers;
 
     private static final String ID = "ID: ";
@@ -43,18 +40,14 @@ public class SearchUserPanel extends FNPanel {
     private static final String USER_TYPE = "User Type: ";
 
     private SearchUserPanel() {
-        // Create Panels
         mSearchUserPanel = new FNPanel();
         mSearchTextFieldPanel = new FNPanel();
-        // Create TextFields
         mSearchUser = new FNTextField();
-        // Create TextAreas
         mSearchUserOutput = new JTextArea(28, 32);
-        // Create Buttons
         mButtonSearch = new FNButton(FNConstants.BUTTON_SEARCH);
         mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
-        // Create ArrayLists
         mUsers = new ArrayList<>();
+
         init();
     }
 
@@ -66,14 +59,13 @@ public class SearchUserPanel extends FNPanel {
     }
 
     private void init() {
-        // Panel Layouts
         BorderLayout searchUserLayout = new BorderLayout();
         mSearchUserPanel.setLayout(searchUserLayout);
         GridLayout searchUserTextFieldPanelLayout = new GridLayout(0, 2);
         mSearchTextFieldPanel.setLayout(searchUserTextFieldPanelLayout);
-        // Labels
+
         FNLabel searchUserLbl = new FNLabel(FNConstants.FN_USERNAME_LABEL);
-        // ScrollPanes/TextAreas
+
         JScrollPane userSearchScroll = new JScrollPane(mSearchUserOutput);
         mSearchUserOutput.setEditable(false);
 
@@ -95,25 +87,18 @@ public class SearchUserPanel extends FNPanel {
         mButtonSearch.addActionListener(e -> {
             mSearchUserOutput.setVisible(true);
             mSearchUserOutput.setText(null);
-            FNUserController conn = new FNUserController();
 
-            if (mSearchUser.getText().trim().isEmpty()) {
-                mUsers = conn.searchAllUsers();
+            String searchUsername = mSearchUser.getText();
 
-                for (FNUser each : mUsers) {
-                    //TODO: [FNCP-023] create static print user method in FNUser EX: public static void printUser(where to print)
-                    mSearchUserOutput.append(ID + each.getId() + "\n");
-                    mSearchUserOutput.append(USERNAME + each.getUsername() + "\n");
-                    mSearchUserOutput.append(PASSWORD + each.getPassword() + "\n");
-                    mSearchUserOutput.append(USER_TYPE + each.getType() + "\n\n");
-                }
+            JSONObject searchResponse = FNUserController.searchUsers(searchUsername);
+            String status = searchResponse.getString("status");
+            String messageString = searchResponse.getString("message");
+            JSONArray messageArray = new JSONArray(messageString);
+
+            if (status.equals("success")) {
+                printJsonObject(messageArray, mSearchUserOutput);
             } else {
-                String username = mSearchUser.getText();
-                FNUser user = conn.searchUsersByUsername(username);
-                mSearchUserOutput.setText(ID + user.getId() + "\n");
-                mSearchUserOutput.append(USERNAME + user.getUsername() + "\n");
-                mSearchUserOutput.append(PASSWORD + user.getPassword() + "\n");
-                mSearchUserOutput.append(USER_TYPE + user.getType() + "\n\n");
+                JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);
             }
         });
 
@@ -128,6 +113,21 @@ public class SearchUserPanel extends FNPanel {
                 JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
             }
         });
+    }
+
+    public void printJsonObject(JSONArray message, JTextArea areaToPrintOn) {
+        for (int i = 0; i < message.length(); i++) {
+            JSONObject jsonObject = message.getJSONObject(i);
+            String userId = jsonObject.getString("userId");
+            String username = jsonObject.getString("userUserName");
+            String password = jsonObject.getString("userPassword");
+            String type = jsonObject.getString("userType");
+
+            areaToPrintOn.append(ID + userId + "\n");
+            areaToPrintOn.append(USERNAME + username + "\n");
+            areaToPrintOn.append(PASSWORD + password + "\n");
+            areaToPrintOn.append(USER_TYPE + type + "\n\n");
+        }
     }
 
     public static JPanel getView() {

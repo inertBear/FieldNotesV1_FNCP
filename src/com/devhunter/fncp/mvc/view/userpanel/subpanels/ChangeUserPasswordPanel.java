@@ -6,9 +6,7 @@
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.validation.FNUserValidation;
-import com.devhunter.fncp.mvc.controller.sql.FNUserController;
-import com.devhunter.fncp.mvc.model.FNUser;
+import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
@@ -21,28 +19,22 @@ import java.awt.event.ActionListener;
 
 public class ChangeUserPasswordPanel extends FNPanel {
 
-    // Panels
     private static ChangeUserPasswordPanel mInstance;
     private static FNPanel mChangeUserPasswordPanel;
     private FNPanel mChangePasswordTextFieldPanel;
-    // TextFields
     private FNTextField mChangePassUsername;
     private FNPasswordField mCurrentPass;
     private FNPasswordField mNewUserPass;
-    // Buttons
     private FNButton mButtonChangePassword;
 
     private ChangeUserPasswordPanel() {
-        // Create Panels
         mChangeUserPasswordPanel = new FNPanel();
         mChangePasswordTextFieldPanel = new FNPanel();
-        // Create TextFields
         mChangePassUsername = new FNTextField();
         mCurrentPass = new FNPasswordField();
         mNewUserPass = new FNPasswordField();
-
-        // Create Buttons
         mButtonChangePassword = new FNButton(FNConstants.BUTTON_UPDATE);
+
         init();
     }
 
@@ -54,7 +46,6 @@ public class ChangeUserPasswordPanel extends FNPanel {
     }
 
     private void init() {
-        // Panel Layouts
         BorderLayout changeUserPasswordLayout = new BorderLayout();
         mChangeUserPasswordPanel.setLayout(changeUserPasswordLayout);
         GridLayout changeUserPasswordTextFieldPanelLayout = new GridLayout(0, 2);
@@ -62,7 +53,6 @@ public class ChangeUserPasswordPanel extends FNPanel {
 
         // ADMIN ACCESS: change any user password
         if (FNUtil.getInstance().hasAdminAccess()) {
-            // Labels
             FNLabel passUserlbl = new FNLabel(FNConstants.CRED_USERNAME_LABEL);
             FNLabel newPassUserlbl = new FNLabel(FNConstants.USER_NEW_PASSWORD_LABEL);
 
@@ -84,9 +74,7 @@ public class ChangeUserPasswordPanel extends FNPanel {
                     updatePassword(username, currentPassword, newPassword);
                 }
             });
-            // NON-ADMIN ACCESS: only change your own password
         } else {
-            // Labels
             FNLabel currentPassLbl = new FNLabel(FNConstants.USER_CURRENT_PASSWORD_LABEL);
             FNLabel newPasslbl = new FNLabel(FNConstants.USER_NEW_PASSWORD_LABEL);
 
@@ -126,25 +114,20 @@ public class ChangeUserPasswordPanel extends FNPanel {
      * @param newPassword
      */
     private void updatePassword(String username, String oldPassword, String newPassword) {
-        JSONObject updatePasswordResponse = null;
+        JSONObject updatePasswordResponse;
         // if they supply their current password
-        if(FNUtil.getInstance().getCurrentPassword().equals(oldPassword)) {
-            if (!oldPassword.equals(newPassword)) {
-                // update their password
-                updatePasswordResponse = FNUserController.updatePassword(username, newPassword);
-                if (updatePasswordResponse != null) {
-                    String message = updatePasswordResponse.getString("message");
+        if (FNUtil.getInstance().getCurrentPassword().equals(oldPassword)) {
 
-                    FNUtil.getInstance().setCurrentPassword(newPassword);
+            // update their password
+            updatePasswordResponse = FNUserController.updatePassword(username, newPassword);
 
-                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), message);
-                } else {
-                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Failure: contact admin");
-                }
-            } else {
-                JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "cannot use old password");
-
+            String status = updatePasswordResponse.getString("status");
+            String message = updatePasswordResponse.getString("message");
+            if (status.equals("success")) {
+                FNUtil.getInstance().setCurrentPassword(newPassword);
             }
+
+            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), message);
         } else {
             JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "entered wrong current password");
         }

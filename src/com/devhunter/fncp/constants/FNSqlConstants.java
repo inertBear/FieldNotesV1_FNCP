@@ -16,13 +16,6 @@ package com.devhunter.fncp.constants;
  */
 public class FNSqlConstants {
 
-    // database table: user
-    public static final String LOGIN_TABLE = "rhl_login";
-    public static final String USER_ID_COLUMN = "rhl_login_id";
-    public static final String USER_USERNAME_COLUMN = "rhl_username";
-    public static final String USER_PASSWORD_COLUMN = "rhl_password";
-    public static final String USER_TYPE_COLUMN = "rhl_user_type";
-
     // database table: data
     public static final String DATA_TABLE = "data";
     public static final String TICKET_COLUMN = "ticketNumber";
