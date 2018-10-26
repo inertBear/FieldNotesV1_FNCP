@@ -24,14 +24,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DeleteDataPanel extends FNPanel {
-    // CRUD SEARCH PANELS
     private static FNPanel mCrudSearchPanel;
     private FNPanel mCrudSearchTextFieldPanel;
-    // Panels
     private static DeleteDataPanel sInstance;
     private FNPanel mDeleteFNDataPanel;
     private FNPanel mDeleteFNButtonPanel;
-    // TextFields
     private FNTextField mCRUDSearch;
     private FNTextField mTextDeleteDataName;
     private FNTextField mTextDeleteDataWellName;
@@ -46,19 +43,15 @@ public class DeleteDataPanel extends FNPanel {
     private FNTextField mTextDeleteDataLocation;
     private FNTextField mTextDeleteDataGPS;
     private FNTextField mTextDeleteDataBillable;
-    // Buttons
     private FNButton buttonDelete;
-    // Strings
+
     private String mFlexTicketNumber;
 
     private DeleteDataPanel() {
-        // create CRUD Search Panels
         mCrudSearchPanel = new FNPanel();
         mCrudSearchTextFieldPanel = new FNPanel();
-        // Create Panels
         mDeleteFNDataPanel = new FNPanel();
         mDeleteFNButtonPanel = new FNPanel();
-        // create TextFields
         mCRUDSearch = new FNTextField();
         mTextDeleteDataName = new FNTextField();
         mTextDeleteDataWellName = new FNTextField();
@@ -73,10 +66,9 @@ public class DeleteDataPanel extends FNPanel {
         mTextDeleteDataLocation = new FNTextField();
         mTextDeleteDataGPS = new FNTextField();
         mTextDeleteDataBillable = new FNTextField();
-        // create Buttons
         buttonDelete = new FNButton(FNConstants.BUTTON_DELETE);
-        // create Strings
         mFlexTicketNumber = "";
+
         init();
     }
 
@@ -87,16 +79,16 @@ public class DeleteDataPanel extends FNPanel {
         return sInstance;
     }
 
-    void init() {
+    private void init() {
         // CRUD Search Panel Layouts
         BorderLayout crudSearchLayout = new BorderLayout();
         mCrudSearchPanel.setLayout(crudSearchLayout);
         GridLayout crudSearchTextFieldPanelLayout = new GridLayout(0, 2);
         mCrudSearchTextFieldPanel.setLayout(crudSearchTextFieldPanelLayout);
-        // CRUD Search Labels
+
         FNLabel crudTicketLabel = new FNLabel(FNConstants.CRUD_SEARCH_TICKET_NUMBER);
-        // CRUD Search Buttons
         FNButton buttonCrudSearch = new FNButton(FNConstants.BUTTON_SEARCH);
+
         // Panels/layouts
         GridLayout deleteFNDataPanelLayout = new GridLayout(0, 2);
         mDeleteFNDataPanel.setLayout(deleteFNDataPanelLayout);
@@ -104,7 +96,6 @@ public class DeleteDataPanel extends FNPanel {
         mDeleteFNButtonPanel.setLayout(deleteFNButtonPanelLayout);
         mDeleteFNButtonPanel.setBorder(FNUtil.getInstance().getLineBorder());
 
-        // Labels
         FNLabel lblDeleteDataName = new FNLabel(FNConstants.FN_USERNAME_LABEL);
         FNLabel lblDeleteDataWellName = new FNLabel(FNConstants.FN_WELLNAME_LABEL);
         FNLabel lblDeleteDataDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
@@ -118,6 +109,7 @@ public class DeleteDataPanel extends FNPanel {
         FNLabel lblDeleteDataLocation = new FNLabel(FNConstants.FN_LOCATION_LABEL);
         FNLabel lblDeleteDataGPS = new FNLabel(FNConstants.FN_GPS_LABEL);
         FNLabel lblDeleteDataBillable = new FNLabel(FNConstants.FN_BILLING_LABEL);
+
         // Override TextField properties
         mTextDeleteDataName.setEditable(false);
         mTextDeleteDataWellName.setEditable(false);

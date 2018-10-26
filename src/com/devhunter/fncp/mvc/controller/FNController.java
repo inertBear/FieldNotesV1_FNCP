@@ -47,22 +47,6 @@ public class FNController {
     }
 
     /**
-     * Add a FieldNote
-     *
-     * @param query
-     * @return true is success, false if failure
-     */
-    protected boolean addData(String query) {
-        try {
-            mStatement.executeUpdate(query);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
      * Update a FieldNote
      *
      * @param query

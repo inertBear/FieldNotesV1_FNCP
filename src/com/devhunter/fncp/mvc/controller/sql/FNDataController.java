@@ -37,60 +37,30 @@ public class FNDataController extends FNController {
     }
 
     /**
-     * search for all FieldNotes
+     * Search for FieldNotes
      *
-     * @return ArrayList<FieldNote> fieldNotes
+     * @param username  may be empty
+     * @param dateStart may only be empty if dateEnd is also empty
+     * @param dateEnd   may only be empty if dateStart is also empty
+     * @return JSONObject that contains the search results
      */
-    public ArrayList<FieldNote> searchAllData() {
-        final String selectQuery = FNDataQueries.SELECT_DATA_QUERY;
-        return searchData(selectQuery);
-    }
 
-    /**
-     * search for all the FieldNotes with a username
-     *
-     * @param userName
-     * @return ArrayList<FieldNote> fieldNotes
-     */
-    public ArrayList<FieldNote> searchDataByUsername(String userName) {
-        final String selectQuery = SqlInterpolate.interpolate(FNDataQueries.SELECT_DATA_BY_USER_QUERY, userName);
-        return searchData(selectQuery);
-    }
+    public static JSONObject searchFieldNotes(String username, String dateStart, String dateEnd) {
+        //get productKey
+        String productKey = FNUtil.getInstance().getCurrentProductKey();
 
-    /**
-     * search for all the FieldNotes within a date range
-     *
-     * @param startDate
-     * @param endDate
-     * @return ArrayList<FieldNote> fieldNotes
-     */
-    public ArrayList<FieldNote> searchDataByDateRange(String startDate, String endDate) {
-        final String selectQuery = SqlInterpolate.interpolate(FNDataQueries.SELECT_DATA_BY_RANGE_QUERY, startDate, endDate);
-        return searchData(selectQuery);
-    }
+        // set URL for web service
+        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FN_searchNotes.php";
 
-    /**
-     * search for FieldNotes with a username within a date range
-     *
-     * @param username  username
-     * @param startDate startDate
-     * @param endDate   endDate
-     * @return ArrayList<FieldNote> fieldNotes
-     */
-    public ArrayList<FieldNote> searchDataByUserAndDateRange(String username, String startDate, String endDate) {
-        final String selectQuery = SqlInterpolate.interpolate(FNDataQueries.SELECT_DATA_BY_RANGE_AND_USER_QUERY, username, startDate, endDate);
-        return searchData(selectQuery);
-    }
+        // convert to List of params
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("userName", username));
+        params.add(new BasicNameValuePair("dateStart", dateStart));
+        params.add(new BasicNameValuePair("dateEnd", dateEnd));
+        params.add(new BasicNameValuePair("customerKey", productKey));
 
-    /**
-     * search for a FieldNote with a Ticket Number
-     *
-     * @param ticketNumber
-     * @return FieldNote fieldNote
-     */
-    public FieldNote searchDataByTicketNumber(String ticketNumber) {
-        final String selectQuery = SqlInterpolate.interpolate(FNDataQueries.SELECT_DATA_BY_TICKET_QUERY, ticketNumber);
-        return searchData(selectQuery).get(0);
+        // make HTTP connection
+        return mJsonParser.createHttpRequest(postUrl, "POST", params);
     }
 
     /**
@@ -104,7 +74,7 @@ public class FNDataController extends FNController {
         String productKey = FNUtil.getInstance().getCurrentProductKey();
 
         // set URL for web service
-        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FNA_addNote.php";
+        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FNA_search.php";
 
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
@@ -125,6 +95,17 @@ public class FNDataController extends FNController {
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(postUrl, "POST", params);
+    }
+
+    /**
+     * search for a FieldNote with a Ticket Number
+     *
+     * @param ticketNumber
+     * @return FieldNote fieldNote
+     */
+    public FieldNote searchDataByTicketNumber(String ticketNumber) {
+        final String selectQuery = SqlInterpolate.interpolate(FNDataQueries.SELECT_DATA_BY_TICKET_QUERY, ticketNumber);
+        return searchData(selectQuery).get(0);
     }
 
     /**

@@ -10,7 +10,7 @@ package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
 import com.devhunter.fncp.mvc.controller.sql.FNDataController;
-import com.devhunter.fncp.mvc.model.*;
+import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
@@ -21,6 +21,8 @@ import com.devhunter.fncp.utilities.FNUtil;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,36 +38,26 @@ import java.util.Properties;
 
 public class SearchDataPanel extends FNPanel {
 
-    // Panels
     private static SearchDataPanel sInstance;
     private static FNPanel mSearchDataPanel;
     private static FNPanel mSearchTextFieldPanel;
-    // TextFields
     private FNTextField mTextDataUsername;
-    // TextArea - searchData results
     private JTextArea mSearchDataOutput;
-    // DatePicker
     private UtilDateModel mSearchStartModel;
     private Properties mSearchStartProperties;
     private JDatePickerImpl mDatePickerSearchStart;
     private UtilDateModel mSearchEndModel;
     private Properties mSearchEndProperties;
     private JDatePickerImpl mDatePickerSearchEnd;
-    // Buttons
     private FNButton mButtonSearch;
     private FNButton mButtonExport;
-    // searchData results
     private ArrayList<FieldNote> mFieldNotes;
 
     private SearchDataPanel() {
-        // create Panels
         mSearchDataPanel = new FNPanel();
         mSearchTextFieldPanel = new FNPanel();
-        // create TextFields
         mTextDataUsername = new FNTextField();
-        // create TextAreas
         mSearchDataOutput = new JTextArea(28, 32);
-        // create DatePickers
         mSearchStartModel = new UtilDateModel();
         mSearchStartProperties = new Properties();
         JDatePanelImpl mDatePanelSearchStart = new JDatePanelImpl(mSearchStartModel, mSearchStartProperties);
@@ -74,11 +66,10 @@ public class SearchDataPanel extends FNPanel {
         mSearchEndProperties = new Properties();
         JDatePanelImpl mDatePanelSearchEnd = new JDatePanelImpl(mSearchEndModel, mSearchEndProperties);
         mDatePickerSearchEnd = new JDatePickerImpl(mDatePanelSearchEnd, new DateLabelFormatter());
-        // create Buttons
         mButtonSearch = new FNButton(FNConstants.BUTTON_SEARCH);
         mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
-        //searchData results
         mFieldNotes = new ArrayList<>();
+
         init();
     }
 
@@ -90,19 +81,19 @@ public class SearchDataPanel extends FNPanel {
     }
 
     private void init() {
-        // Panel Layouts
+
         BorderLayout searchFNPanelLayout = new BorderLayout();
         mSearchDataPanel.setLayout(searchFNPanelLayout);
         GridLayout searchFNTextFieldPanelLayout = new GridLayout(0, 2);
         mSearchTextFieldPanel.setLayout(searchFNTextFieldPanelLayout);
-        // Labels
+
         FNLabel lblUsernameSearch = new FNLabel(FNConstants.FN_USERNAME_LABEL);
         FNLabel lblDataSearchDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
         FNLabel lblDataSearchDateEnd = new FNLabel(FNConstants.FN_DATE_END_LABEL);
-        // ScrollPane/TextArea
+
         JScrollPane dataSearchScroll = new JScrollPane(mSearchDataOutput);
         mSearchDataOutput.setEditable(false);
-        // Set DatePicker Properties
+
         mSearchStartProperties.put("text.today", "Today");
         mSearchStartProperties.put("text.month", "Month");
         mSearchStartProperties.put("text.year", "Year");
@@ -110,7 +101,6 @@ public class SearchDataPanel extends FNPanel {
         mSearchEndProperties.put("text.month", "Month");
         mSearchEndProperties.put("text.year", "Year");
 
-        // NO-ADMIN USERS: can only searchData their own data
         if (!FNUtil.getInstance().hasAdminAccess()) {
             mTextDataUsername.setText(FNUtil.getInstance().getCurrentUsername());
             mTextDataUsername.setEditable(false);
@@ -126,6 +116,7 @@ public class SearchDataPanel extends FNPanel {
         mSearchTextFieldPanel.add(mDatePickerSearchEnd);
         mSearchTextFieldPanel.add(new FNLabel());
         mSearchTextFieldPanel.add(mButtonSearch);
+
         // Add Views to Main Panel
         mSearchDataPanel.add(mSearchTextFieldPanel, BorderLayout.NORTH);
         mSearchDataPanel.add(dataSearchScroll, BorderLayout.CENTER);
@@ -137,65 +128,14 @@ public class SearchDataPanel extends FNPanel {
                 mSearchDataOutput.setVisible(true);
                 mSearchDataOutput.setText(null);
 
-                FNDataController conn = new FNDataController();
+                String dateStart = mDatePickerSearchStart.getJFormattedTextField().getText();
+                String dateEnd = mDatePickerSearchEnd.getJFormattedTextField().getText();
+                String username = mTextDataUsername.getText();
 
-                // if start date but no end, or end date but no start
-                if (mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty() && !mDatePickerSearchEnd.getJFormattedTextField().getText().isEmpty()
-                        || (!mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty() && mDatePickerSearchEnd.getJFormattedTextField().getText().isEmpty())) {
-                    // do nothing
-                    // if both are empty
-                } else if (mTextDataUsername.getText().trim().isEmpty()
-                        && mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
-                    // searchData all names and dates
-                    mFieldNotes = conn.searchAllData();
-                    FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
-
-                    // if user searchData bar has a name, but no dates are selected
-                } else if (!mTextDataUsername.getText().trim().isEmpty() && mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
-                    // searchData specific name and all dates
-                    String username = mTextDataUsername.getText();
-                    mFieldNotes = conn.searchDataByUsername(username);
-                    FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
-
-                    // if no user, but dates are selected
-                } else if (mTextDataUsername.getText().trim().isEmpty() && !mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
-                    // searchData by selected dates, independent of username
-                    mSearchDataOutput.setEnabled(true);
-                    mSearchDataOutput.setVisible(true);
-                    mSearchDataOutput.setText(null);
-
-                    if (mDatePickerSearchEnd.getJFormattedTextField().getText().trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a date range");
-                    } else {
-                        try {
-                            String startDate = mDatePickerSearchStart.getJFormattedTextField().getText();
-                            String endDate = mDatePickerSearchEnd.getJFormattedTextField().getText();
-
-                            mFieldNotes = conn.searchDataByDateRange(startDate, endDate);
-                            FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
-
-                        } catch (StringIndexOutOfBoundsException e1) {
-                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a valid date range");
-                        }
-                    }
-                    //if there is a user AND a date range
-                } else if (!mTextDataUsername.getText().trim().isEmpty() && !mDatePickerSearchStart.getJFormattedTextField().getText().isEmpty()) {
-                    // searchData by user name and date
-                    if (mDatePickerSearchStart.getJFormattedTextField().getText().trim().isEmpty() || mDatePickerSearchEnd.getJFormattedTextField().getText().trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a date range");
-                    } else {
-                        try {
-                            String username = mTextDataUsername.getText();
-                            String startDate = mDatePickerSearchStart.getJFormattedTextField().getText();
-                            String endDate = mDatePickerSearchEnd.getJFormattedTextField().getText();
-
-                            mFieldNotes = conn.searchDataByUserAndDateRange(username, startDate, endDate);
-                            FNUtil.printFieldNotesToJTextArea(mFieldNotes, mSearchDataOutput);
-
-                        } catch (StringIndexOutOfBoundsException e1) {
-                            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a valid date range");
-                        }
-                    }
+                if (dateStart.isEmpty() && !dateEnd.isEmpty() || !dateStart.isEmpty() && dateEnd.isEmpty()) {
+                    JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Please enter a date range");
+                } else {
+                    searchFieldNotes(username, dateStart, dateEnd);
                 }
             }
         });
@@ -220,6 +160,55 @@ public class SearchDataPanel extends FNPanel {
 
         FNControlPanel.getFieldNotesFrame().repaint();
         FNControlPanel.getFieldNotesFrame().revalidate();
+    }
+
+    private void searchFieldNotes(String username, String dateStart, String dateEnd) {
+        JSONObject searchFieldNoteResponse = FNDataController.searchFieldNotes(username, dateStart, dateEnd);
+        String status = searchFieldNoteResponse.getString("status");
+        String messageString = searchFieldNoteResponse.getString("message");
+        JSONArray messageArray = new JSONArray(messageString);
+
+        if (status.equals("success")) {
+            printJsonObject(messageArray, mSearchDataOutput);
+        } else {
+            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);
+        }
+    }
+
+    private void printJsonObject(JSONArray message, JTextArea areaToPrintOn) {
+        for (int i = 0; i < message.length(); i++) {
+            JSONObject jsonObject = message.getJSONObject(i);
+
+            String ticketNumber = jsonObject.getString("ticketNumber");
+            String username = jsonObject.getString("userName");
+            String wellname = jsonObject.getString("wellName");
+            String timeStart = jsonObject.getString("timeStart");
+            String timeEnd = jsonObject.getString("timeEnd");
+            String dateStart = jsonObject.getString("dateStart");
+            String dateEnd = jsonObject.getString("dateEnd");
+            String mileageStart = jsonObject.getString("mileageStart");
+            String mileageEnd = jsonObject.getString("mileageEnd");
+            String description = jsonObject.getString("description");
+            String projectNumber = jsonObject.getString("projectNumber");
+            String location = jsonObject.getString("location");
+            String billing = jsonObject.getString("billing");
+            String gps = jsonObject.getString("gps");
+
+            areaToPrintOn.append("TicketNumber: " + ticketNumber + "\n");
+            areaToPrintOn.append("Username: " + username + "\n");
+            areaToPrintOn.append("Wellname: " + wellname + "\n");
+            areaToPrintOn.append("Time Start: " + timeStart + "\n");
+            areaToPrintOn.append("Time End: " + timeEnd + "\n");
+            areaToPrintOn.append("Date Start: " + dateStart + "\n");
+            areaToPrintOn.append("Date End: " + dateEnd + "\n");
+            areaToPrintOn.append("Mileage Start: " + mileageStart + "\n");
+            areaToPrintOn.append("Mileage End: " + mileageEnd + "\n");
+            areaToPrintOn.append("Description: " + description + "\n");
+            areaToPrintOn.append("Project Number: " + projectNumber + "\n");
+            areaToPrintOn.append("Location: " + location + "\n");
+            areaToPrintOn.append("Billing: " + billing + "\n");
+            areaToPrintOn.append("GPS: " + gps + "\n\n");
+        }
     }
 
     public static JPanel getView() {
