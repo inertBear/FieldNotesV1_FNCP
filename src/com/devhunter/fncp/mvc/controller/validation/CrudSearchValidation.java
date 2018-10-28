@@ -7,10 +7,9 @@
 
 package com.devhunter.fncp.mvc.controller.validation;
 
-import javax.swing.JOptionPane;
-
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
+import javax.swing.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 

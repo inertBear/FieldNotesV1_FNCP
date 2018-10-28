@@ -10,14 +10,10 @@ package com.devhunter.fncp.constants;
 import java.io.File;
 
 /**
- * This class attempts to encapsulate everything that aligns this Version to FieldNotes with a specific entity.
- * The idea is: is FieldNotes needs to be customized for a new entity, the only changes that will need to be made
- * will be in these "CONSTANT" classes.
- * <p>
- * This class specifically holds the database connection data and the approved drop down values for that entity.
+ * constant values relevant to FNCP
  */
 
-public class FNConstants {
+public class FNCPConstants {
     // approved work locations
     public static final String[] APPROVED_BILLING_LOCATIONS = {"", "Office", "Field", "Shop"};
     // approved billing codes
@@ -60,6 +56,9 @@ public class FNConstants {
     public static final String USER_PASSWORD_LABEL = "Password:";
     public static final String USER_ID_LABEL = "ID:";
     public static final String USER_USER_TYPE_LABEL = "User Type:";
+    public static final String ADMIN_USER = "admin";
+    public static final String REGULAR_USER = "user";
+    public static final String TEST_USER = "test";
     // FieldNote field strings
     public static final String FN_TICKET_NUMBER_LABEL = "Ticket Number:";
     public static final String FN_USERNAME_LABEL = "Name:";
@@ -85,6 +84,8 @@ public class FNConstants {
     public static final String BUTTON_ADD = "Add";
     public static final String BUTTON_REGISTER = "Register";
     public static final String BUTTON_EXPORT = "Export to Excel";
+    public static final String BUTTON_CANCEL = "Cancel";
+    public static final String BUTTON_CLOSE = "Close";
     // Label Strings
     public static final String AS_USER_TYPE_USER_LABEL = "as User:";
     public static final String AS_USER_TYPE_TEST_LABEL = "as Test:";

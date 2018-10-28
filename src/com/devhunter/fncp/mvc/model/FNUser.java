@@ -7,9 +7,7 @@ package com.devhunter.fncp.mvc.model;
 
 public class FNUser {
 
-    //TODO: [FNCP-022] create an Entity factory to create the entity type by the String "type" passed in
-
-    private int mId = 0;
+    private int mId;
     private String mType;
     private String mUsername;
     //TODO: [FNCP-022] convert this to Char array
@@ -57,42 +55,38 @@ public class FNUser {
     /**
      * FNEntityBuilder
      */
-    public static class FNEntityBuilder {
-        private int mId = 0;
-        private String mType = "UNKNOWN";
-        private String mUsername = "FNUSER";
+    public static class FNUserBuilder {
+        private int mId;
+        private String mType;
+        private String mUsername;
         //TODO: [FNCP-022] convert this to Char array
-        private String mPassword = "FNPASSWORD";
+        private String mPassword;
 
-        public FNEntityBuilder() {
+        public FNUserBuilder() {
         }
 
-        public FNEntityBuilder setId(int id) {
+        public FNUserBuilder setId(int id) {
             this.mId = id;
             return this;
         }
 
-        public FNEntityBuilder setUsername(String username) {
+        public FNUserBuilder setUsername(String username) {
             this.mUsername = username;
             return this;
         }
 
-        public FNEntityBuilder setPassword(String password) {
+        public FNUserBuilder setPassword(String password) {
             this.mPassword = password;
             return this;
         }
 
-        public FNEntityBuilder setType(String type) {
+        public FNUserBuilder setType(String type) {
             this.mType = type;
             return this;
         }
 
         public FNUser build() {
             return new FNUser(mId, mUsername, mPassword, mType);
-        }
-
-        public FNUser buildEmptyFNEntity() {
-            return new FNUser(0, null, null, null);
         }
     }
 }

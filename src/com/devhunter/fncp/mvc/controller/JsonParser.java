@@ -22,11 +22,11 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
-public class JsonParser {
+class JsonParser {
 
-    public JsonParser() {
+    JsonParser() {
     }
 
     JSONObject createHttpRequest(String url, String method, List<NameValuePair> params) {

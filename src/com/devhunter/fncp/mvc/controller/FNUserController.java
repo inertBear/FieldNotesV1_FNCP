@@ -15,8 +15,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
-import static com.devhunter.fncp.constants.FNUserConstants.ADMIN_USER;
+import static com.devhunter.fncp.constants.FNCPConstants.ADMIN_USER;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 /**
  * This class holds the methods for all the user changes from and into the
@@ -32,7 +32,6 @@ public class FNUserController {
     private static JsonParser mJsonParser = new JsonParser();
 
     public FNUserController() {
-        super();
     }
 
     /**

@@ -8,13 +8,9 @@
 package com.devhunter.fncp.constants;
 
 /**
- * This class attempts to encapsulate everything that aligns this Version to FieldNotes with a specific entity.
- * The idea is: if FieldNotes needs to be customized for a new entity, the only changes that will need to be made
- * will be in these "CONSTANT" classes.
- * <p>
- * This class specifically holds the entity-specific database table names and columns..
+ * constant values common to all FieldNotes software
  */
-public class FNSqlConstants {
+public class FNPConstants {
 
     // JSON Data tags
     public static final String PRODUCT_KEY_TAG = "customerKey";
@@ -47,32 +43,26 @@ public class FNSqlConstants {
     public static final String RESPONSE_MESSAGE_TAG = "message";
 
     // Web Service URLs
-    public static final String REGISTER_URL = "http://www.fieldnotesfn.com/FNA_test/FNA_register.php";
-    public static final String LOGIN_URL = "http://www.fieldnotesfn.com/FNA_test/FNA_login.php";
-    public static final String CONFIRM_ADMIN_TYPE_URL = "http://www.fieldnotesfn.com/FNA_test/FN_confirmAdmin.php";
-    public static final String ADD_NOTE_URL = "http://www.fieldnotesfn.com/FNA_test/FNA_addNote.php";
-    public static final String SEARCH_NOTES_URL = "http://www.fieldnotesfn.com/FNA_test/FN_searchNotes.php";
-    public static final String UPDATE_NOTE_URL = "http://www.fieldnotesfn.com/FNA_test/FNA_updateNote.php";
-    public static final String DELETE_NOTE_URL = "http://www.fieldnotesfn.com/FNA_test/FN_deleteNote.php";
-    public static final String ADD_USER_URL = "http://www.fieldnotesfn.com/FNA_test/FN_addUser.php";
-    public static final String SEARCH_USERS_URL = "http://www.fieldnotesfn.com/FNA_test/FN_searchUsers.php";
-    public static final String UPDATE_PASSWORD_URL = "http://www.fieldnotesfn.com/FNA_test/FN_changePassword.php";
-    public static final String DELETE_USER_URL = "http://www.fieldnotesfn.com/FNA_test/FN_deleteUser.php";
+    public static final String REGISTER_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_register.php";
+    public static final String LOGIN_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_login.php";
+    public static final String CONFIRM_ADMIN_TYPE_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_confirmAdmin.php";
+    public static final String ADD_NOTE_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_addNote.php";
+    public static final String SEARCH_NOTES_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_searchNotes.php";
+    public static final String UPDATE_NOTE_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_updateNote.php";
+    public static final String DELETE_NOTE_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_deleteNote.php";
+    public static final String ADD_USER_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_addUser.php";
+    public static final String SEARCH_USERS_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_searchUsers.php";
+    public static final String UPDATE_PASSWORD_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_changePassword.php";
+    public static final String DELETE_USER_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_deleteUser.php";
+    public static final String SEARCH_BILLING_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_searchBilling.php";
 
     // HTTP Request Methods
     public static final String HTTP_REQUEST_METHOD_POST = "POST";
     public static final String HTTP_REQUEST_METHOD_GET = "GET";
 
-    // Database tables
-    public static final String USER_TABLE = "User";
-    public static final String DATA_TABLE = "Data";
-
     // Database table: state column
-    public static final String BILLING_STATE_IS_NULL = BILLING_STATE_TAG + " IS NULL";
     public static final String BILLING_STATE_NOT_SET = "not set";
     public static final String BILLING_STATE_CREATED = "created";
     public static final String BILLING_STATE_BILLED = "billed";
     public static final String BILLING_STATE_COMPLETE = "complete";
-
-    public static final String IS_BILLABLE = "Billable";
 }

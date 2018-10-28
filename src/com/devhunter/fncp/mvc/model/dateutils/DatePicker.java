@@ -305,7 +305,7 @@ public class DatePicker extends JPanel {
 		for (c.gridy = 2; c.gridy < 8; c.gridy++) {
 			for (c.gridx = 0; c.gridx < 7; c.gridx++) {
 				JButton dayButton;
-				// System.out.print("Draw month: " + draw.get(Calendar.MONTH));
+				// System.out.print("Draw month: " + drawPanel.get(Calendar.MONTH));
 				if (draw.get(Calendar.MONTH) == monthInt) {
 					String dayString = dayName.format(draw.getTime());
 					if (draw.get(Calendar.DAY_OF_MONTH) < 10)
@@ -316,7 +316,7 @@ public class DatePicker extends JPanel {
 					dayButton.setEnabled(false);
 				}
 				// System.out.println(", day: " +
-				// dayName.format(draw.getTime()));
+				// dayName.format(drawPanel.getTime()));
 				x.add(dayButton, c);
 				Color color = dayButton.getBackground();
 				if ((draw.get(Calendar.DAY_OF_MONTH) == getDay()) && (draw.get(Calendar.MONTH) == monthInt)) {
@@ -337,7 +337,7 @@ public class DatePicker extends JPanel {
 				});
 				draw.add(Calendar.DATE, +1);
 			}
-			// if (draw.get(Calendar.MONTH) != monthInt) break;
+			// if (drawPanel.get(Calendar.MONTH) != monthInt) break;
 		}
 		return x;
 	}

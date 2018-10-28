@@ -7,9 +7,9 @@
 
 package com.devhunter.fncp.mvc.model.listview;
 
-import com.devhunter.fncp.constants.FNSqlConstants;
+import com.devhunter.fncp.constants.FNPConstants;
 import com.devhunter.fncp.mvc.controller.FNDataController;
-import com.devhunter.fncp.mvc.controller.billing.statemachine.FNBillingStateMachine;
+import com.devhunter.fncp.mvc.controller.billingStateMachine.FNBillingStateMachine;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.utilities.FNUtil;
 import javafx.application.Platform;
@@ -27,8 +27,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.util.ArrayList;
+import static com.devhunter.fncp.constants.FNCPConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 /**
  * embedded Java FX ListView in a Swing application. All calls to this ListView must be done within a <i>Platform.runLAter(...)</i>
@@ -65,52 +68,67 @@ public class FNListView extends JFXPanel {
             public void handle(MouseEvent event) {
                 //get FieldNote by ticket number
                 String ticketNumber = mListView.getSelectionModel().getSelectedItem().getTicketNumber();
-                FNDataController con = new FNDataController();
-                final FieldNote fieldNote = con.searchDataByTicketNumber(ticketNumber);
 
-                //create Dialog
-                Stage dialogStage = new Stage();
-                dialogStage.setTitle("Ticket Number: " + ticketNumber);
-                dialogStage.initModality(Modality.WINDOW_MODAL);
+                JSONObject searchResponse = FNDataController.searchFieldNotes(null, null, null, ticketNumber);
+                String status = searchResponse.getString(RESPONSE_STATUS_TAG);
+                String messageString = searchResponse.getString(RESPONSE_MESSAGE_TAG);
 
-                //create the "Advance State" button
-                Button btnChangeState = new Button(FNBillingStateMachine.getInstance().getNextState(fieldNote.getBillingState()).toUpperCase());
-                btnChangeState.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        FNBillingStateMachine.getInstance().advanceState(fieldNote);
-                        dialogStage.close();
-                        removeItem(mListView.getSelectionModel().getSelectedItem());
+                if (status.equals(RESPONSE_STATUS_SUCCESS)) {
+                    // get the result
+                    JSONArray messageArray = new JSONArray(messageString);
+                    JSONObject message = messageArray.getJSONObject(0);
+
+                    FieldNote fieldNote = FNUtil.buildFieldNote(message);
+
+                    //create Dialog
+                    Stage dialogStage = new Stage();
+                    dialogStage.setTitle(FN_TICKET_NUMBER_LABEL + " " + ticketNumber);
+                    dialogStage.initModality(Modality.WINDOW_MODAL);
+
+                    //create the "Advance State" button
+                    Button btnChangeState = new Button(FNBillingStateMachine.getInstance()
+                            .getNextState(fieldNote.getBillingState()));
+
+                    btnChangeState.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            // advance the state of the FieldNote
+                            FNBillingStateMachine.getInstance().advanceState(fieldNote);
+                            dialogStage.close();
+                            removeItem(mListView.getSelectionModel().getSelectedItem());
+                        }
+                    });
+
+
+                    //Create the "Cancel/Close" button
+                    Button btnCancel;
+                    if (fieldNote.getBillingState().equals(FNPConstants.BILLING_STATE_COMPLETE)) {
+                        btnCancel = new Button(BUTTON_CANCEL);
+                    } else {
+                        btnCancel = new Button(BUTTON_CLOSE);
                     }
-                });
+                    btnCancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            dialogStage.close();
+                        }
+                    });
 
-                //Create the "Cancel/Close" button
-                Button btnCancel;
-                if (fieldNote.getBillingState().equals(FNSqlConstants.BILLING_STATE_COMPLETE)) {
-                    btnCancel = new Button("Cancel");
-                } else {
-                    btnCancel = new Button("Close");
-                }
-                btnCancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        dialogStage.close();
+
+                    //create Vbox  NOTE:(a Vbox is just a simple, single vertical column, this may need to be refined)
+                    VBox vbox;
+                    if (!fieldNote.getBillingState().equals(FNPConstants.BILLING_STATE_COMPLETE)) {
+                        vbox = new VBox(5.0, new Text(FNUtil.getFieldNoteAsString(fieldNote)), btnChangeState, btnCancel);
+                    } else {
+                        vbox = new VBox(5.0, new Text(FNUtil.getFieldNoteAsString(fieldNote)), btnCancel);
                     }
-                });
+                    vbox.setAlignment(Pos.CENTER);
+                    vbox.setPadding(new Insets(15));
 
-                //create Vbox  NOTE:(a Vbox is just a simple, single vertical column, this may need to be refined)
-                VBox vbox;
-                if (!fieldNote.getBillingState().equals(FNSqlConstants.BILLING_STATE_COMPLETE)) {
-                    vbox = new VBox(5.0, new Text(FNUtil.getFieldNoteAsString(fieldNote)), btnChangeState, btnCancel);
-                } else {
-                    vbox = new VBox(5.0, new Text(FNUtil.getFieldNoteAsString(fieldNote)), btnCancel);
+                    //set the scene to the dialog
+                    dialogStage.setScene(new Scene(vbox));
+                    dialogStage.show();
                 }
-                vbox.setAlignment(Pos.CENTER);
-                vbox.setPadding(new Insets(15));
-
-                //set the scene to the dialog
-                dialogStage.setScene(new Scene(vbox));
-                dialogStage.show();
             }
         });
 
@@ -123,25 +141,25 @@ public class FNListView extends JFXPanel {
                 if (empty || preview == null || preview.getTicketNumber() == null) {
                     setText(null);
                 } else {
-                    setText("Ticket Number: " + preview.getTicketNumber() + "   ||   Project: " + preview.getProject());
+                    setText(FN_TICKET_NUMBER_LABEL + " " + preview.getTicketNumber() + "   ||   " +
+                            FN_PROJECT_LABEL + " " + preview.getProject());
                 }
             }
         });
     }
 
     /**
-     * Add the items that will be displayed in the ListView
+     * Add a fieldnote to the ListView
      *
-     * @param fieldNotes
+     * @param fieldNote to add to ListView
      */
-    public void addItems(ArrayList<FieldNote> fieldNotes) {
+    public void addItem(FieldNote fieldNote) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                for (FieldNote each : fieldNotes) {
-                    FNDataPreview listItem = new FNDataPreview(each);
-                    mListView.getItems().add(listItem);
-                }
+                FNDataPreview listItem = new FNDataPreview(fieldNote);
+                mListView.getItems().add(listItem);
+
             }
         });
     }

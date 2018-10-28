@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.controller.FNDataController;
 import com.devhunter.fncp.mvc.controller.validation.CrudSearchValidation;
 import com.devhunter.fncp.mvc.controller.validation.FNValidation;
@@ -39,7 +39,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Properties;
 
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 public class EditDataPanel extends FNPanel {
 
@@ -94,7 +94,7 @@ public class EditDataPanel extends FNPanel {
         mEditTicketEndProperties = new Properties();
         JDatePanelImpl mEditTicketEndDatePanel = new JDatePanelImpl(mEditTicketEndModel, mEditTicketEndProperties);
         mEditTicketEndDatePicker = new JDatePickerImpl(mEditTicketEndDatePanel, new DateLabelFormatter());
-        buttonEdit = new FNButton(FNConstants.BUTTON_UPDATE);
+        buttonEdit = new FNButton(FNCPConstants.BUTTON_UPDATE);
         mEditTicketNumberString = "";
 
         init();
@@ -114,27 +114,27 @@ public class EditDataPanel extends FNPanel {
         GridLayout crudSearchTextFieldPanelLayout = new GridLayout(0, 2);
         mCrudSearchTextFieldPanel.setLayout(crudSearchTextFieldPanelLayout);
 
-        FNLabel crudTicketLabel = new FNLabel(FNConstants.CRUD_SEARCH_TICKET_NUMBER);
-        FNButton buttonCrudSearch = new FNButton(FNConstants.BUTTON_SEARCH);
+        FNLabel crudTicketLabel = new FNLabel(FNCPConstants.CRUD_SEARCH_TICKET_NUMBER);
+        FNButton buttonCrudSearch = new FNButton(FNCPConstants.BUTTON_SEARCH);
 
         GridLayout editNDataPanelLayout = new GridLayout(0, 2);
         mEditFNDataPanel.setLayout(editNDataPanelLayout);
         FlowLayout editDataPanelLayout = new FlowLayout();
         mEditFNButtonPanel.setLayout(editDataPanelLayout);
 
-        FNLabel lblEditDataName = new FNLabel(FNConstants.FN_USERNAME_LABEL);
-        FNLabel lblEditDataWellName = new FNLabel(FNConstants.FN_WELLNAME_LABEL);
-        FNLabel lblEditDataDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
-        FNLabel lblEditDataTimeStart = new FNLabel(FNConstants.FN_TIME_START_LABEL);
-        FNLabel lblEditDataMileageStart = new FNLabel(FNConstants.FN_MILEAGE_START_LABEL);
-        FNLabel lblEditDataDescription = new FNLabel(FNConstants.FN_DESCRIPTION_LABEL);
-        FNLabel lblEditDataMileageEnd = new FNLabel(FNConstants.FN_MILEAGE_END_LABEL);
-        FNLabel lblEditDataDateEnd = new FNLabel(FNConstants.FN_DATE_END_LABEL);
-        FNLabel lblEditDataTimeEnd = new FNLabel(FNConstants.FN_TIME_END_LABEL);
-        FNLabel lblEditDataProject = new FNLabel(FNConstants.FN_PROJECT_LABEL);
-        FNLabel lblEditDataLocation = new FNLabel(FNConstants.FN_LOCATION_LABEL);
-        FNLabel lblEditDataGPS = new FNLabel(FNConstants.FN_GPS_LABEL);
-        FNLabel lblEditDataBillable = new FNLabel(FNConstants.FN_BILLING_LABEL);
+        FNLabel lblEditDataName = new FNLabel(FNCPConstants.FN_USERNAME_LABEL);
+        FNLabel lblEditDataWellName = new FNLabel(FNCPConstants.FN_WELLNAME_LABEL);
+        FNLabel lblEditDataDateStart = new FNLabel(FNCPConstants.FN_DATE_START_LABEL);
+        FNLabel lblEditDataTimeStart = new FNLabel(FNCPConstants.FN_TIME_START_LABEL);
+        FNLabel lblEditDataMileageStart = new FNLabel(FNCPConstants.FN_MILEAGE_START_LABEL);
+        FNLabel lblEditDataDescription = new FNLabel(FNCPConstants.FN_DESCRIPTION_LABEL);
+        FNLabel lblEditDataMileageEnd = new FNLabel(FNCPConstants.FN_MILEAGE_END_LABEL);
+        FNLabel lblEditDataDateEnd = new FNLabel(FNCPConstants.FN_DATE_END_LABEL);
+        FNLabel lblEditDataTimeEnd = new FNLabel(FNCPConstants.FN_TIME_END_LABEL);
+        FNLabel lblEditDataProject = new FNLabel(FNCPConstants.FN_PROJECT_LABEL);
+        FNLabel lblEditDataLocation = new FNLabel(FNCPConstants.FN_LOCATION_LABEL);
+        FNLabel lblEditDataGPS = new FNLabel(FNCPConstants.FN_GPS_LABEL);
+        FNLabel lblEditDataBillable = new FNLabel(FNCPConstants.FN_BILLING_LABEL);
 
         // Customize Spinner properties
         mSpinnerEditDataLocation.setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
@@ -302,6 +302,12 @@ public class EditDataPanel extends FNPanel {
         return value.substring(0, 1).toUpperCase() + value.substring(1);
     }
 
+    /**
+     * parse time string for entry into TimePicker
+     *
+     * @param string
+     * @return
+     */
     private Time parseTime(String string) {
         DateFormat formatter = new SimpleDateFormat("HH:mm");
         Time timeValue = null;
@@ -311,18 +317,6 @@ public class EditDataPanel extends FNPanel {
             e.printStackTrace();
         }
         return timeValue;
-    }
-
-    public Date parseDate(String dateString) {
-        //parse date
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("yyyy/MM/dd").parse(dateString);
-        } catch (ParseException e1) {
-            // bad date format in current fieldnote
-            e1.printStackTrace();
-        }
-        return date;
     }
 
     public static JPanel getView() {

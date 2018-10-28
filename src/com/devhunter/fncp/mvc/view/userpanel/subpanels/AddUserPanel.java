@@ -5,8 +5,7 @@
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.constants.FNUserConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
@@ -17,8 +16,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.devhunter.fncp.constants.FNConstants.*;
-import static com.devhunter.fncp.constants.FNSqlConstants.RESPONSE_MESSAGE_TAG;
+import static com.devhunter.fncp.constants.FNCPConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.RESPONSE_MESSAGE_TAG;
 
 public class AddUserPanel extends FNPanel {
 
@@ -39,7 +38,7 @@ public class AddUserPanel extends FNPanel {
         mCheckBoxPanel = new FNPanel();
         mAddUser = new FNTextField();
         mAddPassword = new FNTextField();
-        mButtonAdd = new FNButton(FNConstants.BUTTON_ADD);
+        mButtonAdd = new FNButton(FNCPConstants.BUTTON_ADD);
         mAdminCheckbox = new FNCheckbox();
         mUserCheckbox = new FNCheckbox();
         mTestCheckbox = new FNCheckbox();
@@ -58,8 +57,8 @@ public class AddUserPanel extends FNPanel {
         BorderLayout addUserLayout = new BorderLayout();
         mAddUserPanel.setLayout(addUserLayout);
 
-        FNLabel addUserLbl = new FNLabel(FNConstants.USER_NEW_USERNAME_LABEL);
-        FNLabel addPassLbl = new FNLabel(FNConstants.USER_NEW_PASSWORD_LABEL);
+        FNLabel addUserLbl = new FNLabel(FNCPConstants.USER_NEW_USERNAME_LABEL);
+        FNLabel addPassLbl = new FNLabel(FNCPConstants.USER_NEW_PASSWORD_LABEL);
 
         ButtonGroup userButtonGroup = new ButtonGroup();
         userButtonGroup.add(mUserCheckbox);
@@ -173,11 +172,11 @@ public class AddUserPanel extends FNPanel {
      */
     private String getSelectedUserType() {
         if (mAdminCheckbox.isSelected()) {
-            return FNUserConstants.ADMIN_USER;
+            return ADMIN_USER;
         } else if (mTestCheckbox.isSelected()) {
-            return FNUserConstants.TEST_USER;
+            return TEST_USER;
         } else {
-            return FNUserConstants.REGULAR_USER;
+            return REGULAR_USER;
         }
     }
 

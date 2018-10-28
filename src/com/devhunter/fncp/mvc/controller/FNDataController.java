@@ -7,9 +7,8 @@
 
 package com.devhunter.fncp.mvc.controller;
 
-import com.devhunter.fncp.constants.queries.FNDataQueries;
+import com.devhunter.fncp.mvc.controller.billingStateMachine.BillingState;
 import com.devhunter.fncp.mvc.model.FieldNote;
-import com.devhunter.fncp.utilities.SqlInterpolate;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -17,7 +16,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 /**
  * This class holds the methods for all the data changes from and into the
@@ -27,23 +26,11 @@ import static com.devhunter.fncp.constants.FNSqlConstants.*;
  * NOTE: The methods housed here were only intended to relate
  * to the actual storing, alteration, and retrieving of FieldNote data.
  */
-public class FNDataController extends FNController {
+public class FNDataController {
 
     private static JsonParser mJsonParser = new JsonParser();
 
     public FNDataController() {
-        super();
-    }
-
-    /**
-     * search for a FieldNote with a Ticket Number
-     *
-     * @param ticketNumber
-     * @return FieldNote fieldNote
-     */
-    public FieldNote searchDataByTicketNumber(String ticketNumber) {
-        final String selectQuery = SqlInterpolate.interpolate(FNDataQueries.SELECT_DATA_BY_TICKET_QUERY, ticketNumber);
-        return searchData(selectQuery).get(0);
     }
 
     /**
@@ -65,6 +52,31 @@ public class FNDataController extends FNController {
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(SEARCH_NOTES_URL, HTTP_REQUEST_METHOD_POST, params);
+    }
+
+    /**
+     * Search for FieldNotes by billing state
+     *
+     * @param state         to search for
+     * @param projectNumber to search for, can be null. results in searching all Projects
+     * @param username      to search for, can be null. results in searching ALL users
+     * @param dateStart     to search for, can be null if dateEnd = null.
+     * @param dateEnd       to search for, can be null if dateStart = null.
+     *                      <p>
+     *                      NOTE: if both dateStart and dateEnd are null, results in search all dates
+     * @return JSONObject with search results
+     */
+    public static JSONObject searchFieldNotes(BillingState state, String projectNumber, String username, String dateStart, String dateEnd) {
+        // convert to List of params
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair(BILLING_STATE_TAG, state.getState()));
+        params.add(new BasicNameValuePair(USERNAME_TAG, username));
+        params.add(new BasicNameValuePair(PROJECT_NUMBER_TAG, projectNumber));
+        params.add(new BasicNameValuePair(DATE_START_TAG, dateStart));
+        params.add(new BasicNameValuePair(DATE_END_TAG, dateEnd));
+
+        // make HTTP connection
+        return mJsonParser.createHttpRequest(SEARCH_BILLING_URL, HTTP_REQUEST_METHOD_POST, params);
     }
 
     /**
@@ -117,6 +129,7 @@ public class FNDataController extends FNController {
         params.add(new BasicNameValuePair(LOCATION_TAG, fieldNote.getLocation()));
         params.add(new BasicNameValuePair(BILLING_TAG, fieldNote.getBillingType()));
         params.add(new BasicNameValuePair(GPS_TAG, fieldNote.getGPSCoords()));
+        params.add(new BasicNameValuePair(BILLING_STATE_TAG, fieldNote.getBillingState()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(UPDATE_NOTE_URL, HTTP_REQUEST_METHOD_POST, params);

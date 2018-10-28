@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.controller.FNDataController;
 import com.devhunter.fncp.mvc.controller.validation.CrudSearchValidation;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
@@ -24,7 +24,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 public class DeleteDataPanel extends FNPanel {
     private static FNPanel mCrudSearchPanel;
@@ -69,7 +69,7 @@ public class DeleteDataPanel extends FNPanel {
         mTextDeleteDataLocation = new FNTextField();
         mTextDeleteDataGPS = new FNTextField();
         mTextDeleteDataBillable = new FNTextField();
-        buttonDelete = new FNButton(FNConstants.BUTTON_DELETE);
+        buttonDelete = new FNButton(FNCPConstants.BUTTON_DELETE);
         mDeleteTicketNumberString = "";
 
         init();
@@ -89,8 +89,8 @@ public class DeleteDataPanel extends FNPanel {
         GridLayout crudSearchTextFieldPanelLayout = new GridLayout(0, 2);
         mCrudSearchTextFieldPanel.setLayout(crudSearchTextFieldPanelLayout);
 
-        FNLabel crudTicketLabel = new FNLabel(FNConstants.CRUD_SEARCH_TICKET_NUMBER);
-        FNButton buttonCrudSearch = new FNButton(FNConstants.BUTTON_SEARCH);
+        FNLabel crudTicketLabel = new FNLabel(FNCPConstants.CRUD_SEARCH_TICKET_NUMBER);
+        FNButton buttonCrudSearch = new FNButton(FNCPConstants.BUTTON_SEARCH);
 
         // Panels/layouts
         GridLayout deleteFNDataPanelLayout = new GridLayout(0, 2);
@@ -99,19 +99,19 @@ public class DeleteDataPanel extends FNPanel {
         mDeleteFNButtonPanel.setLayout(deleteFNButtonPanelLayout);
         mDeleteFNButtonPanel.setBorder(FNUtil.getInstance().getLineBorder());
 
-        FNLabel lblDeleteDataName = new FNLabel(FNConstants.FN_USERNAME_LABEL);
-        FNLabel lblDeleteDataWellName = new FNLabel(FNConstants.FN_WELLNAME_LABEL);
-        FNLabel lblDeleteDataDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
-        FNLabel lblDeleteDataTimeStart = new FNLabel(FNConstants.FN_TIME_START_LABEL);
-        FNLabel lblDeleteDataMileageStart = new FNLabel(FNConstants.FN_MILEAGE_START_LABEL);
-        FNLabel lblDeleteDataDescription = new FNLabel(FNConstants.FN_DESCRIPTION_LABEL);
-        FNLabel lblDeleteDataMileageEnd = new FNLabel(FNConstants.FN_MILEAGE_END_LABEL);
-        FNLabel lblDeleteDataDateEnd = new FNLabel(FNConstants.FN_DATE_END_LABEL);
-        FNLabel lblDeleteDataTimeEnd = new FNLabel(FNConstants.FN_TIME_END_LABEL);
-        FNLabel lblDeleteDataProject = new FNLabel(FNConstants.FN_PROJECT_LABEL);
-        FNLabel lblDeleteDataLocation = new FNLabel(FNConstants.FN_LOCATION_LABEL);
-        FNLabel lblDeleteDataGPS = new FNLabel(FNConstants.FN_GPS_LABEL);
-        FNLabel lblDeleteDataBillable = new FNLabel(FNConstants.FN_BILLING_LABEL);
+        FNLabel lblDeleteDataName = new FNLabel(FNCPConstants.FN_USERNAME_LABEL);
+        FNLabel lblDeleteDataWellName = new FNLabel(FNCPConstants.FN_WELLNAME_LABEL);
+        FNLabel lblDeleteDataDateStart = new FNLabel(FNCPConstants.FN_DATE_START_LABEL);
+        FNLabel lblDeleteDataTimeStart = new FNLabel(FNCPConstants.FN_TIME_START_LABEL);
+        FNLabel lblDeleteDataMileageStart = new FNLabel(FNCPConstants.FN_MILEAGE_START_LABEL);
+        FNLabel lblDeleteDataDescription = new FNLabel(FNCPConstants.FN_DESCRIPTION_LABEL);
+        FNLabel lblDeleteDataMileageEnd = new FNLabel(FNCPConstants.FN_MILEAGE_END_LABEL);
+        FNLabel lblDeleteDataDateEnd = new FNLabel(FNCPConstants.FN_DATE_END_LABEL);
+        FNLabel lblDeleteDataTimeEnd = new FNLabel(FNCPConstants.FN_TIME_END_LABEL);
+        FNLabel lblDeleteDataProject = new FNLabel(FNCPConstants.FN_PROJECT_LABEL);
+        FNLabel lblDeleteDataLocation = new FNLabel(FNCPConstants.FN_LOCATION_LABEL);
+        FNLabel lblDeleteDataGPS = new FNLabel(FNCPConstants.FN_GPS_LABEL);
+        FNLabel lblDeleteDataBillable = new FNLabel(FNCPConstants.FN_BILLING_LABEL);
 
         // Override TextField properties
         mTextDeleteDataName.setEditable(false);
@@ -185,7 +185,6 @@ public class DeleteDataPanel extends FNPanel {
                         JSONObject message = messageArray.getJSONObject(0);
 
                         // display ticket data in view
-                        // show searchData bar and field note data
                         mDeleteFNDataPanel.setVisible(true);
                         mDeleteTicketNumber.setText(mDeleteTicketNumberString);
 
