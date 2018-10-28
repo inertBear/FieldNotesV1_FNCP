@@ -7,13 +7,11 @@
 
 package com.devhunter.fncp.mvc.view.billingpanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.constants.FNSqlConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
+import com.devhunter.fncp.mvc.controller.FNDataController;
+import com.devhunter.fncp.mvc.controller.billingStateMachine.BillingState;
+import com.devhunter.fncp.mvc.controller.billingStateMachine.FNBillingStateMachine;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
-import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.BillingState;
-import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.FNBillingStateMachine;
-import com.devhunter.fncp.mvc.controller.validation.CrudSearchValidation;
-import com.devhunter.fncp.mvc.controller.sql.billing.FNBillingController;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
@@ -23,19 +21,11 @@ import com.devhunter.fncp.mvc.model.fnview.FNTextField;
 import com.devhunter.fncp.mvc.model.listview.FNListView;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,40 +35,32 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class BillingStatePanel {
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
-    // Panels
+public class BillingStatePanel extends FNPanel {
+
     private static BillingStatePanel sInstance;
     private static FNPanel mSearchDataPanel;
     private static FNPanel mSearchTextFieldPanel;
-    // Billing State
     private static BillingState mBillingState;
-    // TextFields
     private FNTextField mSearchUsername;
     private FNTextField mSearchProjectNumber;
-    // DatePicker
     private UtilDateModel mSearchStartModel;
     private Properties mSearchStartProperties;
     private JDatePickerImpl mDatePickerSearchStart;
     private UtilDateModel mSearchEndModel;
     private Properties mSearchEndProperties;
     private JDatePickerImpl mDatePickerSearchEnd;
-    // Buttons
     private FNButton mBtnSearch;
     private FNButton mButtonExport;
-    // ListView - searchData results
     private FNListView mListView;
-    // searchData results
     private ArrayList<FieldNote> mFieldNotes;
 
     private BillingStatePanel() {
-        // create Panels
         mSearchDataPanel = new FNPanel();
         mSearchTextFieldPanel = new FNPanel();
-        // create TextFields
         mSearchUsername = new FNTextField();
         mSearchProjectNumber = new FNTextField();
-        // create DatePickers
         mSearchStartModel = new UtilDateModel();
         mSearchStartProperties = new Properties();
         JDatePanelImpl mDatePanelSearchStart = new JDatePanelImpl(mSearchStartModel, mSearchStartProperties);
@@ -87,15 +69,12 @@ public class BillingStatePanel {
         mSearchEndProperties = new Properties();
         JDatePanelImpl mDatePanelSearchEnd = new JDatePanelImpl(mSearchEndModel, mSearchEndProperties);
         mDatePickerSearchEnd = new JDatePickerImpl(mDatePanelSearchEnd, new DateLabelFormatter());
-        // create Buttons
-        mBtnSearch = new FNButton(FNConstants.BUTTON_SEARCH);
-        mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
-        // create ListView
+        mBtnSearch = new FNButton(FNCPConstants.BUTTON_SEARCH);
+        mButtonExport = new FNButton(FNCPConstants.BUTTON_EXPORT);
         mListView = new FNListView();
-        // create ArrayList
         mFieldNotes = new ArrayList<>();
 
-        init();
+        drawPanel();
     }
 
     public static BillingStatePanel getInstance() {
@@ -105,7 +84,7 @@ public class BillingStatePanel {
         return sInstance;
     }
 
-    public void init() {
+    private void drawPanel() {
 
         // Panel Layouts
         mSearchDataPanel.setLayout(new BorderLayout());
@@ -122,13 +101,13 @@ public class BillingStatePanel {
         mSearchEndProperties.put("text.year", "Year");
 
         // Add Views to TextFieldPanel
-        mSearchTextFieldPanel.add(new FNLabel(FNConstants.FN_USERNAME_LABEL));
+        mSearchTextFieldPanel.add(new FNLabel(FNCPConstants.FN_USERNAME_LABEL));
         mSearchTextFieldPanel.add(mSearchUsername);
-        mSearchTextFieldPanel.add(new FNLabel(FNConstants.FN_PROJECT_LABEL));
+        mSearchTextFieldPanel.add(new FNLabel(FNCPConstants.FN_PROJECT_LABEL));
         mSearchTextFieldPanel.add(mSearchProjectNumber);
-        mSearchTextFieldPanel.add(new FNLabel(FNConstants.FN_DATE_START_LABEL));
+        mSearchTextFieldPanel.add(new FNLabel(FNCPConstants.FN_DATE_START_LABEL));
         mSearchTextFieldPanel.add(mDatePickerSearchStart);
-        mSearchTextFieldPanel.add(new FNLabel(FNConstants.FN_DATE_END_LABEL));
+        mSearchTextFieldPanel.add(new FNLabel(FNCPConstants.FN_DATE_END_LABEL));
         mSearchTextFieldPanel.add(mDatePickerSearchEnd);
         mSearchTextFieldPanel.add(new FNLabel());
         mSearchTextFieldPanel.add(mBtnSearch);
@@ -148,59 +127,13 @@ public class BillingStatePanel {
             String startDate = mDatePickerSearchStart.getJFormattedTextField().getText();
             String endDate = mDatePickerSearchEnd.getJFormattedTextField().getText();
 
-            FNBillingController conn = new FNBillingController();
-
-            // if start date is valid
-            if (CrudSearchValidation.isDateRangeValid(startDate, endDate)) {
-                // if there is a date
-                if (CrudSearchValidation.hasDateRange(startDate, endDate)) {
-                    // if there is a username
-                    if (!username.isEmpty()) {
-                        // if there is a project name
-                        if (!projectName.isEmpty()) {
-                            mFieldNotes = conn.searchDataByUsernameProjectAndDateRange(mBillingState, username, projectName, startDate, endDate);
-                        } else {
-                            // searchData by user name and date range
-                            mFieldNotes = conn.searchDataByUsernameAndDateRange(mBillingState, username, startDate, endDate);
-                        }
-                    } else if (!projectName.isEmpty()) {
-                        // searchData by project name and date range
-                        mFieldNotes = conn.searchDataByProjectAndDateRange(mBillingState, projectName, startDate, endDate);
-                    } else {
-                        // searchData by date range
-                        mFieldNotes = conn.searchDataByDateRange(mBillingState, startDate, endDate);
-                    }
-                } else {
-                    // if there is a username
-                    if (!username.isEmpty()) {
-                        // if there is a project name
-                        if (!projectName.isEmpty()) {
-                            mFieldNotes = conn.searchDataByUsernameAndProject(mBillingState, username, projectName);
-                        } else {
-                            // searchData by user name
-                            mFieldNotes = conn.searchDataByUsername(mBillingState, username);
-                        }
-                    } else if (!projectName.isEmpty()) {
-                        mFieldNotes = conn.searchDataByProject(mBillingState, projectName);
-                    } else {
-                        // searchData all user names, project names, and date ranges
-                        mFieldNotes = conn.searchAllData(mBillingState);
-                    }
-                }
-
-                if (!mFieldNotes.isEmpty()) {
-                    // add all FieldNotes to ListView
-                    mListView.addItems(mFieldNotes);
-                }
-            }
+            searchFieldNotes(mBillingState, username, projectName, startDate, endDate);
         });
 
         // export CSV file to User Desktop
         mButtonExport.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // export controller
-                ExportController exporter = new ExportController();
-                boolean exportSuccess = exporter.writeBillingToCSVFile(mFieldNotes);
+                boolean exportSuccess = ExportController.writeBillingToCSVFile(mFieldNotes);
 
                 if (exportSuccess) {
                     JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
@@ -209,6 +142,27 @@ public class BillingStatePanel {
                 }
             }
         });
+    }
+
+    private void searchFieldNotes(BillingState state, String username, String projectNumber, String dateStart, String dateEnd) {
+        JSONObject searchFieldNoteResponse = FNDataController.searchFieldNotes(state, projectNumber, username, dateStart, dateEnd);
+        String status = searchFieldNoteResponse.getString(RESPONSE_STATUS_TAG);
+        String messageString = searchFieldNoteResponse.getString(RESPONSE_MESSAGE_TAG);
+
+        if (status.equals(RESPONSE_STATUS_SUCCESS)) {
+            JSONArray messageArray = new JSONArray(messageString);
+
+            for (int i = 0; i < messageArray.length(); i++) {
+                JSONObject message = messageArray.getJSONObject(i);
+
+                FieldNote fieldNote = FNUtil.buildFieldNote(message);
+
+                // add to ListView
+                mListView.addItem(fieldNote);
+            }
+        } else {
+            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);
+        }
     }
 
     public static void setBillingState(BillingState state) {

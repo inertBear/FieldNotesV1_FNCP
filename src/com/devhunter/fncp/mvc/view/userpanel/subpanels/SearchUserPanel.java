@@ -7,54 +7,45 @@
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
+import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
-import com.devhunter.fncp.mvc.controller.sql.FNUserController;
+import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.model.fnview.FNTextField;
-import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static com.devhunter.fncp.constants.FNCPConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
+
 public class SearchUserPanel extends FNPanel {
 
-    // Panels
     private static SearchUserPanel mInstance;
     private static FNPanel mSearchUserPanel;
     private static FNPanel mSearchTextFieldPanel;
-    // TextFields
     private FNTextField mSearchUser;
-    // TextAreas
     private JTextArea mSearchUserOutput;
-    // Buttons
     private FNButton mButtonSearch;
     private FNButton mButtonExport;
-    // ArrayLists
     private ArrayList<FNUser> mUsers;
 
-    private static final String ID = "ID: ";
-    private static final String USERNAME = "Username: ";
-    private static final String PASSWORD = "Password: ";
-    private static final String USER_TYPE = "User Type: ";
-
     private SearchUserPanel() {
-        // Create Panels
         mSearchUserPanel = new FNPanel();
         mSearchTextFieldPanel = new FNPanel();
-        // Create TextFields
         mSearchUser = new FNTextField();
-        // Create TextAreas
         mSearchUserOutput = new JTextArea(28, 32);
-        // Create Buttons
-        mButtonSearch = new FNButton(FNConstants.BUTTON_SEARCH);
-        mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
-        // Create ArrayLists
+        mButtonSearch = new FNButton(FNCPConstants.BUTTON_SEARCH);
+        mButtonExport = new FNButton(FNCPConstants.BUTTON_EXPORT);
         mUsers = new ArrayList<>();
+
         init();
     }
 
@@ -66,14 +57,13 @@ public class SearchUserPanel extends FNPanel {
     }
 
     private void init() {
-        // Panel Layouts
         BorderLayout searchUserLayout = new BorderLayout();
         mSearchUserPanel.setLayout(searchUserLayout);
         GridLayout searchUserTextFieldPanelLayout = new GridLayout(0, 2);
         mSearchTextFieldPanel.setLayout(searchUserTextFieldPanelLayout);
-        // Labels
-        FNLabel searchUserLbl = new FNLabel(FNConstants.FN_USERNAME_LABEL);
-        // ScrollPanes/TextAreas
+
+        FNLabel searchUserLbl = new FNLabel(FNCPConstants.FN_USERNAME_LABEL);
+
         JScrollPane userSearchScroll = new JScrollPane(mSearchUserOutput);
         mSearchUserOutput.setEditable(false);
 
@@ -95,39 +85,60 @@ public class SearchUserPanel extends FNPanel {
         mButtonSearch.addActionListener(e -> {
             mSearchUserOutput.setVisible(true);
             mSearchUserOutput.setText(null);
-            FNUserController conn = new FNUserController();
 
-            if (mSearchUser.getText().trim().isEmpty()) {
-                mUsers = conn.searchAllUsers();
-
-                for (FNUser each : mUsers) {
-                    //TODO: [FNCP-023] create static print user method in FNUser EX: public static void printUser(where to print)
-                    mSearchUserOutput.append(ID + each.getId() + "\n");
-                    mSearchUserOutput.append(USERNAME + each.getUsername() + "\n");
-                    mSearchUserOutput.append(PASSWORD + each.getPassword() + "\n");
-                    mSearchUserOutput.append(USER_TYPE + each.getType() + "\n\n");
-                }
-            } else {
-                String username = mSearchUser.getText();
-                FNUser user = conn.searchUsersByUsername(username);
-                mSearchUserOutput.setText(ID + user.getId() + "\n");
-                mSearchUserOutput.append(USERNAME + user.getUsername() + "\n");
-                mSearchUserOutput.append(PASSWORD + user.getPassword() + "\n");
-                mSearchUserOutput.append(USER_TYPE + user.getType() + "\n\n");
-            }
+            String searchUsername = mSearchUser.getText();
+            searchUser(searchUsername);
         });
 
-        // When user trys to export CSV file to user desktop
+        // When user tries to export CSV file to user desktop
         mButtonExport.addActionListener(e -> {
+            boolean exportSuccessCode = ExportController.writeUserToCSVFile(mUsers);
 
-            ExportController exporter = new ExportController();
-            boolean exportSuccessCode = exporter.writeUserToCSVFile(mUsers);
             if (exportSuccessCode) {
                 JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
             } else {
                 JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Failure! CVS export error");
             }
         });
+    }
+
+    /**
+     * search users in FieldNotes
+     *
+     * @param username
+     */
+    private void searchUser(String username) {
+        JSONObject searchResponse = FNUserController.searchUsers(username);
+        String status = searchResponse.getString(RESPONSE_STATUS_TAG);
+        String messageString = searchResponse.getString(RESPONSE_MESSAGE_TAG);
+
+        if (status.equals(RESPONSE_STATUS_SUCCESS)) {
+            JSONArray messageArray = new JSONArray(messageString);
+            printJsonObject(messageArray, mSearchUserOutput);
+        } else {
+            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);
+        }
+    }
+
+    /**
+     * print search results to JTextArea
+     *
+     * @param message
+     * @param areaToPrintOn
+     */
+    private void printJsonObject(JSONArray message, JTextArea areaToPrintOn) {
+        for (int i = 0; i < message.length(); i++) {
+            JSONObject jsonObject = message.getJSONObject(i);
+            String userId = jsonObject.getString(USER_USER_ID_TAG);
+            String username = jsonObject.getString(USER_USERNAME_TAG);
+            String password = jsonObject.getString(USER_PASSWORD_TAG);
+            String type = jsonObject.getString(USER_TYPE_TAG);
+
+            areaToPrintOn.append(USER_ID_LABEL + " " + userId + "\n");
+            areaToPrintOn.append(USER_USERNAME_LABEL + " " + username + "\n");
+            areaToPrintOn.append(USER_PASSWORD_LABEL + " " + password + "\n");
+            areaToPrintOn.append(USER_USER_TYPE_LABEL + " " + type + "\n\n");
+        }
     }
 
     public static JPanel getView() {

@@ -7,9 +7,9 @@
 
 package com.devhunter.fncp.mvc.view.billingpanel;
 
-import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.constants.FNSqlConstants;
-import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.BillingState;
+import com.devhunter.fncp.constants.FNCPConstants;
+import com.devhunter.fncp.constants.FNPConstants;
+import com.devhunter.fncp.mvc.controller.billingStateMachine.BillingState;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
@@ -29,9 +29,9 @@ public class FNBillingPanel extends FNPanel {
 
     private FNBillingPanel() {
         sBillingControlPanel = new FNPanel();
-        mBtnUnbilled = new FNButton(FNConstants.UNBILLED_DATA);
-        mBtnBilled = new FNButton(FNConstants.BILLED_DATA);
-        mBtnCompleted = new FNButton(FNConstants.COMPLETED_DATA);
+        mBtnUnbilled = new FNButton(FNCPConstants.UNBILLED_DATA);
+        mBtnBilled = new FNButton(FNCPConstants.BILLED_DATA);
+        mBtnCompleted = new FNButton(FNCPConstants.COMPLETED_DATA);
         init();
     }
 
@@ -59,7 +59,7 @@ public class FNBillingPanel extends FNPanel {
             resetGui();
             mBtnUnbilled.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(BillingStatePanel.getView(), BorderLayout.CENTER);
-            BillingStatePanel.setBillingState(new BillingState(FNSqlConstants.BILLING_STATE_CREATED));
+            BillingStatePanel.setBillingState(new BillingState(FNPConstants.BILLING_STATE_CREATED));
 
             sBillingControlPanel.setVisible(true);
             BillingStatePanel.getView().setVisible(true);
@@ -72,7 +72,7 @@ public class FNBillingPanel extends FNPanel {
             resetGui();
             mBtnBilled.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(BillingStatePanel.getView(), BorderLayout.CENTER);
-            BillingStatePanel.setBillingState(new BillingState(FNSqlConstants.BILLING_STATE_BILLED));
+            BillingStatePanel.setBillingState(new BillingState(FNPConstants.BILLING_STATE_BILLED));
 
             sBillingControlPanel.setVisible(true);
             BillingStatePanel.getView().setVisible(true);
@@ -85,7 +85,7 @@ public class FNBillingPanel extends FNPanel {
             resetGui();
             mBtnCompleted.setBackground(FNUtil.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(BillingStatePanel.getView(), BorderLayout.CENTER);
-            BillingStatePanel.setBillingState(new BillingState(FNSqlConstants.BILLING_STATE_COMPLETE));
+            BillingStatePanel.setBillingState(new BillingState(FNPConstants.BILLING_STATE_COMPLETE));
 
             sBillingControlPanel.setVisible(true);
             BillingStatePanel.getView().setVisible(true);

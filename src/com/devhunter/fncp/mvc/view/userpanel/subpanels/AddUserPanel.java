@@ -5,47 +5,40 @@
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.constants.FNUserConstants;
-import com.devhunter.fncp.mvc.controller.validation.FNUserValidation;
-import com.devhunter.fncp.mvc.controller.sql.FNUserController;
-import com.devhunter.fncp.mvc.model.FNUser;
+import com.devhunter.fncp.constants.FNCPConstants;
+import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.devhunter.fncp.constants.FNCPConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.RESPONSE_MESSAGE_TAG;
+
 public class AddUserPanel extends FNPanel {
 
-    // Panels
     private static AddUserPanel mInstance;
     private static FNPanel mAddUserPanel;
     private FNPanel mAddUserTextFieldPanel;
     private FNPanel mCheckBoxPanel;
-    // TextFields
     private FNTextField mAddUser;
     private FNTextField mAddPassword;
-    // Buttons
     private FNButton mButtonAdd;
-    //user checkboxes
     private FNCheckbox mAdminCheckbox;
     private FNCheckbox mUserCheckbox;
     private FNCheckbox mTestCheckbox;
 
     private AddUserPanel() {
-        // Create Panels
         mAddUserPanel = new FNPanel();
         mAddUserTextFieldPanel = new FNPanel();
         mCheckBoxPanel = new FNPanel();
-        // Create TextFields
         mAddUser = new FNTextField();
         mAddPassword = new FNTextField();
-        // Create Buttons
-        mButtonAdd = new FNButton(FNConstants.BUTTON_ADD);
-        //Create Checkboxes
+        mButtonAdd = new FNButton(FNCPConstants.BUTTON_ADD);
         mAdminCheckbox = new FNCheckbox();
         mUserCheckbox = new FNCheckbox();
         mTestCheckbox = new FNCheckbox();
@@ -60,26 +53,25 @@ public class AddUserPanel extends FNPanel {
         return mInstance;
     }
 
-    void init() {
-        // Panel Layouts
+    private void init() {
         BorderLayout addUserLayout = new BorderLayout();
         mAddUserPanel.setLayout(addUserLayout);
-        // Labels
-        FNLabel addUserLbl = new FNLabel(FNConstants.USER_NEW_USERNAME_LABEL);
-        FNLabel addPassLbl = new FNLabel(FNConstants.USER_NEW_PASSWORD_LABEL);
-        //Checkboxes
+
+        FNLabel addUserLbl = new FNLabel(FNCPConstants.USER_NEW_USERNAME_LABEL);
+        FNLabel addPassLbl = new FNLabel(FNCPConstants.USER_NEW_PASSWORD_LABEL);
+
         ButtonGroup userButtonGroup = new ButtonGroup();
         userButtonGroup.add(mUserCheckbox);
         userButtonGroup.add(mAdminCheckbox);
         userButtonGroup.add(mTestCheckbox);
-        //set fnuser by default
+
         mUserCheckbox.setSelected(true);
-        //addData checkboxes to panel
-        mCheckBoxPanel.add(new FNLabel("as User:"));
+
+        mCheckBoxPanel.add(new FNLabel(AS_USER_TYPE_USER_LABEL));
         mCheckBoxPanel.add(mUserCheckbox);
-        mCheckBoxPanel.add(new FNLabel("as Admin:"));
+        mCheckBoxPanel.add(new FNLabel(AS_USER_TYPE_ADMIN_LABEL));
         mCheckBoxPanel.add(mAdminCheckbox);
-        mCheckBoxPanel.add(new FNLabel("as Test User:"));
+        mCheckBoxPanel.add(new FNLabel(AS_USER_TYPE_TEST_LABEL));
         mCheckBoxPanel.add(mTestCheckbox);
 
         // Add Views to TextField Panel with Gridbag layout
@@ -148,39 +140,44 @@ public class AddUserPanel extends FNPanel {
 
         mButtonAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Create FNUser
-                FNUser.FNEntityBuilder entity = new FNUser.FNEntityBuilder();
-                entity.setUsername(mAddUser.getText());
-                entity.setPassword(mAddPassword.getText());
+                String newUsername = mAddUser.getText();
+                String newPassword = mAddPassword.getText();
+                String newType = getSelectedUserType();
 
-                if (mAdminCheckbox.isSelected()) {
-                    entity.setType(FNUserConstants.ADMIN_USER);
-                } else if (mTestCheckbox.isSelected()) {
-                    entity.setType(FNUserConstants.TEST_USER);
-                } else {
-                    entity.setType(FNUserConstants.REGULAR_USER);
-                }
-                FNUser user = entity.build();
-
-                // validate USER
-                if (FNUserValidation.validate(user)) {
-                    // send user to controller for CUD event
-                    FNUserController conn = new FNUserController();
-                    int resultCode = conn.addUser(user);
-                    // code 1 == success, code 2 == user already exists, code 3 == failure
-                    if (resultCode == 1) {
-                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
-                                "User added to Field Notes");
-                    } else if (resultCode == 2) {
-                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
-                                "User already exists in Field Notes");
-                    } else {
-                        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(),
-                                "Connection Error - USER WAS NOT ADDED");
-                    }
-                }
+                addUser(newUsername, newPassword, newType);
             }
         });
+    }
+
+    /**
+     * add user to FieldNotes
+     *
+     * @param username
+     * @param password
+     * @param type
+     */
+    private void addUser(String username, String password, String type) {
+        JSONObject addUserResponse = FNUserController.addUser(username, password, type);
+
+        String addUserMessage = addUserResponse.getString(RESPONSE_MESSAGE_TAG);
+        JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), addUserMessage);
+
+        resetGui();
+    }
+
+    /**
+     * get selected user type from UI
+     *
+     * @return
+     */
+    private String getSelectedUserType() {
+        if (mAdminCheckbox.isSelected()) {
+            return ADMIN_USER;
+        } else if (mTestCheckbox.isSelected()) {
+            return TEST_USER;
+        } else {
+            return REGULAR_USER;
+        }
     }
 
     public static JPanel getView() {
@@ -199,5 +196,8 @@ public class AddUserPanel extends FNPanel {
     private void resetGui() {
         mAddUser.setText(null);
         mAddPassword.setText(null);
+        mAdminCheckbox.setSelected(false);
+        mTestCheckbox.setSelected(false);
+        mUserCheckbox.setSelected(true);
     }
 }

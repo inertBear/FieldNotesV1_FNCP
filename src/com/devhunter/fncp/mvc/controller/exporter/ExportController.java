@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class ExportController {
 
-    public boolean writeUserToCSVFile(ArrayList<FNUser> users) {
+    public static boolean writeUserToCSVFile(ArrayList<FNUser> users) {
 
         PrintWriter writer;
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
@@ -51,7 +51,7 @@ public class ExportController {
         return true;
     }
 
-    public boolean writeDataToCSVFile(ArrayList<FieldNote> fieldNotes) {
+    public static boolean writeDataToCSVFile(ArrayList<FieldNote> fieldNotes) {
 
         PrintWriter writer;
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
@@ -128,7 +128,7 @@ public class ExportController {
         return true;
     }
 
-    public boolean writeBillingToCSVFile(ArrayList<FieldNote> fieldNotes) {
+    public static boolean writeBillingToCSVFile(ArrayList<FieldNote> fieldNotes) {
 
         PrintWriter writer;
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
@@ -215,7 +215,7 @@ public class ExportController {
      * @param data
      * @return String
      */
-    private String stripCommas(String data) {
+    private static String stripCommas(String data) {
         if (data != null) {
             return data.replaceAll(",", " ");
         } else {

@@ -38,5 +38,4 @@ class FNDataPreview {
     String getDate() {
         return this.mDate;
     }
-
 }

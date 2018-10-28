@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.view.datapanel;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
@@ -31,10 +31,11 @@ public class FNDataPanel extends FNPanel {
 
     private FNDataPanel() {
         sDataControlPanel = new FNPanel();
-        mBtnDataSearch = new FNButton(FNConstants.DATA_SEARCH_BUTTON);
-        mBtnDataAdd = new FNButton(FNConstants.DATA_ADD_BUTTON);
-        mBtnDataDeleteSearch = new FNButton(FNConstants.DATA_DELETE_BUTTON);
-        mBtnDataEditSearch = new FNButton(FNConstants.DATA_EDIT_BUTTON);
+        mBtnDataSearch = new FNButton(FNCPConstants.DATA_SEARCH_BUTTON);
+        mBtnDataAdd = new FNButton(FNCPConstants.DATA_ADD_BUTTON);
+        mBtnDataDeleteSearch = new FNButton(FNCPConstants.DATA_DELETE_BUTTON);
+        mBtnDataEditSearch = new FNButton(FNCPConstants.DATA_EDIT_BUTTON);
+
         init();
     }
 
@@ -46,7 +47,6 @@ public class FNDataPanel extends FNPanel {
     }
 
     private void init() {
-        // Initialize Data Control Panel
         sDataControlPanel.add(mBtnDataSearch);
         sDataControlPanel.add(mBtnDataAdd);
         // ADMIN ACCESS
