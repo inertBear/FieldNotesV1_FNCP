@@ -8,7 +8,7 @@
 package com.devhunter.fncp.mvc.view.loginpanel;
 
 import com.devhunter.fncp.FNInit;
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
@@ -20,7 +20,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 /**
  * This class draws the login panel as a singleton. Successful login will create an instance of
@@ -58,7 +58,7 @@ public class FNLogin extends FNPanel {
     }
 
     public void init() {
-        mLoginFrame.setSize(FNConstants.lOGIN_PANEL_X_AXIS, FNConstants.lOGIN_PANEL_Y_AXIS);
+        mLoginFrame.setSize(FNCPConstants.lOGIN_PANEL_X_AXIS, FNCPConstants.lOGIN_PANEL_Y_AXIS);
         mLoginFrame.setLocationRelativeTo(null);
         mLoginFrame.setVisible(true);
         mLoginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +71,7 @@ public class FNLogin extends FNPanel {
 
         // ImageLabels
         try {
-            Image img = ImageIO.read(getClass().getResource(FNConstants.APPLICATION_LOGO_FOLDER));
+            Image img = ImageIO.read(getClass().getResource(FNCPConstants.APPLICATION_LOGO_FOLDER));
             mLoginTitleLabel = new FNImageLabel(new ImageIcon(img));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -80,15 +80,15 @@ public class FNLogin extends FNPanel {
 
         // ImageButtons
         try {
-            Image img = ImageIO.read(getClass().getResource(FNConstants.BUTTON_SUBMIT_LOCATION));
+            Image img = ImageIO.read(getClass().getResource(FNCPConstants.BUTTON_SUBMIT_LOCATION));
             mButtonLogin = new FNImageButton(new ImageIcon(img));
         } catch (IOException e1) {
             e1.printStackTrace();
             System.out.println("Image button failed to load");
         }
 
-        FNLabel lblUsername = new FNLabel(FNConstants.USER_USERNAME_LABEL);
-        FNLabel lblPassword = new FNLabel(FNConstants.USER_PASSWORD_LABEL);
+        FNLabel lblUsername = new FNLabel(FNCPConstants.USER_USERNAME_LABEL);
+        FNLabel lblPassword = new FNLabel(FNCPConstants.USER_PASSWORD_LABEL);
 
         // Override Label properties
         mLoginUsername.setPreferredSize(FNUtil.getInstance().getStandardTextFieldDimension());

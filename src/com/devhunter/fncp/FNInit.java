@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.view.loginpanel.FNLogin;
 import com.devhunter.fncp.mvc.view.loginpanel.FNRegister;
 import com.devhunter.fncp.utilities.FNUtil;
@@ -17,14 +17,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import static com.devhunter.fncp.constants.FNConstants.REGISTRATION_FILE_PATH;
+import static com.devhunter.fncp.constants.FNCPConstants.REGISTRATION_FILE_PATH;
 
 public class FNInit {
 
     private static JFrame FieldNotesFrame;
 
     public static void main(String[] args) {
-        FieldNotesFrame = new JFrame(FNConstants.APPLICATION_NAME);
+        FieldNotesFrame = new JFrame(FNCPConstants.APPLICATION_NAME);
 
         String productKey = null;
         FileReader fileReader;

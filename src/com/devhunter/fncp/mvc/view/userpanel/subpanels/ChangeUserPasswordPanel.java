@@ -5,7 +5,7 @@
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.*;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
@@ -17,7 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 public class ChangeUserPasswordPanel extends FNPanel {
 
@@ -35,7 +35,7 @@ public class ChangeUserPasswordPanel extends FNPanel {
         mChangePassUsername = new FNTextField();
         mCurrentPass = new FNPasswordField();
         mNewUserPass = new FNPasswordField();
-        mButtonChangePassword = new FNButton(FNConstants.BUTTON_UPDATE);
+        mButtonChangePassword = new FNButton(FNCPConstants.BUTTON_UPDATE);
 
         init();
     }
@@ -55,8 +55,8 @@ public class ChangeUserPasswordPanel extends FNPanel {
 
         // ADMIN ACCESS: change any user password
         if (FNUtil.getInstance().hasAdminAccess()) {
-            FNLabel passUserlbl = new FNLabel(FNConstants.USER_USERNAME_LABEL);
-            FNLabel newPassUserlbl = new FNLabel(FNConstants.USER_NEW_PASSWORD_LABEL);
+            FNLabel passUserlbl = new FNLabel(FNCPConstants.USER_USERNAME_LABEL);
+            FNLabel newPassUserlbl = new FNLabel(FNCPConstants.USER_NEW_PASSWORD_LABEL);
 
             // Add Views to TextField Panel
             mChangePasswordTextFieldPanel.add(passUserlbl);
@@ -77,8 +77,8 @@ public class ChangeUserPasswordPanel extends FNPanel {
                 }
             });
         } else {
-            FNLabel currentPassLbl = new FNLabel(FNConstants.USER_CURRENT_PASSWORD_LABEL);
-            FNLabel newPasslbl = new FNLabel(FNConstants.USER_NEW_PASSWORD_LABEL);
+            FNLabel currentPassLbl = new FNLabel(FNCPConstants.USER_CURRENT_PASSWORD_LABEL);
+            FNLabel newPasslbl = new FNLabel(FNCPConstants.USER_NEW_PASSWORD_LABEL);
 
             // Add Views to TextField Panel
             mChangePasswordTextFieldPanel.add(currentPassLbl);

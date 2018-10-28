@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.view.userpanel;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
@@ -31,10 +31,10 @@ public class FNUserPanel extends FNPanel {
 
     private FNUserPanel() {
         sUserControlPanel = new FNPanel();
-        mBtnUserSearch = new FNButton(FNConstants.USER_SEARCH_BUTTON);
-        mBtnUserAdd = new FNButton(FNConstants.USER_ADD_BUTTON);
-        mBtnUserDelete = new FNButton(FNConstants.USER_DELETE_BUTTON);
-        mBtnUserPassword = new FNButton(FNConstants.USER_EDIT_PASSWORD_BUTTON);
+        mBtnUserSearch = new FNButton(FNCPConstants.USER_SEARCH_BUTTON);
+        mBtnUserAdd = new FNButton(FNCPConstants.USER_ADD_BUTTON);
+        mBtnUserDelete = new FNButton(FNCPConstants.USER_DELETE_BUTTON);
+        mBtnUserPassword = new FNButton(FNCPConstants.USER_EDIT_PASSWORD_BUTTON);
 
         init();
     }

@@ -8,7 +8,7 @@
 package com.devhunter.fncp.mvc.view;
 
 import com.devhunter.fncp.FNInit;
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNImageLabel;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
@@ -37,9 +37,9 @@ public class FNControlPanel extends FNPanel {
     private FNControlPanel() {
         mMainControlFrame = FNInit.getFieldNotesJFrame();
         mControlPanel = new FNPanel();
-        mControlPanelUserButton = new FNButton(FNConstants.USER_CONTROLS_BUTTON);
-        mControlPanelDataButton = new FNButton(FNConstants.DATA_CONTROLS_BUTTON);
-        mControlPanelBillingButton = new FNButton(FNConstants.BILLING_CONTROLS_BUTTON);
+        mControlPanelUserButton = new FNButton(FNCPConstants.USER_CONTROLS_BUTTON);
+        mControlPanelDataButton = new FNButton(FNCPConstants.DATA_CONTROLS_BUTTON);
+        mControlPanelBillingButton = new FNButton(FNCPConstants.BILLING_CONTROLS_BUTTON);
         init();
     }
 
@@ -52,8 +52,8 @@ public class FNControlPanel extends FNPanel {
     }
 
     private void init() {
-        mMainControlFrame.setSize(FNConstants.MAIN_CONTROL_PANEL_X_AXIS,
-                FNConstants.MAIN_CONTROL_PANEL_Y_AXIS);
+        mMainControlFrame.setSize(FNCPConstants.MAIN_CONTROL_PANEL_X_AXIS,
+                FNCPConstants.MAIN_CONTROL_PANEL_Y_AXIS);
         mMainControlFrame.setLocationRelativeTo(null);
         mMainControlFrame.setVisible(true);
         mMainControlFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,13 +64,13 @@ public class FNControlPanel extends FNPanel {
 
         // ImageLabels
         try {
-            Image img = ImageIO.read(getClass().getResource(FNConstants.APPLICATION_ICON_FOLDER));
+            Image img = ImageIO.read(getClass().getResource(FNCPConstants.APPLICATION_ICON_FOLDER));
             mControlPanelImageLabel = new FNImageLabel(new ImageIcon(img));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(mMainControlFrame, "title image failed to load");
         }
         mControlPanelImageLabel.setBorder(null);
-        FNLabel controlPanelLabel2 = new FNLabel(FNConstants.APPLICATION_SUB_NAME);
+        FNLabel controlPanelLabel2 = new FNLabel(FNCPConstants.APPLICATION_SUB_NAME);
         controlPanelLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
         controlPanelLabel2.setAlignmentY(Component.CENTER_ALIGNMENT);
 

@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.controller.FNDataController;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
 import com.devhunter.fncp.mvc.model.FieldNote;
@@ -32,8 +32,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import static com.devhunter.fncp.constants.FNConstants.*;
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNCPConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 public class SearchDataPanel extends FNPanel {
 
@@ -65,8 +65,8 @@ public class SearchDataPanel extends FNPanel {
         mSearchEndProperties = new Properties();
         JDatePanelImpl mDatePanelSearchEnd = new JDatePanelImpl(mSearchEndModel, mSearchEndProperties);
         mDatePickerSearchEnd = new JDatePickerImpl(mDatePanelSearchEnd, new DateLabelFormatter());
-        mButtonSearch = new FNButton(FNConstants.BUTTON_SEARCH);
-        mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
+        mButtonSearch = new FNButton(FNCPConstants.BUTTON_SEARCH);
+        mButtonExport = new FNButton(FNCPConstants.BUTTON_EXPORT);
         mFieldNotes = new ArrayList<>();
 
         init();
@@ -87,8 +87,8 @@ public class SearchDataPanel extends FNPanel {
         mSearchTextFieldPanel.setLayout(searchFNTextFieldPanelLayout);
 
         FNLabel lblUsernameSearch = new FNLabel(FN_USERNAME_LABEL);
-        FNLabel lblDataSearchDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
-        FNLabel lblDataSearchDateEnd = new FNLabel(FNConstants.FN_DATE_END_LABEL);
+        FNLabel lblDataSearchDateStart = new FNLabel(FNCPConstants.FN_DATE_START_LABEL);
+        FNLabel lblDataSearchDateEnd = new FNLabel(FNCPConstants.FN_DATE_END_LABEL);
 
         JScrollPane dataSearchScroll = new JScrollPane(mSearchDataOutput);
         mSearchDataOutput.setEditable(false);

@@ -7,8 +7,8 @@
 
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.constants.FNSqlConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
+import com.devhunter.fncp.constants.FNPConstants;
 import com.devhunter.fncp.mvc.controller.FNDataController;
 import com.devhunter.fncp.mvc.controller.validation.FNValidation;
 import com.devhunter.fncp.mvc.model.FieldNote;
@@ -34,7 +34,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Properties;
 
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 public class AddDataPanel extends FNPanel {
 
@@ -91,7 +91,7 @@ public class AddDataPanel extends FNPanel {
         mNewTicketEndProperties = new Properties();
         mNewTicketEndDatePanel = new JDatePanelImpl(mNewTicketEndModel, mNewTicketEndProperties);
         mNewTicketEndDatePicker = new JDatePickerImpl(mNewTicketEndDatePanel, new DateLabelFormatter());
-        buttonSubmit = new FNButton(FNConstants.BUTTON_SUBMIT);
+        buttonSubmit = new FNButton(FNCPConstants.BUTTON_SUBMIT);
 
         init();
     }
@@ -110,19 +110,19 @@ public class AddDataPanel extends FNPanel {
         mAddFNButtonPanel.setLayout(addFNButtonPanelLayout);
         mAddFNButtonPanel.setBorder(FNUtil.getInstance().getLineBorder());
 
-        FNLabel lblNewDataName = new FNLabel(FNConstants.FN_USERNAME_LABEL);
-        FNLabel lblNewDataWellName = new FNLabel(FNConstants.FN_WELLNAME_LABEL);
-        FNLabel lblNewDataDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
-        FNLabel lblNewDataTimeStart = new FNLabel(FNConstants.FN_TIME_START_LABEL);
-        FNLabel lblNewDataMileageStart = new FNLabel(FNConstants.FN_MILEAGE_START_LABEL);
-        FNLabel lblNewDataDescription = new FNLabel(FNConstants.FN_DESCRIPTION_LABEL);
-        FNLabel lblNewDataMileageEnd = new FNLabel(FNConstants.FN_MILEAGE_END_LABEL);
-        FNLabel lblNewDataDateEnd = new FNLabel(FNConstants.FN_DATE_END_LABEL);
-        FNLabel lblNewDataTimeEnd = new FNLabel(FNConstants.FN_TIME_END_LABEL);
-        FNLabel lblNewDataProject = new FNLabel(FNConstants.FN_PROJECT_LABEL);
-        FNLabel lblNewDataLocation = new FNLabel(FNConstants.FN_LOCATION_LABEL);
-        FNLabel lblNewDataGPS = new FNLabel(FNConstants.FN_GPS_LABEL);
-        FNLabel lblNewDataBillable = new FNLabel(FNConstants.FN_BILLING_LABEL);
+        FNLabel lblNewDataName = new FNLabel(FNCPConstants.FN_USERNAME_LABEL);
+        FNLabel lblNewDataWellName = new FNLabel(FNCPConstants.FN_WELLNAME_LABEL);
+        FNLabel lblNewDataDateStart = new FNLabel(FNCPConstants.FN_DATE_START_LABEL);
+        FNLabel lblNewDataTimeStart = new FNLabel(FNCPConstants.FN_TIME_START_LABEL);
+        FNLabel lblNewDataMileageStart = new FNLabel(FNCPConstants.FN_MILEAGE_START_LABEL);
+        FNLabel lblNewDataDescription = new FNLabel(FNCPConstants.FN_DESCRIPTION_LABEL);
+        FNLabel lblNewDataMileageEnd = new FNLabel(FNCPConstants.FN_MILEAGE_END_LABEL);
+        FNLabel lblNewDataDateEnd = new FNLabel(FNCPConstants.FN_DATE_END_LABEL);
+        FNLabel lblNewDataTimeEnd = new FNLabel(FNCPConstants.FN_TIME_END_LABEL);
+        FNLabel lblNewDataProject = new FNLabel(FNCPConstants.FN_PROJECT_LABEL);
+        FNLabel lblNewDataLocation = new FNLabel(FNCPConstants.FN_LOCATION_LABEL);
+        FNLabel lblNewDataGPS = new FNLabel(FNCPConstants.FN_GPS_LABEL);
+        FNLabel lblNewDataBillable = new FNLabel(FNCPConstants.FN_BILLING_LABEL);
 
         // Override TextField properties
         mTextNewDataName.setEditable(false);
@@ -194,7 +194,7 @@ public class AddDataPanel extends FNPanel {
                         .setLocation((String) mSpinnerNewDataLocation.getValue())
                         .setGPSCoords(mTextNewDataGPS.getText())
                         .setBillingType((String) mSpinnerNewDataBillable.getValue())
-                        .setBillingState(FNSqlConstants.BILLING_STATE_CREATED)
+                        .setBillingState(FNPConstants.BILLING_STATE_CREATED)
                         .build();
                 // validate FieldNote
                 if (FNValidation.validate(fieldNote)) {

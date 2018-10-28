@@ -8,7 +8,7 @@
 package com.devhunter.fncp.mvc.view.loginpanel;
 
 import com.devhunter.fncp.FNInit;
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
@@ -27,8 +27,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import static com.devhunter.fncp.constants.FNConstants.*;
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNCPConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 public class FNRegister extends FNPanel {
 
@@ -57,8 +57,8 @@ public class FNRegister extends FNPanel {
     }
 
     private void init() {
-        mRegisterFrame.setSize(FNConstants.lOGIN_PANEL_X_AXIS,
-                FNConstants.lOGIN_PANEL_Y_AXIS);
+        mRegisterFrame.setSize(FNCPConstants.lOGIN_PANEL_X_AXIS,
+                FNCPConstants.lOGIN_PANEL_Y_AXIS);
         mRegisterFrame.setLocationRelativeTo(null);
         mRegisterFrame.setVisible(true);
         mRegisterFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

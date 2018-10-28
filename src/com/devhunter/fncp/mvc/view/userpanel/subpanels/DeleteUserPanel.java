@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import javax.swing.*;
 import java.awt.*;
 
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 public class DeleteUserPanel extends FNPanel {
 
@@ -33,7 +33,7 @@ public class DeleteUserPanel extends FNPanel {
         mDeleteUserPanel = new FNPanel();
         mDeleteUserTextFieldPanel = new FNPanel();
         mDeleteUser = new FNTextField();
-        mButtonDelete = new FNButton(FNConstants.BUTTON_DELETE);
+        mButtonDelete = new FNButton(FNCPConstants.BUTTON_DELETE);
 
         init();
     }
@@ -52,7 +52,7 @@ public class DeleteUserPanel extends FNPanel {
         GridLayout deleteUserTextFieldPanelLayout = new GridLayout(0, 2);
         mDeleteUserTextFieldPanel.setLayout(deleteUserTextFieldPanelLayout);
 
-        FNLabel deleteUserlbl = new FNLabel(FNConstants.USER_USERNAME_LABEL);
+        FNLabel deleteUserlbl = new FNLabel(FNCPConstants.USER_USERNAME_LABEL);
 
         mDeleteUserTextFieldPanel.add(deleteUserlbl);
         mDeleteUserTextFieldPanel.add(mDeleteUser);

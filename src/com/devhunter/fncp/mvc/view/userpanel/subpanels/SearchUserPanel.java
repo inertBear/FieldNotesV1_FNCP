@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
-import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
 import com.devhunter.fncp.mvc.model.FNUser;
@@ -23,8 +23,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.devhunter.fncp.constants.FNConstants.*;
-import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNCPConstants.*;
+import static com.devhunter.fncp.constants.FNPConstants.*;
 
 public class SearchUserPanel extends FNPanel {
 
@@ -42,8 +42,8 @@ public class SearchUserPanel extends FNPanel {
         mSearchTextFieldPanel = new FNPanel();
         mSearchUser = new FNTextField();
         mSearchUserOutput = new JTextArea(28, 32);
-        mButtonSearch = new FNButton(FNConstants.BUTTON_SEARCH);
-        mButtonExport = new FNButton(FNConstants.BUTTON_EXPORT);
+        mButtonSearch = new FNButton(FNCPConstants.BUTTON_SEARCH);
+        mButtonExport = new FNButton(FNCPConstants.BUTTON_EXPORT);
         mUsers = new ArrayList<>();
 
         init();
@@ -62,7 +62,7 @@ public class SearchUserPanel extends FNPanel {
         GridLayout searchUserTextFieldPanelLayout = new GridLayout(0, 2);
         mSearchTextFieldPanel.setLayout(searchUserTextFieldPanelLayout);
 
-        FNLabel searchUserLbl = new FNLabel(FNConstants.FN_USERNAME_LABEL);
+        FNLabel searchUserLbl = new FNLabel(FNCPConstants.FN_USERNAME_LABEL);
 
         JScrollPane userSearchScroll = new JScrollPane(mSearchUserOutput);
         mSearchUserOutput.setEditable(false);
