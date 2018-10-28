@@ -18,19 +18,19 @@ public class FNBillingQueries {
     public static final String SELECT_NULL_BILLING_QUERY = "SELECT * FROM " + DATA_TABLE + " WHERE " + BILLING_STATE_IS_NULL;
 
     //searchData all "created" data
-    public static final String SELECT_BILLING_QUERY = "SELECT * FROM " + DATA_TABLE + " WHERE " + BILLING_COLUMN + " = '" + IS_BILLABLE + "' AND " + BILLING_STATE_COLUMN + " = '%s'";
+    public static final String SELECT_BILLING_QUERY = "SELECT * FROM " + DATA_TABLE + " WHERE " + BILLING_TAG + " = '" + IS_BILLABLE + "' AND " + BILLING_STATE_TAG + " = '%s'";
     //searchData "created" data by user
-    public static final String SELECT_BILLING_BY_USER_QUERY = SELECT_BILLING_QUERY + " AND " + USER_COLUMN + " = '%s'";
+    public static final String SELECT_BILLING_BY_USER_QUERY = SELECT_BILLING_QUERY + " AND " + USERNAME_TAG + " = '%s'";
     //searchData "created" data by date range
-    public static final String SELECT_BILLING_BY_RANGE_QUERY = SELECT_BILLING_QUERY + " AND " + DATESTART_COLUMN + " >= '%s' AND " + DATEEND_COLUMN + " <= '%s'";
+    public static final String SELECT_BILLING_BY_RANGE_QUERY = SELECT_BILLING_QUERY + " AND " + DATE_START_TAG + " >= '%s' AND " + DATE_END_TAG + " <= '%s'";
     //searchData "created data by project
-    public static final String SELECT_BILLING_BY_PROJECT_QUERY = SELECT_BILLING_QUERY + " AND " + PROJECTNUMBER_COLUMN + " = '%s'";
+    public static final String SELECT_BILLING_BY_PROJECT_QUERY = SELECT_BILLING_QUERY + " AND " + PROJECT_NUMBER_TAG + " = '%s'";
     //searchData "created" data by user and date range
-    public static final String SELECT_BILLING_BY_USER_AND_RANGE_QUERY = SELECT_BILLING_BY_USER_QUERY + " AND " + DATESTART_COLUMN + " >= '%s' AND " + DATEEND_COLUMN + " <= '%s'";
+    public static final String SELECT_BILLING_BY_USER_AND_RANGE_QUERY = SELECT_BILLING_BY_USER_QUERY + " AND " + DATE_START_TAG + " >= '%s' AND " + DATE_END_TAG + " <= '%s'";
     //searchData "created" data by user and project
-    public static final String SELECT_BILLING_BY_USER_AND_PROJECT_QUERY = SELECT_BILLING_BY_USER_QUERY + " AND " + PROJECTNUMBER_COLUMN + " = '%s'";
+    public static final String SELECT_BILLING_BY_USER_AND_PROJECT_QUERY = SELECT_BILLING_BY_USER_QUERY + " AND " + PROJECT_NUMBER_TAG + " = '%s'";
     //searchData "created data by project and date range
-    public static final String SELECT_BILLING_BY_PROJECT_AND_DATE_RANGE_QUERY = SELECT_BILLING_BY_PROJECT_QUERY + " AND " + DATESTART_COLUMN + " >= '%s' AND " + DATEEND_COLUMN + " <= '%s'";
+    public static final String SELECT_BILLING_BY_PROJECT_AND_DATE_RANGE_QUERY = SELECT_BILLING_BY_PROJECT_QUERY + " AND " + DATE_START_TAG + " >= '%s' AND " + DATE_END_TAG + " <= '%s'";
     //searchData "created" data by user, project, and date range
-    public static final String SELECT_BILLING_BY_USER_DATE_RANGE_AND_PROJECT_QUERY = SELECT_BILLING_BY_USER_AND_PROJECT_QUERY + " AND " + DATESTART_COLUMN + " >= '%s' AND " + DATEEND_COLUMN + " <= '%s'";
+    public static final String SELECT_BILLING_BY_USER_DATE_RANGE_AND_PROJECT_QUERY = SELECT_BILLING_BY_USER_AND_PROJECT_QUERY + " AND " + DATE_START_TAG + " >= '%s' AND " + DATE_END_TAG + " <= '%s'";
 }

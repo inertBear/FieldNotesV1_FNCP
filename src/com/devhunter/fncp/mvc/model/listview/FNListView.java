@@ -8,8 +8,8 @@
 package com.devhunter.fncp.mvc.model.listview;
 
 import com.devhunter.fncp.constants.FNSqlConstants;
-import com.devhunter.fncp.mvc.controller.sql.FNDataController;
-import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.FNBillingStateMachine;
+import com.devhunter.fncp.mvc.controller.FNDataController;
+import com.devhunter.fncp.mvc.controller.billing.statemachine.FNBillingStateMachine;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.utilities.FNUtil;
 import javafx.application.Platform;

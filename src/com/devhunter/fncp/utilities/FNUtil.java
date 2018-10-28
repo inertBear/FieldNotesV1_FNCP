@@ -9,7 +9,7 @@ package com.devhunter.fncp.utilities;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.constants.FNSqlConstants;
-import com.devhunter.fncp.mvc.controller.sql.billing.FNBillingController;
+import com.devhunter.fncp.mvc.controller.billing.FNBillingController;
 import com.devhunter.fncp.mvc.model.FieldNote;
 
 import javax.swing.*;
@@ -181,21 +181,21 @@ public class FNUtil {
         if (resultSet != null) {
             while (resultSet.next()) {
                 FieldNote fieldNote = new FieldNote.FieldNoteBuilder()
-                        .setUserName(resultSet.getString(FNSqlConstants.USER_COLUMN))
-                        .setTicketNumber(resultSet.getString(FNSqlConstants.TICKET_COLUMN))
-                        .setWellName(resultSet.getString(FNSqlConstants.WELLNAME_COLUMN))
-                        .setDateStart(resultSet.getString(FNSqlConstants.DATESTART_COLUMN))
-                        .setTimeStart(resultSet.getString(FNSqlConstants.TIMESTART_COLUMN))
-                        .setMileageStart(resultSet.getString(FNSqlConstants.MILEAGESTART_COLUMN))
-                        .setDescription(resultSet.getString(FNSqlConstants.DESCRIPTION_COLUMN))
-                        .setMileageEnd(resultSet.getString(FNSqlConstants.MILEAGEEND_COLUMN))
-                        .setDateEnd(resultSet.getString(FNSqlConstants.DATEEND_COLUMN))
-                        .setTimeEnd(resultSet.getString(FNSqlConstants.TIMEEND_COLUMN))
-                        .setProjectNumber(resultSet.getString(FNSqlConstants.PROJECTNUMBER_COLUMN))
-                        .setLocation(resultSet.getString(FNSqlConstants.LOCATION_COLUMN))
-                        .setGPSCoords(resultSet.getString(FNSqlConstants.GPSCOORDS_COLUMN))
-                        .setBillingType(resultSet.getString(FNSqlConstants.BILLING_COLUMN))
-                        .setBillingState(resultSet.getString(FNSqlConstants.BILLING_STATE_COLUMN))
+                        .setUserName(resultSet.getString(FNSqlConstants.USERNAME_TAG))
+                        .setTicketNumber(resultSet.getString(FNSqlConstants.TICKET_NUMBER_TAG))
+                        .setWellName(resultSet.getString(FNSqlConstants.WELLNAME_TAG))
+                        .setDateStart(resultSet.getString(FNSqlConstants.DATE_START_TAG))
+                        .setTimeStart(resultSet.getString(FNSqlConstants.TIME_START_TAG))
+                        .setMileageStart(resultSet.getString(FNSqlConstants.MILEAGE_START_TAG))
+                        .setDescription(resultSet.getString(FNSqlConstants.DESCRIPTION_TAG))
+                        .setMileageEnd(resultSet.getString(FNSqlConstants.MILEAGE_END_TAG))
+                        .setDateEnd(resultSet.getString(FNSqlConstants.DATE_END_TAG))
+                        .setTimeEnd(resultSet.getString(FNSqlConstants.TIME_END_TAG))
+                        .setProjectNumber(resultSet.getString(FNSqlConstants.PROJECT_NUMBER_TAG))
+                        .setLocation(resultSet.getString(FNSqlConstants.LOCATION_TAG))
+                        .setGPSCoords(resultSet.getString(FNSqlConstants.GPS_TAG))
+                        .setBillingType(resultSet.getString(FNSqlConstants.BILLING_TAG))
+                        .setBillingState(resultSet.getString(FNSqlConstants.BILLING_STATE_TAG))
                         .build();
 
                 fieldNotes.add(fieldNote);
@@ -254,8 +254,8 @@ public class FNUtil {
                 FNConstants.FN_DESCRIPTION_LABEL + " " + fieldNote.getDescription() + "\n" +
                 FNConstants.FN_GPS_LABEL + " " + fieldNote.getGPSCoords() + "\n\n" +
                 FNConstants.FN_BILLING_STATE_LABEL + " " + fieldNote.getBillingState() + "\n\n" +
-                "Total hours: " + con.calculateHours(fieldNote) + "\n" +
-                "Total mileage: " + con.calculateMilage(fieldNote) + "\n";
+                FNConstants.FN_BILLING_TOTAL_HOURS + " " + con.calculateHours(fieldNote) + "\n" +
+                FNConstants.FN_BILLING_TOTAL_MILEAGE + " " + con.calculateMilage(fieldNote) + "\n";
     }
 
     /**

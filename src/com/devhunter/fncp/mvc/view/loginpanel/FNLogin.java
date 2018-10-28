@@ -20,13 +20,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+import static com.devhunter.fncp.constants.FNSqlConstants.*;
+
 /**
  * This class draws the login panel as a singleton. Successful login will create an instance of
  * the Control Panel
  *
  * @author devHunter Feb 20, 2018
  */
-
 public class FNLogin extends FNPanel {
 
     private static JFrame mLoginFrame;
@@ -57,33 +58,38 @@ public class FNLogin extends FNPanel {
     }
 
     public void init() {
-        // Frame
         mLoginFrame.setSize(FNConstants.lOGIN_PANEL_X_AXIS, FNConstants.lOGIN_PANEL_Y_AXIS);
         mLoginFrame.setLocationRelativeTo(null);
         mLoginFrame.setVisible(true);
         mLoginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // Panels/Layouts
+
+
         BorderLayout loginPanelMainLayout = new BorderLayout();
         mLoginPanel.setLayout(loginPanelMainLayout);
         GridLayout loginCredentialPanelLayout = new GridLayout(0, 2);
         mLoginCredentialPanel.setLayout(loginCredentialPanelLayout);
+
         // ImageLabels
         try {
             Image img = ImageIO.read(getClass().getResource(FNConstants.APPLICATION_LOGO_FOLDER));
             mLoginTitleLabel = new FNImageLabel(new ImageIcon(img));
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(mLoginFrame, "title image failed to load");
+            ex.printStackTrace();
+            System.out.println("Title image failed to load");
         }
+
         // ImageButtons
         try {
             Image img = ImageIO.read(getClass().getResource(FNConstants.BUTTON_SUBMIT_LOCATION));
             mButtonLogin = new FNImageButton(new ImageIcon(img));
         } catch (IOException e1) {
-            JOptionPane.showMessageDialog(mLoginFrame, "Image button failed to load");
+            e1.printStackTrace();
+            System.out.println("Image button failed to load");
         }
-        // Labels
-        FNLabel lblUsername = new FNLabel(FNConstants.CRED_USERNAME_LABEL);
-        FNLabel lblPassword = new FNLabel(FNConstants.CRED_PASSWORD_LABEL);
+
+        FNLabel lblUsername = new FNLabel(FNConstants.USER_USERNAME_LABEL);
+        FNLabel lblPassword = new FNLabel(FNConstants.USER_PASSWORD_LABEL);
+
         // Override Label properties
         mLoginUsername.setPreferredSize(FNUtil.getInstance().getStandardTextFieldDimension());
         mLoginPassword.setPreferredSize(FNUtil.getInstance().getStandardTextFieldDimension());
@@ -104,6 +110,7 @@ public class FNLogin extends FNPanel {
         mLoginFrame.add(mLoginPanel, BorderLayout.CENTER);
         mLoginFrame.repaint();
         mLoginFrame.revalidate();
+
         //pressing "Enter" triggers the Login Button
         JRootPane rootPane = SwingUtilities.getRootPane(mButtonLogin);
         rootPane.setDefaultButton(mButtonLogin);
@@ -111,42 +118,43 @@ public class FNLogin extends FNPanel {
         mButtonLogin.addActionListener(e -> {
             mLoginPanel.setVisible(false);
 
-            // get login info
             String username = mLoginUsername.getText();
             String password = mLoginPassword.getText();
 
-            JSONObject loginResponse = FNUserController.login(username, password);
-
-            String status = loginResponse.getString("status");
-            String message = loginResponse.getString("message");
-
-            if (status.equals("success")) {
-                //set username to session
-                FNUtil.getInstance().setCurrentUsername(username);
-                FNUtil.getInstance().setCurrentPassword(password);
-
-                //find out if user has Admin Access
-                if (FNUserController.hasAdminAccess(username)) {
-                    FNUtil.getInstance().setAdminAccess(true);
-                } else {
-                    FNUtil.getInstance().setAdminAccess(false);
-                }
-
-                //open Control Panel
-                FNControlPanel.getInstance();
-            } else {
-                // display failure
-                JOptionPane.showMessageDialog(mLoginFrame, message);
-
-                //reset UI
-                mLoginPanel.setVisible(true);
-                mLoginPassword.setText("");
-            }
+            login(username, password);
         });
     }
 
-    public static JFrame getFieldNotesLoginFrame() {
-        return mLoginFrame;
+    private void login(String username, String password) {
+        JSONObject loginResponse = FNUserController.login(username, password);
+
+        String status = loginResponse.getString(RESPONSE_STATUS_TAG);
+        String message = loginResponse.getString(RESPONSE_MESSAGE_TAG);
+
+        if (status.equals(RESPONSE_STATUS_SUCCESS)) {
+            //set username & password to session
+            FNUtil.getInstance().setCurrentUsername(username);
+            FNUtil.getInstance().setCurrentPassword(password);
+
+            //find out if user has Admin Access
+            if (FNUserController.hasAdminAccess(username)) {
+                FNUtil.getInstance().setAdminAccess(true);
+            } else {
+                FNUtil.getInstance().setAdminAccess(false);
+            }
+
+            //open Control Panel
+            FNControlPanel.getInstance();
+        } else {
+            // display failure
+            JOptionPane.showMessageDialog(mLoginFrame, message);
+            resetGui();
+        }
+    }
+
+    private void resetGui() {
+        mLoginPanel.setVisible(true);
+        mLoginPassword.setText(null);
     }
 }
 

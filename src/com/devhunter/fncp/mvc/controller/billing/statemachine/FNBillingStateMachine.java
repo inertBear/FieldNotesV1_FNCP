@@ -1,8 +1,8 @@
-package com.devhunter.fncp.mvc.controller.sql.billing.statemachine;
+package com.devhunter.fncp.mvc.controller.billing.statemachine;
 
 import com.devhunter.fncp.constants.FNSqlConstants;
-import com.devhunter.fncp.mvc.controller.sql.FNDataController;
-import com.devhunter.fncp.mvc.controller.sql.billing.FNBillingController;
+import com.devhunter.fncp.mvc.controller.FNDataController;
+import com.devhunter.fncp.mvc.controller.billing.FNBillingController;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.utilities.FNUtil;
 

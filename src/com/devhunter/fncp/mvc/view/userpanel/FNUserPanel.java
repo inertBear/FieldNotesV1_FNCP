@@ -35,6 +35,7 @@ public class FNUserPanel extends FNPanel {
         mBtnUserAdd = new FNButton(FNConstants.USER_ADD_BUTTON);
         mBtnUserDelete = new FNButton(FNConstants.USER_DELETE_BUTTON);
         mBtnUserPassword = new FNButton(FNConstants.USER_EDIT_PASSWORD_BUTTON);
+
         init();
     }
 
@@ -55,13 +56,9 @@ public class FNUserPanel extends FNPanel {
         sUserControlPanel.add(mBtnUserPassword);
         sUserControlPanel.setVisible(false);
 
-        // Initialize User Search Panel
         SearchUserPanel.getInstance();
-        // Initialize Add User Panel
         AddUserPanel.getInstance();
-        // Initialize Delete User Panel
         DeleteUserPanel.getInstance();
-        // Initialize Change Password User Panel
         ChangeUserPasswordPanel.getInstance();
 
         // when user navigates to Search User TAB

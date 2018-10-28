@@ -5,11 +5,11 @@
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.devhunter.fncp.mvc.controller.sql.billing;
+package com.devhunter.fncp.mvc.controller.billing;
 
 import com.devhunter.fncp.constants.queries.FNBillingQueries;
 import com.devhunter.fncp.mvc.controller.FNController;
-import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.BillingState;
+import com.devhunter.fncp.mvc.controller.billing.statemachine.BillingState;
 import com.devhunter.fncp.mvc.controller.validation.FNValidation;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.utilities.SqlInterpolate;

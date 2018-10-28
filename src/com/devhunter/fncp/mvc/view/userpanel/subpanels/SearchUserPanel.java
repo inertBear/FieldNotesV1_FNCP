@@ -8,8 +8,8 @@
 package com.devhunter.fncp.mvc.view.userpanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.exporter.ExportController;
 import com.devhunter.fncp.mvc.controller.FNUserController;
+import com.devhunter.fncp.mvc.controller.exporter.ExportController;
 import com.devhunter.fncp.mvc.model.FNUser;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
@@ -23,6 +23,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static com.devhunter.fncp.constants.FNConstants.*;
+import static com.devhunter.fncp.constants.FNSqlConstants.*;
+
 public class SearchUserPanel extends FNPanel {
 
     private static SearchUserPanel mInstance;
@@ -33,11 +36,6 @@ public class SearchUserPanel extends FNPanel {
     private FNButton mButtonSearch;
     private FNButton mButtonExport;
     private ArrayList<FNUser> mUsers;
-
-    private static final String ID = "ID: ";
-    private static final String USERNAME = "Username: ";
-    private static final String PASSWORD = "Password: ";
-    private static final String USER_TYPE = "User Type: ";
 
     private SearchUserPanel() {
         mSearchUserPanel = new FNPanel();
@@ -89,24 +87,13 @@ public class SearchUserPanel extends FNPanel {
             mSearchUserOutput.setText(null);
 
             String searchUsername = mSearchUser.getText();
-
-            JSONObject searchResponse = FNUserController.searchUsers(searchUsername);
-            String status = searchResponse.getString("status");
-            String messageString = searchResponse.getString("message");
-            JSONArray messageArray = new JSONArray(messageString);
-
-            if (status.equals("success")) {
-                printJsonObject(messageArray, mSearchUserOutput);
-            } else {
-                JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);
-            }
+            searchUser(searchUsername);
         });
 
-        // When user trys to export CSV file to user desktop
+        // When user tries to export CSV file to user desktop
         mButtonExport.addActionListener(e -> {
+            boolean exportSuccessCode = ExportController.writeUserToCSVFile(mUsers);
 
-            ExportController exporter = new ExportController();
-            boolean exportSuccessCode = exporter.writeUserToCSVFile(mUsers);
             if (exportSuccessCode) {
                 JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
             } else {
@@ -115,18 +102,42 @@ public class SearchUserPanel extends FNPanel {
         });
     }
 
-    public void printJsonObject(JSONArray message, JTextArea areaToPrintOn) {
+    /**
+     * search users in FieldNotes
+     *
+     * @param username
+     */
+    private void searchUser(String username) {
+        JSONObject searchResponse = FNUserController.searchUsers(username);
+        String status = searchResponse.getString(RESPONSE_STATUS_TAG);
+        String messageString = searchResponse.getString(RESPONSE_MESSAGE_TAG);
+
+        if (status.equals(RESPONSE_STATUS_SUCCESS)) {
+            JSONArray messageArray = new JSONArray(messageString);
+            printJsonObject(messageArray, mSearchUserOutput);
+        } else {
+            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);
+        }
+    }
+
+    /**
+     * print search results to JTextArea
+     *
+     * @param message
+     * @param areaToPrintOn
+     */
+    private void printJsonObject(JSONArray message, JTextArea areaToPrintOn) {
         for (int i = 0; i < message.length(); i++) {
             JSONObject jsonObject = message.getJSONObject(i);
-            String userId = jsonObject.getString("userId");
-            String username = jsonObject.getString("userUserName");
-            String password = jsonObject.getString("userPassword");
-            String type = jsonObject.getString("userType");
+            String userId = jsonObject.getString(USER_USER_ID_TAG);
+            String username = jsonObject.getString(USER_USERNAME_TAG);
+            String password = jsonObject.getString(USER_PASSWORD_TAG);
+            String type = jsonObject.getString(USER_TYPE_TAG);
 
-            areaToPrintOn.append(ID + userId + "\n");
-            areaToPrintOn.append(USERNAME + username + "\n");
-            areaToPrintOn.append(PASSWORD + password + "\n");
-            areaToPrintOn.append(USER_TYPE + type + "\n\n");
+            areaToPrintOn.append(USER_ID_LABEL + " " + userId + "\n");
+            areaToPrintOn.append(USER_USERNAME_LABEL + " " + username + "\n");
+            areaToPrintOn.append(USER_PASSWORD_LABEL + " " + password + "\n");
+            areaToPrintOn.append(USER_USER_TYPE_LABEL + " " + type + "\n\n");
         }
     }
 

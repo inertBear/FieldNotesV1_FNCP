@@ -17,6 +17,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.devhunter.fncp.constants.FNSqlConstants.*;
+
 public class ChangeUserPasswordPanel extends FNPanel {
 
     private static ChangeUserPasswordPanel mInstance;
@@ -53,7 +55,7 @@ public class ChangeUserPasswordPanel extends FNPanel {
 
         // ADMIN ACCESS: change any user password
         if (FNUtil.getInstance().hasAdminAccess()) {
-            FNLabel passUserlbl = new FNLabel(FNConstants.CRED_USERNAME_LABEL);
+            FNLabel passUserlbl = new FNLabel(FNConstants.USER_USERNAME_LABEL);
             FNLabel newPassUserlbl = new FNLabel(FNConstants.USER_NEW_PASSWORD_LABEL);
 
             // Add Views to TextField Panel
@@ -108,31 +110,30 @@ public class ChangeUserPasswordPanel extends FNPanel {
 
     /**
      * change the password of the entity
-     *
-     * @param username
-     * @param oldPassword
-     * @param newPassword
      */
     private void updatePassword(String username, String oldPassword, String newPassword) {
         JSONObject updatePasswordResponse;
         // if they supply their current password
         if (FNUtil.getInstance().getCurrentPassword().equals(oldPassword)) {
-
             // update their password
             updatePasswordResponse = FNUserController.updatePassword(username, newPassword);
 
-            String status = updatePasswordResponse.getString("status");
-            String message = updatePasswordResponse.getString("message");
-            if (status.equals("success")) {
+            String status = updatePasswordResponse.getString(RESPONSE_STATUS_TAG);
+            String message = updatePasswordResponse.getString(RESPONSE_MESSAGE_TAG);
+            if (status.equals(RESPONSE_STATUS_SUCCESS)) {
                 FNUtil.getInstance().setCurrentPassword(newPassword);
+                resetGui();
+            } else {
+                mCurrentPass.setText(null);
+                mNewUserPass.setText(null);
             }
 
             JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), message);
         } else {
-            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "entered wrong current password");
+            JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Current password incorrect");
+            mCurrentPass.setText(null);
+            mNewUserPass.setText(null);
         }
-        mCurrentPass.setText(null);
-        mNewUserPass.setText(null);
     }
 
     public static JPanel getView() {
@@ -149,10 +150,8 @@ public class ChangeUserPasswordPanel extends FNPanel {
     }
 
     private void resetGui() {
-        mChangeUserPasswordPanel.setVisible(false);
-
-        mChangeUserPasswordPanel.setVisible(false);
         mChangePassUsername.setText(null);
+        mCurrentPass.setText(null);
         mNewUserPass.setText(null);
     }
 }

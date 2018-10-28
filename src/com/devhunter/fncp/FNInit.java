@@ -14,9 +14,10 @@ import com.devhunter.fncp.utilities.FNUtil;
 
 import javax.swing.*;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
+import static com.devhunter.fncp.constants.FNConstants.REGISTRATION_FILE_PATH;
 
 public class FNInit {
 
@@ -26,14 +27,9 @@ public class FNInit {
         FieldNotesFrame = new JFrame(FNConstants.APPLICATION_NAME);
 
         String productKey = null;
-
-        //get product key from saved file
-        String path = System.getProperty("user.home") + File.separator + "Documents";
-        File textFile = new File(path, "FNCP_product_key.txt");
-
         FileReader fileReader;
         try {
-            fileReader = new FileReader(textFile);
+            fileReader = new FileReader(REGISTRATION_FILE_PATH);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             productKey = bufferedReader.readLine();
         } catch (IOException e) {

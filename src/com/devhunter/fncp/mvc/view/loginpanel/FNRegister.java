@@ -1,8 +1,14 @@
+/**
+ * ? 2017-2018 FieldNotes
+ * All Rights Reserved
+ * <p>
+ * Created by DevHunter exclusively for FieldNotes
+ */
+
 package com.devhunter.fncp.mvc.view.loginpanel;
 
 import com.devhunter.fncp.FNInit;
 import com.devhunter.fncp.constants.FNConstants;
-import com.devhunter.fncp.mvc.controller.JsonParser;
 import com.devhunter.fncp.mvc.controller.FNUserController;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNLabel;
@@ -21,31 +27,24 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import static com.devhunter.fncp.constants.FNConstants.*;
+import static com.devhunter.fncp.constants.FNSqlConstants.*;
+
 public class FNRegister extends FNPanel {
 
-    // Frame
     private static JFrame mRegisterFrame;
     private FNPanel mRegisterPanel;
     private FNLabel mRegisterLabel;
     private FNTextField mProductKey;
     private FNButton mRegisterButton;
-
-    private JsonParser mJsonParser = new JsonParser();
-
-    // Panels
     private static FNRegister mInstance;
 
     private FNRegister() {
-        // Create Frame
         mRegisterFrame = FNInit.getFieldNotesJFrame();
-        // Create Panel
         mRegisterPanel = new FNPanel();
-        // Label
-        mRegisterLabel = new FNLabel("Enter your Product key");
-        // Textfield
+        mRegisterLabel = new FNLabel(REGISTRATION_LABEL);
         mProductKey = new FNTextField();
-        // Button
-        mRegisterButton = new FNButton("Register");
+        mRegisterButton = new FNButton(BUTTON_REGISTER);
 
         init();
     }
@@ -84,42 +83,46 @@ public class FNRegister extends FNPanel {
         mRegisterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // try to register
-                // for test: 1159616266
                 String productKey = mProductKey.getText();
-
-                JSONObject response = FNUserController.register(productKey);
-
-                String status = response.getString("status");
-                String message = response.getString("message");
-
-                if (status.equals("success")) {
-                    //write product key to file
-                    String path = System.getProperty("user.home") + File.separator + "Documents";
-
-                    try {
-                        File textFile = new File(path, "FNCP_product_key.txt");
-                        BufferedWriter out = new BufferedWriter(new FileWriter(textFile));
-                        out.write(productKey);
-
-                        out.close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    // display success
-                    JOptionPane.showMessageDialog(mRegisterFrame, message);
-
-                    //close register panel
-                    mRegisterFrame.dispatchEvent(new WindowEvent(mRegisterFrame, WindowEvent.WINDOW_CLOSING));
-                } else {
-                    // display failure
-                    JOptionPane.showMessageDialog(mRegisterFrame, message);
-
-                    //reset UI
-                    mRegisterPanel.setVisible(true);
-                }
+                register(productKey);
             }
         });
+    }
+
+    private void register(String productKey) {
+        // save key
+        FNUtil.getInstance().setCurrentProductKey(productKey);
+        // try to register
+        JSONObject response = FNUserController.register(productKey);
+
+        String status = response.getString(RESPONSE_STATUS_TAG);
+        String message = response.getString(RESPONSE_MESSAGE_TAG);
+
+        if (status.equals(RESPONSE_STATUS_SUCCESS)) {
+            //write product key to file
+            try {
+                File textFile = new File(REGISTRATION_FILE_PATH);
+                BufferedWriter out = new BufferedWriter(new FileWriter(textFile));
+                out.write(productKey);
+                out.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            // display success
+            JOptionPane.showMessageDialog(mRegisterFrame, message);
+            //close register panel
+            mRegisterFrame.dispatchEvent(new WindowEvent(mRegisterFrame, WindowEvent.WINDOW_CLOSING));
+        } else {
+            // clear the key
+            FNUtil.getInstance().setCurrentProductKey("");
+
+            JOptionPane.showMessageDialog(mRegisterFrame, message);
+            resetGui();
+        }
+    }
+
+    private void resetGui() {
+        mProductKey.setText(null);
+        mRegisterPanel.setVisible(true);
     }
 }

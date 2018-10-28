@@ -45,36 +45,4 @@ public class FNController {
         }
         return fieldNotes;
     }
-
-    /**
-     * Update a FieldNote
-     *
-     * @param query
-     * @return true is success, false if failure
-     */
-    protected boolean updateData(String query) {
-        try {
-            mStatement.executeUpdate(query);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * Delete a FieldNote
-     *
-     * @param query
-     * @return
-     */
-    protected boolean deleteData(String query) {
-        try {
-            mStatement.executeUpdate(query);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 }

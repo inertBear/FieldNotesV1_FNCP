@@ -17,6 +17,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.devhunter.fncp.constants.FNConstants.*;
+import static com.devhunter.fncp.constants.FNSqlConstants.RESPONSE_MESSAGE_TAG;
+
 public class AddUserPanel extends FNPanel {
 
     private static AddUserPanel mInstance;
@@ -65,11 +68,11 @@ public class AddUserPanel extends FNPanel {
 
         mUserCheckbox.setSelected(true);
 
-        mCheckBoxPanel.add(new FNLabel("as User:"));
+        mCheckBoxPanel.add(new FNLabel(AS_USER_TYPE_USER_LABEL));
         mCheckBoxPanel.add(mUserCheckbox);
-        mCheckBoxPanel.add(new FNLabel("as Admin:"));
+        mCheckBoxPanel.add(new FNLabel(AS_USER_TYPE_ADMIN_LABEL));
         mCheckBoxPanel.add(mAdminCheckbox);
-        mCheckBoxPanel.add(new FNLabel("as Test User:"));
+        mCheckBoxPanel.add(new FNLabel(AS_USER_TYPE_TEST_LABEL));
         mCheckBoxPanel.add(mTestCheckbox);
 
         // Add Views to TextField Panel with Gridbag layout
@@ -140,26 +143,42 @@ public class AddUserPanel extends FNPanel {
             public void actionPerformed(ActionEvent e) {
                 String newUsername = mAddUser.getText();
                 String newPassword = mAddPassword.getText();
-                String newType;
-
-                if (mAdminCheckbox.isSelected()) {
-                    newType = FNUserConstants.ADMIN_USER;
-                } else if (mTestCheckbox.isSelected()) {
-                    newType = FNUserConstants.TEST_USER;
-                } else {
-                    newType = FNUserConstants.REGULAR_USER;
-                }
+                String newType = getSelectedUserType();
 
                 addUser(newUsername, newPassword, newType);
             }
         });
     }
 
+    /**
+     * add user to FieldNotes
+     *
+     * @param username
+     * @param password
+     * @param type
+     */
     private void addUser(String username, String password, String type) {
         JSONObject addUserResponse = FNUserController.addUser(username, password, type);
 
-        String addUserMessage = addUserResponse.getString("message");
+        String addUserMessage = addUserResponse.getString(RESPONSE_MESSAGE_TAG);
         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), addUserMessage);
+
+        resetGui();
+    }
+
+    /**
+     * get selected user type from UI
+     *
+     * @return
+     */
+    private String getSelectedUserType() {
+        if (mAdminCheckbox.isSelected()) {
+            return FNUserConstants.ADMIN_USER;
+        } else if (mTestCheckbox.isSelected()) {
+            return FNUserConstants.TEST_USER;
+        } else {
+            return FNUserConstants.REGULAR_USER;
+        }
     }
 
     public static JPanel getView() {
@@ -178,5 +197,8 @@ public class AddUserPanel extends FNPanel {
     private void resetGui() {
         mAddUser.setText(null);
         mAddPassword.setText(null);
+        mAdminCheckbox.setSelected(false);
+        mTestCheckbox.setSelected(false);
+        mUserCheckbox.setSelected(true);
     }
 }

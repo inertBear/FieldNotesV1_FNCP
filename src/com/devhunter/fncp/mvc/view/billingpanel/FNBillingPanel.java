@@ -9,7 +9,7 @@ package com.devhunter.fncp.mvc.view.billingpanel;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.constants.FNSqlConstants;
-import com.devhunter.fncp.mvc.controller.sql.billing.statemachine.BillingState;
+import com.devhunter.fncp.mvc.controller.billing.statemachine.BillingState;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
 import com.devhunter.fncp.mvc.model.fnview.FNPanel;
 import com.devhunter.fncp.mvc.view.FNControlPanel;

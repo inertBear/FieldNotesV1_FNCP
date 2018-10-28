@@ -8,8 +8,8 @@
 package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
+import com.devhunter.fncp.mvc.controller.FNDataController;
 import com.devhunter.fncp.mvc.controller.exporter.ExportController;
-import com.devhunter.fncp.mvc.controller.sql.FNDataController;
 import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
@@ -32,9 +32,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
 
-/**
- * Determines how the user will searchData for data and parses data into a JTextField
- */
+import static com.devhunter.fncp.constants.FNConstants.*;
+import static com.devhunter.fncp.constants.FNSqlConstants.*;
 
 public class SearchDataPanel extends FNPanel {
 
@@ -87,7 +86,7 @@ public class SearchDataPanel extends FNPanel {
         GridLayout searchFNTextFieldPanelLayout = new GridLayout(0, 2);
         mSearchTextFieldPanel.setLayout(searchFNTextFieldPanelLayout);
 
-        FNLabel lblUsernameSearch = new FNLabel(FNConstants.FN_USERNAME_LABEL);
+        FNLabel lblUsernameSearch = new FNLabel(FN_USERNAME_LABEL);
         FNLabel lblDataSearchDateStart = new FNLabel(FNConstants.FN_DATE_START_LABEL);
         FNLabel lblDataSearchDateEnd = new FNLabel(FNConstants.FN_DATE_END_LABEL);
 
@@ -143,10 +142,7 @@ public class SearchDataPanel extends FNPanel {
         // export CSV file to User Desktop
         mButtonExport.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // export controller
-                ExportController exporter = new ExportController();
-                boolean exportSuccess = exporter.writeDataToCSVFile(mFieldNotes);
-
+                boolean exportSuccess = ExportController.writeDataToCSVFile(mFieldNotes);
                 if (exportSuccess) {
                     JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
                 } else {
@@ -162,52 +158,65 @@ public class SearchDataPanel extends FNPanel {
         FNControlPanel.getFieldNotesFrame().revalidate();
     }
 
+    /**
+     * search FieldNotes by params
+     *
+     * @param username
+     * @param dateStart
+     * @param dateEnd
+     */
     private void searchFieldNotes(String username, String dateStart, String dateEnd) {
-        JSONObject searchFieldNoteResponse = FNDataController.searchFieldNotes(username, dateStart, dateEnd);
-        String status = searchFieldNoteResponse.getString("status");
-        String messageString = searchFieldNoteResponse.getString("message");
-        JSONArray messageArray = new JSONArray(messageString);
+        JSONObject searchFieldNoteResponse = FNDataController.searchFieldNotes(username, dateStart, dateEnd, null);
+        String status = searchFieldNoteResponse.getString(RESPONSE_STATUS_TAG);
+        String messageString = searchFieldNoteResponse.getString(RESPONSE_MESSAGE_TAG);
 
-        if (status.equals("success")) {
+        if (status.equals(RESPONSE_STATUS_SUCCESS)) {
+            JSONArray messageArray = new JSONArray(messageString);
             printJsonObject(messageArray, mSearchDataOutput);
         } else {
             JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);
         }
     }
 
+    /**
+     * print search results to JTextArea
+     *
+     * @param message
+     * @param areaToPrintOn
+     */
     private void printJsonObject(JSONArray message, JTextArea areaToPrintOn) {
         for (int i = 0; i < message.length(); i++) {
             JSONObject jsonObject = message.getJSONObject(i);
 
-            String ticketNumber = jsonObject.getString("ticketNumber");
-            String username = jsonObject.getString("userName");
-            String wellname = jsonObject.getString("wellName");
-            String timeStart = jsonObject.getString("timeStart");
-            String timeEnd = jsonObject.getString("timeEnd");
-            String dateStart = jsonObject.getString("dateStart");
-            String dateEnd = jsonObject.getString("dateEnd");
-            String mileageStart = jsonObject.getString("mileageStart");
-            String mileageEnd = jsonObject.getString("mileageEnd");
-            String description = jsonObject.getString("description");
-            String projectNumber = jsonObject.getString("projectNumber");
-            String location = jsonObject.getString("location");
-            String billing = jsonObject.getString("billing");
-            String gps = jsonObject.getString("gps");
+            String ticketNumber = jsonObject.getString(TICKET_NUMBER_TAG);
+            String username = jsonObject.getString(USERNAME_TAG);
+            String wellname = jsonObject.getString(WELLNAME_TAG);
+            String timeStart = jsonObject.getString(TIME_START_TAG);
+            String timeEnd = jsonObject.getString(TIME_END_TAG);
+            String dateStart = jsonObject.getString(DATE_START_TAG);
+            String dateEnd = jsonObject.getString(DATE_END_TAG);
+            String mileageStart = jsonObject.getString(MILEAGE_START_TAG);
+            String mileageEnd = jsonObject.getString(MILEAGE_END_TAG);
+            String description = jsonObject.getString(DESCRIPTION_TAG);
+            String projectNumber = jsonObject.getString(PROJECT_NUMBER_TAG);
+            String location = jsonObject.getString(LOCATION_TAG);
+            String billing = jsonObject.getString(BILLING_TAG);
+            String gps = jsonObject.getString(GPS_TAG);
 
-            areaToPrintOn.append("TicketNumber: " + ticketNumber + "\n");
-            areaToPrintOn.append("Username: " + username + "\n");
-            areaToPrintOn.append("Wellname: " + wellname + "\n");
-            areaToPrintOn.append("Time Start: " + timeStart + "\n");
-            areaToPrintOn.append("Time End: " + timeEnd + "\n");
-            areaToPrintOn.append("Date Start: " + dateStart + "\n");
-            areaToPrintOn.append("Date End: " + dateEnd + "\n");
-            areaToPrintOn.append("Mileage Start: " + mileageStart + "\n");
-            areaToPrintOn.append("Mileage End: " + mileageEnd + "\n");
-            areaToPrintOn.append("Description: " + description + "\n");
-            areaToPrintOn.append("Project Number: " + projectNumber + "\n");
-            areaToPrintOn.append("Location: " + location + "\n");
-            areaToPrintOn.append("Billing: " + billing + "\n");
-            areaToPrintOn.append("GPS: " + gps + "\n\n");
+            areaToPrintOn.append(FN_TICKET_NUMBER_LABEL + " " + ticketNumber + "\n");
+            areaToPrintOn.append(FN_USERNAME_LABEL + " " + username + "\n");
+            areaToPrintOn.append(FN_WELLNAME_LABEL + " " + wellname + "\n");
+            areaToPrintOn.append(FN_TIME_START_LABEL + " " + timeStart + "\n");
+            areaToPrintOn.append(FN_TIME_END_LABEL + " " + timeEnd + "\n");
+            areaToPrintOn.append(FN_DATE_START_LABEL + " " + dateStart + "\n");
+            areaToPrintOn.append(FN_DATE_END_LABEL + " " + dateEnd + "\n");
+            areaToPrintOn.append(FN_MILEAGE_START_LABEL + " " + mileageStart + "\n");
+            areaToPrintOn.append(FN_MILEAGE_END_LABEL + " " + mileageEnd + "\n");
+            areaToPrintOn.append(FN_DESCRIPTION_LABEL + " " + description + "\n");
+            areaToPrintOn.append(FN_PROJECT_LABEL + " " + projectNumber + "\n");
+            areaToPrintOn.append(FN_LOCATION_LABEL + " " + location + "\n");
+            areaToPrintOn.append(FN_BILLING_LABEL + " " + billing + "\n");
+            areaToPrintOn.append(FN_GPS_LABEL + " " + gps + "\n\n");
         }
     }
 

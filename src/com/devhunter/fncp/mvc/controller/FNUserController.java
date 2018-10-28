@@ -7,7 +7,6 @@
 
 package com.devhunter.fncp.mvc.controller;
 
-import com.devhunter.fncp.mvc.controller.JsonParser;
 import com.devhunter.fncp.utilities.FNUtil;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -16,10 +15,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.devhunter.fncp.constants.FNSqlConstants.*;
+import static com.devhunter.fncp.constants.FNUserConstants.ADMIN_USER;
+
 /**
  * This class holds the methods for all the user changes from and into the
  * database. Using these methods users can Add, Delete, Search and Change
- * Passwords for FieldNotes users. The methods housed here were only intended to
+ * Passwords for FieldNotes users.
+ * <p>
+ * NOTE: The methods housed here were only intended to
  * relate to the actual storing, alteration, and retrieving of FNUser
  * data.
  */
@@ -34,111 +38,81 @@ public class FNUserController {
     /**
      * search for users within FieldNotes.
      *
-     * @return ArrayList<FNUser>
+     * @param username may be null. If non-null, a a single user will be searched
+     * @return JSONObject that contains the search 'status' and 'message'- which contains the results
      */
     public static JSONObject searchUsers(String username) {
-        //get productKey
-        String productKey = FNUtil.getInstance().getCurrentProductKey();
-
-        // set URL for web service
-        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FN_searchUsers.php";
-
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("username", username));
-        params.add(new BasicNameValuePair("customerKey", productKey));
+        params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
 
         // make HTTP connection
-        return mJsonParser.createHttpRequest(postUrl, "POST", params);
+        return mJsonParser.createHttpRequest(SEARCH_USERS_URL, HTTP_REQUEST_METHOD_POST, params);
     }
 
     /**
      * add a user to FieldNotes
      *
-     * @param username of added user
-     * @param password of added user
-     * @param type     of added user
-     * @return JSONObject that contains the response
+     * @param username of user to add
+     * @param password of user to add
+     * @param type     of user to add
+     * @return JSONObject that contains the search 'status' and 'message'
      */
     public static JSONObject addUser(String username, String password, String type) {
-        //get productKey
-        String productKey = FNUtil.getInstance().getCurrentProductKey();
-
-        // set URL for web service
-        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FN_addUser.php";
-
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("username", username));
-        params.add(new BasicNameValuePair("password", password));
-        params.add(new BasicNameValuePair("type", type));
-        params.add(new BasicNameValuePair("customerKey", productKey));
+        params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
+        params.add(new BasicNameValuePair(USER_PASSWORD_TAG, password));
+        params.add(new BasicNameValuePair(USER_TYPE_TAG, type));
 
         // make HTTP connection
-        return mJsonParser.createHttpRequest(postUrl, "POST", params);
+        return mJsonParser.createHttpRequest(ADD_USER_URL, HTTP_REQUEST_METHOD_POST, params);
     }
 
     /**
-     * delete a registered user from FieldNotes
+     * delete an user from FieldNotes
      *
      * @param username of user to delete
-     * @return JSONObject with response from server
+     * @return JSONObject that contains the delete 'status' and 'message'
      */
     public static JSONObject deleteUser(String username) {
-        //get productKey
-        String productKey = FNUtil.getInstance().getCurrentProductKey();
-
-        // set URL for web service
-        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FN_deleteUser.php";
-
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("username", username));
-        params.add(new BasicNameValuePair("customerKey", productKey));
+        params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
 
         // make HTTP connection
-        return mJsonParser.createHttpRequest(postUrl, "POST", params);
+        return mJsonParser.createHttpRequest(DELETE_USER_URL, HTTP_REQUEST_METHOD_POST, params);
     }
 
     /**
-     * update a user's password
+     * update a user password
      *
-     * @param username    user to udpate
+     * @param username    user to update
      * @param newPassword password to update to
-     * @return JSON with update results
+     * @return JSONObject that contains the update 'status' and 'message'
      */
     public static JSONObject updatePassword(String username, String newPassword) {
-        //get productKey
-        String productKey = FNUtil.getInstance().getCurrentProductKey();
-
-        // set URL for web service
-        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FN_changePassword.php";
-
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("username", username));
-        params.add(new BasicNameValuePair("password", newPassword));
-        params.add(new BasicNameValuePair("customerKey", productKey));
+        params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
+        params.add(new BasicNameValuePair(USER_PASSWORD_TAG, newPassword));
 
         // make HTTP connection
-        return mJsonParser.createHttpRequest(postUrl, "POST", params);
+        return mJsonParser.createHttpRequest(UPDATE_PASSWORD_URL, HTTP_REQUEST_METHOD_POST, params);
     }
 
     /**
      * register to FieldNotes
      *
-     * @param productKey to register with
-     * @return JSON with registration results
+     * @return JSONObject that contains the registration 'status' and 'message'
      */
     public static JSONObject register(String productKey) {
-        final String REGISTER_URL = "http://www.fieldnotesfn.com/FNA_test/FNA_register.php";
-
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("customerKey", productKey));
+        params.add(new BasicNameValuePair(PRODUCT_KEY_TAG, productKey));
 
         // make HTTP connection
-        return mJsonParser.createHttpRequest(REGISTER_URL, "POST", params);
+        return mJsonParser.createHttpRequest(REGISTER_URL, HTTP_REQUEST_METHOD_POST, params);
     }
 
     /**
@@ -146,53 +120,40 @@ public class FNUserController {
      *
      * @param username user to login with
      * @param password password to login with
-     * @return JSON with login results
+     * @return JSONObject that contains the login 'status' and 'message'
      */
     public static JSONObject login(String username, String password) {
-        //get productKey
-        String productKey = FNUtil.getInstance().getCurrentProductKey();
-
-        // set URL for web service
-        final String postUrl = "http://www.fieldnotesfn.com/FNA_test/FNA_login.php";
-
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("username", username));
-        params.add(new BasicNameValuePair("password", password));
-        params.add(new BasicNameValuePair("customerKey", productKey));
+        params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
+        params.add(new BasicNameValuePair(USER_PASSWORD_TAG, password));
 
         // make HTTP connection
-        return mJsonParser.createHttpRequest(postUrl, "POST", params);
+        return mJsonParser.createHttpRequest(LOGIN_URL, HTTP_REQUEST_METHOD_POST, params);
     }
 
     /**
      * check is user has admin access
      *
      * @param username user to login with
-     * @return JSON with login results
+     * @return boolean true, if user is an admin
+     * false, if user is anything else
      */
     public static boolean hasAdminAccess(String username) {
-        //get productKey
-        String productKey = FNUtil.getInstance().getCurrentProductKey();
-
-        // set URL for web service
-        final String searchUrl = "http://www.fieldnotesfn.com/FNA_test/FN_confirmAdmin.php";
-
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("username", username));
-        params.add(new BasicNameValuePair("customerKey", productKey));
+        params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
 
         // make HTTP connection
-        JSONObject response = mJsonParser.createHttpRequest(searchUrl, "POST", params);
+        JSONObject response = mJsonParser.createHttpRequest(CONFIRM_ADMIN_TYPE_URL, HTTP_REQUEST_METHOD_POST, params);
 
         //retrieve values from response
-        String status = response.getString("status");
-        String message = response.getString("message");
+        String status = response.getString(RESPONSE_STATUS_TAG);
+        String message = response.getString(RESPONSE_MESSAGE_TAG);
 
-        if (status.equals("success")) {
+        if (status.equals(RESPONSE_STATUS_SUCCESS)) {
             FNUtil.getInstance().setCurrentUserType(message);
-            return message.equals("admin");
+            return message.equals(ADMIN_USER);
         }
         return false;
     }

@@ -1,4 +1,4 @@
-package com.devhunter.fncp.mvc.controller.sql.billing.statemachine;
+package com.devhunter.fncp.mvc.controller.billing.statemachine;
 
 public class BillingState {
     

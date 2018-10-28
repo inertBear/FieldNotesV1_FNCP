@@ -9,9 +9,9 @@ package com.devhunter.fncp.mvc.view.datapanel.subpanels;
 
 import com.devhunter.fncp.constants.FNConstants;
 import com.devhunter.fncp.constants.FNSqlConstants;
+import com.devhunter.fncp.mvc.controller.FNDataController;
 import com.devhunter.fncp.mvc.controller.validation.FNValidation;
-import com.devhunter.fncp.mvc.controller.sql.FNDataController;
-import com.devhunter.fncp.mvc.model.*;
+import com.devhunter.fncp.mvc.model.FieldNote;
 import com.devhunter.fncp.mvc.model.FieldNote.FieldNoteBuilder;
 import com.devhunter.fncp.mvc.model.dateutils.DateLabelFormatter;
 import com.devhunter.fncp.mvc.model.fnview.FNButton;
@@ -34,12 +34,14 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Properties;
 
+import static com.devhunter.fncp.constants.FNSqlConstants.*;
+
 public class AddDataPanel extends FNPanel {
 
     private static final long serialVersionUID = 1L;
     public static AddDataPanel sInstance;
-    public static FNPanel mAddFNMainPanel;
-    public FNPanel mAddFNButtonPanel;
+    private static FNPanel mAddFNMainPanel;
+    private FNPanel mAddFNButtonPanel;
     private FNTextField mTextNewDataName;
     private FNTextField mTextNewDataWellName;
     private FNTextField mTextNewDataMileageStart;
@@ -202,15 +204,19 @@ public class AddDataPanel extends FNPanel {
         });
     }
 
+    /**
+     * add a new FieldNote
+     *
+     * @param fieldNote
+     */
     private void addFieldNote(FieldNote fieldNote) {
         JSONObject addFieldNoteResponse = FNDataController.addFieldNote(fieldNote);
-        String status = addFieldNoteResponse.getString("status");
-        String addUserMessage = addFieldNoteResponse.getString("message");
+        String status = addFieldNoteResponse.getString(RESPONSE_STATUS_TAG);
+        String addUserMessage = addFieldNoteResponse.getString(RESPONSE_MESSAGE_TAG);
 
-        if (status.equals("success")){
+        if (status.equals(RESPONSE_STATUS_SUCCESS)) {
             resetGui();
         }
-
         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), addUserMessage);
     }
 
@@ -249,8 +255,8 @@ public class AddDataPanel extends FNPanel {
         // reset the TimePickers back to current time
         LocalDate now = LocalDate.now();
         mNewTicketStartModel.setDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
-        mNewTicketStartDatePicker.getJFormattedTextField().setText("");
+        mNewTicketStartDatePicker.getJFormattedTextField().setText(null);
         mNewTicketEndModel.setDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
-        mNewTicketEndDatePicker.getJFormattedTextField().setText("");
+        mNewTicketEndDatePicker.getJFormattedTextField().setText(null);
     }
 }

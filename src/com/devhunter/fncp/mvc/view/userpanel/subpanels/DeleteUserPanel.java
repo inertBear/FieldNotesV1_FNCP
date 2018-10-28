@@ -19,6 +19,8 @@ import org.json.JSONObject;
 import javax.swing.*;
 import java.awt.*;
 
+import static com.devhunter.fncp.constants.FNSqlConstants.*;
+
 public class DeleteUserPanel extends FNPanel {
 
     private static DeleteUserPanel mInstance;
@@ -50,7 +52,7 @@ public class DeleteUserPanel extends FNPanel {
         GridLayout deleteUserTextFieldPanelLayout = new GridLayout(0, 2);
         mDeleteUserTextFieldPanel.setLayout(deleteUserTextFieldPanelLayout);
 
-        FNLabel deleteUserlbl = new FNLabel(FNConstants.CRED_USERNAME_LABEL);
+        FNLabel deleteUserlbl = new FNLabel(FNConstants.USER_USERNAME_LABEL);
 
         mDeleteUserTextFieldPanel.add(deleteUserlbl);
         mDeleteUserTextFieldPanel.add(mDeleteUser);
@@ -68,14 +70,20 @@ public class DeleteUserPanel extends FNPanel {
         });
     }
 
+    /**
+     * delete user from FieldNotes
+     *
+     * @param username
+     */
     private void deleteUser(String username) {
+        // delete user
         JSONObject deleteUserResponse = FNUserController.deleteUser(username);
 
-        String status = deleteUserResponse.getString("status");
-        if (status.equals("success")) {
+        String deleteStatus = deleteUserResponse.getString(RESPONSE_STATUS_TAG);
+        if (deleteStatus.equals(RESPONSE_STATUS_SUCCESS)) {
             resetGui();
         }
-        String message = deleteUserResponse.getString("message");
+        String message = deleteUserResponse.getString(RESPONSE_MESSAGE_TAG);
         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), message);
     }
 
