@@ -51,6 +51,8 @@ public class FNBillingStateMachine {
                 Object state = message.get(BILLING_STATE_TAG);
                 // if no state
                 if (state == JSONObject.NULL || state.equals("")) {
+                    // update created state to not set
+                    message.put(BILLING_STATE_TAG, BILLING_STATE_NOT_SET);
                     // create update state
                     FieldNote fieldNote = FNUtil.buildFieldNote(message);
                     // advance state
