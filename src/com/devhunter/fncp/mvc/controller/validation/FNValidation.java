@@ -7,7 +7,7 @@
 
 package com.devhunter.fncp.mvc.controller.validation;
 
-import com.devhunter.fncp.mvc.model.FieldNote;
+import com.devhunter.fncp.mvc.model.FNNote;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 
 import javax.swing.*;
@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
- * This class handles the validation of the FieldNote objects. It is responsible for ensuring that no
+ * This class handles the validation of the FNNote objects. It is responsible for ensuring that no
  * incomplete or incorrect values get from the User-end and into the database. FNValidation will
  * throw an IllegalArgumentException if the data is incomplete.
  */
@@ -25,7 +25,7 @@ public class FNValidation {
     public FNValidation() {
     }
 
-    public static boolean validate(FieldNote fn) {
+    public static boolean validate(FNNote fn) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         String error = "";

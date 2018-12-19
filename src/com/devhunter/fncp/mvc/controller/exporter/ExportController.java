@@ -7,8 +7,8 @@
 
 package com.devhunter.fncp.mvc.controller.exporter;
 
+import com.devhunter.fncp.mvc.model.FNNote;
 import com.devhunter.fncp.mvc.model.FNUser;
-import com.devhunter.fncp.mvc.model.FieldNote;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,7 +51,7 @@ public class ExportController {
         return true;
     }
 
-    public static boolean writeDataToCSVFile(ArrayList<FieldNote> fieldNotes) {
+    public static boolean writeDataToCSVFile(ArrayList<FNNote> notes) {
 
         PrintWriter writer;
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
@@ -93,7 +93,7 @@ public class ExportController {
         builder.append("GPS_Coords");
         builder.append(System.getProperty("line.separator"));
 
-        for (FieldNote each : fieldNotes) {
+        for (FNNote each : notes) {
             builder.append(each.getTicketNumber());
             builder.append(",");
             builder.append(stripCommas(each.getUserName()));
@@ -128,7 +128,7 @@ public class ExportController {
         return true;
     }
 
-    public static boolean writeBillingToCSVFile(ArrayList<FieldNote> fieldNotes) {
+    public static boolean writeBillingToCSVFile(ArrayList<FNNote> notes) {
 
         PrintWriter writer;
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
@@ -172,7 +172,7 @@ public class ExportController {
         builder.append("Billing_State");
         builder.append(System.getProperty("line.separator"));
 
-        for (FieldNote each : fieldNotes) {
+        for (FNNote each : notes) {
             builder.append(each.getTicketNumber());
             builder.append(",");
             builder.append(stripCommas(each.getUserName()));

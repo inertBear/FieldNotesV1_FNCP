@@ -47,20 +47,20 @@ public class FNCPConstants {
     public static final String BILLED_DATA = "Billed";
     public static final String COMPLETED_DATA = "Completed";
     // CRUD Search Panel Strings
-    public static final String CRUD_SEARCH_TICKET_NUMBER = "Ticket Number:";
+    public static final String CRUD_SEARCH_NOTE_NUMBER = "Note Number:";
     // User Maintenance Strings
     public static final String USER_NEW_USERNAME_LABEL = "New Username:";
     public static final String USER_CURRENT_PASSWORD_LABEL = "Current Password:";
     public static final String USER_NEW_PASSWORD_LABEL = "New Password:";
     public static final String USER_USERNAME_LABEL = "Username:";
     public static final String USER_PASSWORD_LABEL = "Password:";
-    public static final String USER_ID_LABEL = "ID:";
+    public static final String USER_ID_LABEL = "User ID:";
     public static final String USER_USER_TYPE_LABEL = "User Type:";
     public static final String ADMIN_USER = "admin";
     public static final String REGULAR_USER = "user";
     public static final String TEST_USER = "test";
-    // FieldNote field strings
-    public static final String FN_TICKET_NUMBER_LABEL = "Ticket Number:";
+    // FNNote field strings
+    public static final String FN_NOTE_NUMBER_LABEL = "Note Number:";
     public static final String FN_USERNAME_LABEL = "Name:";
     public static final String FN_WELLNAME_LABEL = "Well Name:";
     public static final String FN_DATE_START_LABEL = "Date Start:";

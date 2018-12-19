@@ -10,7 +10,8 @@ package com.devhunter.fncp.utilities;
 import com.devhunter.fncp.constants.FNCPConstants;
 import com.devhunter.fncp.constants.FNPConstants;
 import com.devhunter.fncp.mvc.controller.validation.FNValidation;
-import com.devhunter.fncp.mvc.model.FieldNote;
+import com.devhunter.fncp.mvc.model.FNNote;
+import com.devhunter.fncp.mvc.model.FNUser;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -171,14 +172,14 @@ public class FNUtil {
     }
 
     /**
-     * create a FieldNote from a JSONObject
+     * create a FNNote from a JSONObject
      *
      * @param message
-     * @return FieldNote
+     * @return FNNote
      */
-    public static FieldNote buildFieldNote(JSONObject message) {
-        return new FieldNote.FieldNoteBuilder()
-                .setTicketNumber(message.getString(TICKET_NUMBER_TAG))
+    public static FNNote buildNote(JSONObject message) {
+        return new FNNote.FieldNoteBuilder()
+                .setNoteId(message.getString(TICKET_NUMBER_TAG))
                 .setUserName(message.getString(USERNAME_TAG))
                 .setWellName(message.getString(WELLNAME_TAG))
                 .setTimeStart(message.getString(TIME_START_TAG))
@@ -196,23 +197,62 @@ public class FNUtil {
                 .build();
     }
 
+    /**
+     * create a FNNote from a JSONObject for Readback
+     *
+     * @param message
+     * @return FNNote
+     */
+    public static FNNote buildNoteForReadback(JSONObject message) {
+        return new FNNote.FieldNoteBuilder()
+                .setNoteId(message.getString(TICKET_NUMBER_TAG))
+                .setUserName(message.getString(USERNAME_TAG))
+                .setWellName(message.getString(WELLNAME_TAG))
+                .setTimeStart(message.getString(TIME_START_TAG))
+                .setTimeEnd(message.getString(TIME_END_TAG))
+                .setDateStart(message.getString(DATE_START_TAG))
+                .setDateEnd(message.getString(DATE_END_TAG))
+                .setMileageStart(message.getString(MILEAGE_START_TAG))
+                .setMileageEnd(message.getString(MILEAGE_END_TAG))
+                .setDescription(message.getString(DESCRIPTION_TAG))
+                .setProjectNumber(message.getString(PROJECT_NUMBER_TAG))
+                .setLocation(message.getString(LOCATION_TAG))
+                .setBillingType(message.getString(BILLING_TAG))
+                .setGPSCoords(message.getString(GPS_TAG))
+                .build();
+    }
+
+    /**
+     * create a FNUser from a JSONObject
+     *
+     * @param message
+     * @return FNUser
+     */
+    public static FNUser buildUser(JSONObject message) {
+        return new FNUser.FNUserBuilder()
+                .setId(message.getString(USER_USER_ID_TAG))
+                .setUsername(message.getString(USER_USERNAME_TAG))
+                .setPassword(message.getString(USER_PASSWORD_TAG))
+                .setType(message.getString(USER_TYPE_TAG))
+                .build();
+    }
 
     /**
      * Retreive the FieldNotes from within a ResultSet
      *
      * @param resultSet
-     * @return ArrayList<FieldNote>
+     * @return ArrayList<FNNote>
      * @throws SQLException
      */
-    public static ArrayList<FieldNote> retrieveFieldNotes(ResultSet resultSet) throws SQLException {
+    public static ArrayList<FNNote> retrieveFieldNotes(ResultSet resultSet) throws SQLException {
 
-        ArrayList<FieldNote> fieldNotes = new ArrayList<>();
+        ArrayList<FNNote> notes = new ArrayList<>();
 
         if (resultSet != null) {
             while (resultSet.next()) {
-                FieldNote fieldNote = new FieldNote.FieldNoteBuilder()
+                FNNote note = new FNNote.FieldNoteBuilder()
                         .setUserName(resultSet.getString(FNPConstants.USERNAME_TAG))
-                        .setTicketNumber(resultSet.getString(FNPConstants.TICKET_NUMBER_TAG))
+                        .setNoteId(resultSet.getString(FNPConstants.TICKET_NUMBER_TAG))
                         .setWellName(resultSet.getString(FNPConstants.WELLNAME_TAG))
                         .setDateStart(resultSet.getString(FNPConstants.DATE_START_TAG))
                         .setTimeStart(resultSet.getString(FNPConstants.TIME_START_TAG))
@@ -228,22 +268,22 @@ public class FNUtil {
                         .setBillingState(resultSet.getString(FNPConstants.BILLING_STATE_TAG))
                         .build();
 
-                fieldNotes.add(fieldNote);
+                notes.add(note);
             }
             resultSet.close();
         }
-        return fieldNotes;
+        return notes;
     }
 
     /**
      * Print an array of FieldNotes to the JTextArea
      *
-     * @param fieldNotes
+     * @param notes
      * @param textArea
      */
-    public static void printFieldNotesToJTextArea(ArrayList<FieldNote> fieldNotes, JTextArea textArea) {
-        for (FieldNote each : fieldNotes) {
-            textArea.append(FNCPConstants.CRUD_SEARCH_TICKET_NUMBER + " " + each.getTicketNumber() + "\n");
+    public static void printFieldNotesToJTextArea(ArrayList<FNNote> notes, JTextArea textArea) {
+        for (FNNote each : notes) {
+            textArea.append(FNCPConstants.CRUD_SEARCH_NOTE_NUMBER + " " + each.getTicketNumber() + "\n");
             textArea.append(FNCPConstants.FN_USERNAME_LABEL + " " + each.getUserName() + "\n");
             textArea.append(FNCPConstants.FN_PROJECT_LABEL + " " + each.getProject() + "\n");
             textArea.append(FNCPConstants.FN_WELLNAME_LABEL + " " + each.getWellName() + "\n");
@@ -261,49 +301,87 @@ public class FNUtil {
     }
 
     /**
-     * return the contents of a FieldNote as a String value
+     * return the contents of a FNNote as a String value
      *
-     * @param fieldNote
+     * @param note
      * @return String
      */
-    public static String getFieldNoteAsString(FieldNote fieldNote) {
+    public static String getNoteAsString(FNNote note) {
 
-        return (FNCPConstants.CRUD_SEARCH_TICKET_NUMBER + " " + fieldNote.getTicketNumber() + "\n") +
-                FNCPConstants.FN_USERNAME_LABEL + " " + fieldNote.getUserName() + "\n" +
-                FNCPConstants.FN_PROJECT_LABEL + " " + fieldNote.getProject() + "\n" +
-                FNCPConstants.FN_WELLNAME_LABEL + " " + fieldNote.getWellName() + "\n" +
-                FNCPConstants.FN_LOCATION_LABEL + " " + fieldNote.getLocation() + "\n" +
-                FNCPConstants.FN_BILLING_LABEL + " " + fieldNote.getBillingType() + "\n" +
-                FNCPConstants.FN_DATE_START_LABEL + " " + fieldNote.getDateStart() + "\n" +
-                FNCPConstants.FN_DATE_END_LABEL + " " + fieldNote.getDateEnd() + "\n" +
-                FNCPConstants.FN_TIME_START_LABEL + " " + fieldNote.getTimeStart() + "\n" +
-                FNCPConstants.FN_TIME_END_LABEL + " " + fieldNote.getTimeEnd() + "\n" +
-                FNCPConstants.FN_MILEAGE_START_LABEL + " " + fieldNote.getMileageStart() + "\n" +
-                FNCPConstants.FN_MILEAGE_END_LABEL + " " + fieldNote.getMileageEnd() + "\n" +
-                FNCPConstants.FN_DESCRIPTION_LABEL + " " + fieldNote.getDescription() + "\n" +
-                FNCPConstants.FN_GPS_LABEL + " " + fieldNote.getGPSCoords() + "\n\n" +
-                FNCPConstants.FN_BILLING_STATE_LABEL + " " + fieldNote.getBillingState() + "\n\n" +
-                FNCPConstants.FN_BILLING_TOTAL_HOURS + " " + calculateHours(fieldNote) + "\n" +
-                FNCPConstants.FN_BILLING_TOTAL_MILEAGE + " " + calculateMileage(fieldNote) + "\n";
+        return (FNCPConstants.CRUD_SEARCH_NOTE_NUMBER + " " + note.getTicketNumber() + "\n") +
+                FNCPConstants.FN_USERNAME_LABEL + " " + note.getUserName() + "\n" +
+                FNCPConstants.FN_PROJECT_LABEL + " " + note.getProject() + "\n" +
+                FNCPConstants.FN_WELLNAME_LABEL + " " + note.getWellName() + "\n" +
+                FNCPConstants.FN_LOCATION_LABEL + " " + note.getLocation() + "\n" +
+                FNCPConstants.FN_BILLING_LABEL + " " + note.getBillingType() + "\n" +
+                FNCPConstants.FN_DATE_START_LABEL + " " + note.getDateStart() + "\n" +
+                FNCPConstants.FN_DATE_END_LABEL + " " + note.getDateEnd() + "\n" +
+                FNCPConstants.FN_TIME_START_LABEL + " " + note.getTimeStart() + "\n" +
+                FNCPConstants.FN_TIME_END_LABEL + " " + note.getTimeEnd() + "\n" +
+                FNCPConstants.FN_MILEAGE_START_LABEL + " " + note.getMileageStart() + "\n" +
+                FNCPConstants.FN_MILEAGE_END_LABEL + " " + note.getMileageEnd() + "\n" +
+                FNCPConstants.FN_DESCRIPTION_LABEL + " " + note.getDescription() + "\n" +
+                FNCPConstants.FN_GPS_LABEL + " " + note.getGPSCoords() + "\n\n" +
+                FNCPConstants.FN_BILLING_STATE_LABEL + " " + note.getBillingState() + "\n\n" +
+                FNCPConstants.FN_BILLING_TOTAL_HOURS + " " + calculateHours(note) + "\n" +
+                FNCPConstants.FN_BILLING_TOTAL_MILEAGE + " " + calculateMileage(note) + "\n";
     }
 
     /**
-     * calculate the number of miles included in a FieldNote
+     * return the contents of a FNNote as a String value for Readback
      *
-     * @param fieldNote
+     * @param note
      * @return String
      */
-    private static String calculateMileage(FieldNote fieldNote) {
-        return String.valueOf(Integer.parseInt(fieldNote.getMileageEnd()) - Integer.parseInt(fieldNote.getMileageStart()));
+    public static String getNoteAsStringForReadback(FNNote note) {
+
+        return (FNCPConstants.CRUD_SEARCH_NOTE_NUMBER + " " + note.getTicketNumber() + "\n") +
+                FNCPConstants.FN_USERNAME_LABEL + " " + note.getUserName() + "\n" +
+                FNCPConstants.FN_PROJECT_LABEL + " " + note.getProject() + "\n" +
+                FNCPConstants.FN_WELLNAME_LABEL + " " + note.getWellName() + "\n" +
+                FNCPConstants.FN_LOCATION_LABEL + " " + note.getLocation() + "\n" +
+                FNCPConstants.FN_BILLING_LABEL + " " + note.getBillingType() + "\n" +
+                FNCPConstants.FN_DATE_START_LABEL + " " + note.getDateStart() + "\n" +
+                FNCPConstants.FN_DATE_END_LABEL + " " + note.getDateEnd() + "\n" +
+                FNCPConstants.FN_TIME_START_LABEL + " " + note.getTimeStart() + "\n" +
+                FNCPConstants.FN_TIME_END_LABEL + " " + note.getTimeEnd() + "\n" +
+                FNCPConstants.FN_MILEAGE_START_LABEL + " " + note.getMileageStart() + "\n" +
+                FNCPConstants.FN_MILEAGE_END_LABEL + " " + note.getMileageEnd() + "\n" +
+                FNCPConstants.FN_DESCRIPTION_LABEL + " " + note.getDescription() + "\n" +
+                FNCPConstants.FN_GPS_LABEL + " " + note.getGPSCoords() + "\n\n";
+    }
+
+    /**
+     * return the contents of a FNUser as a String value for readback
+     *
+     * @param user
+     * @return String
+     */
+    public static String getUserAsString(FNUser user) {
+
+        return (FNCPConstants.USER_ID_LABEL + " " + user.getId() + "\n") +
+                FNCPConstants.USER_USERNAME_LABEL + " " + user.getName() + "\n" +
+                FNCPConstants.USER_PASSWORD_LABEL + " " + user.getPassword() + "\n" +
+                FNCPConstants.USER_USER_TYPE_LABEL + " " + user.getType() + "\n";
+    }
+
+    /**
+     * calculate the number of miles included in a FNNote
+     *
+     * @param note
+     * @return String
+     */
+    private static String calculateMileage(FNNote note) {
+        return String.valueOf(Integer.parseInt(note.getMileageEnd()) - Integer.parseInt(note.getMileageStart()));
     }
 
     /**
      * calculate the number of billable hours from a provided date/time range
      *
-     * @param fieldNote
+     * @param note
      * @return String
      */
-    private static String calculateHours(FieldNote fieldNote) {
+    private static String calculateHours(FNNote note) {
         final String dateFormat = "yyyy-MM-dd";
         final String timeFormat = "HH:mm";
         final int MILLI_TO_MINUTE = 1000 * 60;
@@ -311,10 +389,10 @@ public class FNUtil {
         String hourString = null;
 
         try {
-            Date dateStart = new SimpleDateFormat(dateFormat).parse(FNValidation.validateDate(fieldNote.getDateStart()));
-            Date dateEnd = new SimpleDateFormat(dateFormat).parse(FNValidation.validateDate(fieldNote.getDateEnd()));
-            Date timeStart = new SimpleDateFormat(timeFormat).parse(FNValidation.validateTime(fieldNote.getTimeStart()));
-            Date timeEnd = new SimpleDateFormat(timeFormat).parse(FNValidation.validateTime(fieldNote.getTimeEnd()));
+            Date dateStart = new SimpleDateFormat(dateFormat).parse(FNValidation.validateDate(note.getDateStart()));
+            Date dateEnd = new SimpleDateFormat(dateFormat).parse(FNValidation.validateDate(note.getDateEnd()));
+            Date timeStart = new SimpleDateFormat(timeFormat).parse(FNValidation.validateTime(note.getTimeStart()));
+            Date timeEnd = new SimpleDateFormat(timeFormat).parse(FNValidation.validateTime(note.getTimeEnd()));
 
             Date fullStartDate = combine(dateStart, timeStart);
             Date fullEndDate = combine(dateEnd, timeEnd);
@@ -437,7 +515,7 @@ public class FNUtil {
     }
 
     /**
-     * get large TextField dimension, used for the TextFields holding FieldNote Values
+     * get large TextField dimension, used for the TextFields holding FNNote Values
      * for example: in the addData, edit, deleteData panels
      *
      * @return large TextField Dimension

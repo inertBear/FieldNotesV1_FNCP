@@ -8,7 +8,7 @@
 package com.devhunter.fncp.mvc.controller;
 
 import com.devhunter.fncp.mvc.controller.billingStateMachine.BillingState;
-import com.devhunter.fncp.mvc.model.FieldNote;
+import com.devhunter.fncp.mvc.model.FNNote;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -24,7 +24,7 @@ import static com.devhunter.fncp.constants.FNPConstants.*;
  * individual or collections of FieldNotes.
  * <p>
  * NOTE: The methods housed here were only intended to relate
- * to the actual storing, alteration, and retrieving of FieldNote data.
+ * to the actual storing, alteration, and retrieving of FNNote data.
  */
 public class FNDataController {
 
@@ -34,12 +34,12 @@ public class FNDataController {
     }
 
     /**
-     * Search for FieldNotes, or for a single FieldNote (if a ticketNumber is not null)
+     * Search for FieldNotes, or for a single FNNote (if a ticketNumber is not null)
      *
      * @param username     may be null
      * @param dateStart    should only be null if dateEnd is also empty
      * @param dateEnd      should only be null if dateStart is also empty
-     * @param ticketNumber may be null and should only have a value is searching for a specific (single result) FieldNote
+     * @param ticketNumber may be null and should only have a value is searching for a specific (single result) FNNote
      * @return JSONObject that contains the search 'status' and 'message'- which contains the results
      */
     public static JSONObject searchFieldNotes(String username, String dateStart, String dateEnd, String ticketNumber) {
@@ -80,56 +80,56 @@ public class FNDataController {
     }
 
     /**
-     * Add a FieldNote
+     * Add a FNNote
      *
-     * @param fieldNote that contains the data to add to the database
+     * @param note that contains the data to add to the database
      * @return JSONObject that contains add 'status' and 'message'
      */
-    public static JSONObject addFieldNote(FieldNote fieldNote) {
+    public static JSONObject addFieldNote(FNNote note) {
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair(USERNAME_TAG, fieldNote.getUserName()));
-        params.add(new BasicNameValuePair(WELLNAME_TAG, fieldNote.getWellName()));
-        params.add(new BasicNameValuePair(TIME_START_TAG, fieldNote.getTimeStart()));
-        params.add(new BasicNameValuePair(TIME_END_TAG, fieldNote.getTimeEnd()));
-        params.add(new BasicNameValuePair(DATE_START_TAG, fieldNote.getDateStart()));
-        params.add(new BasicNameValuePair(DATE_END_TAG, fieldNote.getDateEnd()));
-        params.add(new BasicNameValuePair(MILEAGE_START_TAG, fieldNote.getMileageStart()));
-        params.add(new BasicNameValuePair(MILEAGE_END_TAG, fieldNote.getMileageEnd()));
-        params.add(new BasicNameValuePair(DESCRIPTION_TAG, fieldNote.getDescription()));
-        params.add(new BasicNameValuePair(PROJECT_NUMBER_TAG, fieldNote.getProject()));
-        params.add(new BasicNameValuePair(LOCATION_TAG, fieldNote.getLocation()));
-        params.add(new BasicNameValuePair(BILLING_TAG, fieldNote.getBillingType()));
-        params.add(new BasicNameValuePair(GPS_TAG, fieldNote.getGPSCoords()));
+        params.add(new BasicNameValuePair(USERNAME_TAG, note.getUserName()));
+        params.add(new BasicNameValuePair(WELLNAME_TAG, note.getWellName()));
+        params.add(new BasicNameValuePair(TIME_START_TAG, note.getTimeStart()));
+        params.add(new BasicNameValuePair(TIME_END_TAG, note.getTimeEnd()));
+        params.add(new BasicNameValuePair(DATE_START_TAG, note.getDateStart()));
+        params.add(new BasicNameValuePair(DATE_END_TAG, note.getDateEnd()));
+        params.add(new BasicNameValuePair(MILEAGE_START_TAG, note.getMileageStart()));
+        params.add(new BasicNameValuePair(MILEAGE_END_TAG, note.getMileageEnd()));
+        params.add(new BasicNameValuePair(DESCRIPTION_TAG, note.getDescription()));
+        params.add(new BasicNameValuePair(PROJECT_NUMBER_TAG, note.getProject()));
+        params.add(new BasicNameValuePair(LOCATION_TAG, note.getLocation()));
+        params.add(new BasicNameValuePair(BILLING_TAG, note.getBillingType()));
+        params.add(new BasicNameValuePair(GPS_TAG, note.getGPSCoords()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(ADD_NOTE_URL, HTTP_REQUEST_METHOD_POST, params);
     }
 
     /**
-     * Update a FieldNote
+     * Update a FNNote
      *
-     * @param fieldNote containing the update data and ticket number to update
+     * @param note containing the update data and ticket number to update
      * @return JSONObject that contains update 'status' and 'message'
      */
-    public static JSONObject updateFieldNote(FieldNote fieldNote) {
+    public static JSONObject updateFieldNote(FNNote note) {
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair(TICKET_NUMBER_TAG, fieldNote.getTicketNumber()));
-        params.add(new BasicNameValuePair(USERNAME_TAG, fieldNote.getUserName()));
-        params.add(new BasicNameValuePair(WELLNAME_TAG, fieldNote.getWellName()));
-        params.add(new BasicNameValuePair(TIME_START_TAG, fieldNote.getTimeStart()));
-        params.add(new BasicNameValuePair(TIME_END_TAG, fieldNote.getTimeEnd()));
-        params.add(new BasicNameValuePair(DATE_START_TAG, fieldNote.getDateStart()));
-        params.add(new BasicNameValuePair(DATE_END_TAG, fieldNote.getDateEnd()));
-        params.add(new BasicNameValuePair(MILEAGE_START_TAG, fieldNote.getMileageStart()));
-        params.add(new BasicNameValuePair(MILEAGE_END_TAG, fieldNote.getMileageEnd()));
-        params.add(new BasicNameValuePair(DESCRIPTION_TAG, fieldNote.getDescription()));
-        params.add(new BasicNameValuePair(PROJECT_NUMBER_TAG, fieldNote.getProject()));
-        params.add(new BasicNameValuePair(LOCATION_TAG, fieldNote.getLocation()));
-        params.add(new BasicNameValuePair(BILLING_TAG, fieldNote.getBillingType()));
-        params.add(new BasicNameValuePair(GPS_TAG, fieldNote.getGPSCoords()));
-        params.add(new BasicNameValuePair(BILLING_STATE_TAG, fieldNote.getBillingState()));
+        params.add(new BasicNameValuePair(TICKET_NUMBER_TAG, note.getTicketNumber()));
+        params.add(new BasicNameValuePair(USERNAME_TAG, note.getUserName()));
+        params.add(new BasicNameValuePair(WELLNAME_TAG, note.getWellName()));
+        params.add(new BasicNameValuePair(TIME_START_TAG, note.getTimeStart()));
+        params.add(new BasicNameValuePair(TIME_END_TAG, note.getTimeEnd()));
+        params.add(new BasicNameValuePair(DATE_START_TAG, note.getDateStart()));
+        params.add(new BasicNameValuePair(DATE_END_TAG, note.getDateEnd()));
+        params.add(new BasicNameValuePair(MILEAGE_START_TAG, note.getMileageStart()));
+        params.add(new BasicNameValuePair(MILEAGE_END_TAG, note.getMileageEnd()));
+        params.add(new BasicNameValuePair(DESCRIPTION_TAG, note.getDescription()));
+        params.add(new BasicNameValuePair(PROJECT_NUMBER_TAG, note.getProject()));
+        params.add(new BasicNameValuePair(LOCATION_TAG, note.getLocation()));
+        params.add(new BasicNameValuePair(BILLING_TAG, note.getBillingType()));
+        params.add(new BasicNameValuePair(GPS_TAG, note.getGPSCoords()));
+        params.add(new BasicNameValuePair(BILLING_STATE_TAG, note.getBillingState()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(UPDATE_NOTE_URL, HTTP_REQUEST_METHOD_POST, params);
@@ -138,7 +138,7 @@ public class FNDataController {
     /**
      * delete a fieldNote
      *
-     * @param ticketNumber of the FieldNote to delete
+     * @param ticketNumber of the FNNote to delete
      * @return JSONObject that contains delete 'status' and 'message'
      */
     public static JSONObject deleteFieldNote(String ticketNumber) {

@@ -9,7 +9,7 @@ package com.devhunter.fncp.mvc.controller.billingStateMachine;
 
 import com.devhunter.fncp.constants.FNPConstants;
 import com.devhunter.fncp.mvc.controller.FNDataController;
-import com.devhunter.fncp.mvc.model.FieldNote;
+import com.devhunter.fncp.mvc.model.FNNote;
 import com.devhunter.fncp.mvc.view.FNControlPanel;
 import com.devhunter.fncp.utilities.FNUtil;
 import org.json.JSONArray;
@@ -52,36 +52,36 @@ public class FNBillingStateMachine {
                 // if no state
                 if (state == JSONObject.NULL || state.equals("")) {
                     // create update state
-                    FieldNote fieldNote = FNUtil.buildFieldNote(message);
+                    FNNote note = FNUtil.buildNote(message);
                     // advance state
-                    advanceState(fieldNote);
+                    advanceState(note);
                 }
             }
         }
     }
 
     /**
-     * Advance the BillingState of a FieldNote
+     * Advance the BillingState of a FNNote
      */
-    public void advanceState(FieldNote fieldNote) {
+    public void advanceState(FNNote note) {
         //check current state
-        switch (fieldNote.getBillingState()) {
+        switch (note.getBillingState()) {
             case FNPConstants.BILLING_STATE_CREATED:
-                fieldNote.setBillingState(FNPConstants.BILLING_STATE_BILLED);
+                note.setBillingState(FNPConstants.BILLING_STATE_BILLED);
                 break;
             case FNPConstants.BILLING_STATE_BILLED:
-                fieldNote.setBillingState(FNPConstants.BILLING_STATE_COMPLETE);
+                note.setBillingState(FNPConstants.BILLING_STATE_COMPLETE);
                 break;
             case FNPConstants.BILLING_STATE_COMPLETE:
                 break;
             case FNPConstants.BILLING_STATE_NOT_SET:
             default:
-                fieldNote.setBillingState(FNPConstants.BILLING_STATE_CREATED);
+                note.setBillingState(FNPConstants.BILLING_STATE_CREATED);
                 break;
         }
-        fieldNote.setDescription(FNUtil.allowApostrophe(fieldNote.getDescription()));
+        note.setDescription(FNUtil.allowApostrophe(note.getDescription()));
 
-        JSONObject updateResponse = FNDataController.updateFieldNote(fieldNote);
+        JSONObject updateResponse = FNDataController.updateFieldNote(note);
         String status = updateResponse.getString(RESPONSE_STATUS_TAG);
         String messageString = updateResponse.getString(RESPONSE_MESSAGE_TAG);
 
@@ -91,7 +91,7 @@ public class FNBillingStateMachine {
     }
 
     /**
-     * get the state that a FieldNote can move to
+     * get the state that a FNNote can move to
      *
      * @param currentState
      * @return BillingState
