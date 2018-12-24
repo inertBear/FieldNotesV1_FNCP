@@ -5,58 +5,40 @@
 
 package com.fieldnotes.fncp.mvc.model;
 
-public class FNUser {
+/**
+ * The <i>FNUser</i> class contains the data for a User entry into the USER table of the database.
+ */
 
-    private int mId;
+public class FNUser extends FieldNote {
+
     private String mType;
-    private String mUsername;
     //TODO: [FNCP-022] convert this to Char array
     private String mPassword;
 
-    private FNUser(int id, String username, String password, String type) {
-        mId = id;
-        mUsername = username;
-        mPassword = password;
-        mType = type;
-    }
-
-    public void setID(int id) {
+    private FNUser(String id, String username, String password, String type) {
         this.mId = id;
-    }
-
-    public int getId() {
-        return mId;
-    }
-
-    public void setUsername(String username) {
-        this.mUsername = username;
+        this.mName = username;
+        this.mPassword = password;
+        this.mType = type;
     }
 
     public String getUsername() {
-        return mUsername;
-    }
-
-    public void setPassword(String password) {
-        this.mPassword = password;
+        return this.mName;
     }
 
     public String getPassword() {
-        return mPassword;
+        return this.mPassword;
     }
 
     public String getType() {
-        return mType;
-    }
-
-    public void setType(String type) {
-        this.mType = type;
+        return this.mType;
     }
 
     /**
      * FNEntityBuilder
      */
     public static class FNUserBuilder {
-        private int mId;
+        private String mId;
         private String mType;
         private String mUsername;
         //TODO: [FNCP-022] convert this to Char array
@@ -65,7 +47,7 @@ public class FNUser {
         public FNUserBuilder() {
         }
 
-        public FNUserBuilder setId(int id) {
+        public FNUserBuilder setId(String id) {
             this.mId = id;
             return this;
         }

@@ -15,7 +15,9 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
 import com.fieldnotes.fncp.mvc.model.fnview.FNLabel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
+import com.fieldnotes.fncp.mvc.model.listview.FNListView;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
+import com.fieldnotes.fncp.utilities.FNUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,7 +25,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.fieldnotes.fncp.constants.FNCPConstants.*;
 import static com.fieldnotes.fncp.constants.FNPConstants.*;
 
 public class SearchUserPanel extends FNPanel {
@@ -32,18 +33,18 @@ public class SearchUserPanel extends FNPanel {
     private static FNPanel mSearchUserPanel;
     private static FNPanel mSearchTextFieldPanel;
     private FNTextField mSearchUser;
-    private JTextArea mSearchUserOutput;
     private FNButton mButtonSearch;
     private FNButton mButtonExport;
+    private FNListView mListView;
     private ArrayList<FNUser> mUsers;
 
     private SearchUserPanel() {
         mSearchUserPanel = new FNPanel();
         mSearchTextFieldPanel = new FNPanel();
         mSearchUser = new FNTextField();
-        mSearchUserOutput = new JTextArea(28, 32);
         mButtonSearch = new FNButton(FNCPConstants.BUTTON_SEARCH);
         mButtonExport = new FNButton(FNCPConstants.BUTTON_EXPORT);
+        mListView = new FNListView(false);
         mUsers = new ArrayList<>();
 
         init();
@@ -64,9 +65,6 @@ public class SearchUserPanel extends FNPanel {
 
         FNLabel searchUserLbl = new FNLabel(FNCPConstants.FN_USERNAME_LABEL);
 
-        JScrollPane userSearchScroll = new JScrollPane(mSearchUserOutput);
-        mSearchUserOutput.setEditable(false);
-
         // Add Views to TextField Panel
         mSearchTextFieldPanel.add(searchUserLbl);
         mSearchTextFieldPanel.add(mSearchUser);
@@ -74,7 +72,7 @@ public class SearchUserPanel extends FNPanel {
         mSearchTextFieldPanel.add(mButtonSearch);
         // Add Views to Main Panel
         mSearchUserPanel.add(mSearchTextFieldPanel, BorderLayout.NORTH);
-        mSearchUserPanel.add(userSearchScroll, BorderLayout.CENTER);
+        mSearchUserPanel.add(mListView);
         mSearchUserPanel.add(mButtonExport, BorderLayout.SOUTH);
 
         // Initial View Settings
@@ -83,8 +81,7 @@ public class SearchUserPanel extends FNPanel {
         FNControlPanel.getFieldNotesFrame().revalidate();
 
         mButtonSearch.addActionListener(e -> {
-            mSearchUserOutput.setVisible(true);
-            mSearchUserOutput.setText(null);
+            mListView.removeItems();
 
             String searchUsername = mSearchUser.getText();
             searchUser(searchUsername);
@@ -114,30 +111,16 @@ public class SearchUserPanel extends FNPanel {
 
         if (status.equals(RESPONSE_STATUS_SUCCESS)) {
             JSONArray messageArray = new JSONArray(messageString);
-            printJsonObject(messageArray, mSearchUserOutput);
+
+            for (int i = 0; i < messageArray.length(); i++) {
+                JSONObject message = messageArray.getJSONObject(i);
+
+                FNUser note = FNUtil.buildUser(message);
+                // add to ListView
+                mListView.addItem(note);
+            }
         } else {
             JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);
-        }
-    }
-
-    /**
-     * print search results to JTextArea
-     *
-     * @param message
-     * @param areaToPrintOn
-     */
-    private void printJsonObject(JSONArray message, JTextArea areaToPrintOn) {
-        for (int i = 0; i < message.length(); i++) {
-            JSONObject jsonObject = message.getJSONObject(i);
-            String userId = jsonObject.getString(USER_USER_ID_TAG);
-            String username = jsonObject.getString(USER_USERNAME_TAG);
-            String password = jsonObject.getString(USER_PASSWORD_TAG);
-            String type = jsonObject.getString(USER_TYPE_TAG);
-
-            areaToPrintOn.append(USER_ID_LABEL + " " + userId + "\n");
-            areaToPrintOn.append(USER_USERNAME_LABEL + " " + username + "\n");
-            areaToPrintOn.append(USER_PASSWORD_LABEL + " " + password + "\n");
-            areaToPrintOn.append(USER_USER_TYPE_LABEL + " " + type + "\n\n");
         }
     }
 
@@ -156,6 +139,8 @@ public class SearchUserPanel extends FNPanel {
 
     private void resetGui() {
         mSearchUser.setText(null);
-        mSearchUserOutput.setText(null);
+
+        // remove items from ListView
+        mListView.removeItems();
     }
 }

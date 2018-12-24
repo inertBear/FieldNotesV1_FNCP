@@ -1,5 +1,5 @@
 /**
- * � 2017-2018 FieldNotes
+ * ? 2017-2018 FieldNotes
  * All Rights Reserved
  * <p>
  * Created by DevHunter exclusively for FieldNotes
@@ -89,7 +89,7 @@ public class DeleteDataPanel extends FNPanel {
         GridLayout crudSearchTextFieldPanelLayout = new GridLayout(0, 2);
         mCrudSearchTextFieldPanel.setLayout(crudSearchTextFieldPanelLayout);
 
-        FNLabel crudTicketLabel = new FNLabel(FNCPConstants.CRUD_SEARCH_TICKET_NUMBER);
+        FNLabel crudTicketLabel = new FNLabel(FNCPConstants.CRUD_SEARCH_NOTE_NUMBER);
         FNButton buttonCrudSearch = new FNButton(FNCPConstants.BUTTON_SEARCH);
 
         // Panels/layouts

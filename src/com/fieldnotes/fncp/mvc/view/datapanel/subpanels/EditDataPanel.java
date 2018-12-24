@@ -1,5 +1,5 @@
 /**
- * � 2017-2018 FieldNotes
+ * ? 2017-2018 FieldNotes
  * All Rights Reserved
  * <p>
  * Created by DevHunter exclusively for FieldNotes
@@ -11,8 +11,8 @@ import com.fieldnotes.fncp.constants.FNCPConstants;
 import com.fieldnotes.fncp.mvc.controller.FNDataController;
 import com.fieldnotes.fncp.mvc.controller.validation.CrudSearchValidation;
 import com.fieldnotes.fncp.mvc.controller.validation.FNValidation;
-import com.fieldnotes.fncp.mvc.model.FieldNote;
-import com.fieldnotes.fncp.mvc.model.FieldNote.FieldNoteBuilder;
+import com.fieldnotes.fncp.mvc.model.FNNote;
+import com.fieldnotes.fncp.mvc.model.FNNote.FieldNoteBuilder;
 import com.fieldnotes.fncp.mvc.model.dateutils.DateLabelFormatter;
 import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
 import com.fieldnotes.fncp.mvc.model.fnview.FNLabel;
@@ -114,7 +114,7 @@ public class EditDataPanel extends FNPanel {
         GridLayout crudSearchTextFieldPanelLayout = new GridLayout(0, 2);
         mCrudSearchTextFieldPanel.setLayout(crudSearchTextFieldPanelLayout);
 
-        FNLabel crudTicketLabel = new FNLabel(FNCPConstants.CRUD_SEARCH_TICKET_NUMBER);
+        FNLabel crudTicketLabel = new FNLabel(FNCPConstants.CRUD_SEARCH_NOTE_NUMBER);
         FNButton buttonCrudSearch = new FNButton(FNCPConstants.BUTTON_SEARCH);
 
         GridLayout editNDataPanelLayout = new GridLayout(0, 2);
@@ -205,9 +205,9 @@ public class EditDataPanel extends FNPanel {
 
         buttonEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Build FieldNote
-                FieldNote fieldNote = new FieldNoteBuilder()
-                        .setTicketNumber(mEditTicketNumberString)
+                // Build FNNote
+                FNNote note = new FieldNoteBuilder()
+                        .setNoteId(mEditTicketNumberString)
                         .setUserName(mTextEditDataName.getText())
                         .setWellName(mTextEditDataWellName.getText())
                         .setTimeStart(formatTime(mEditTicketTimeStart.getFormatedTime()))
@@ -223,9 +223,9 @@ public class EditDataPanel extends FNPanel {
                         .setGPSCoords(mTextEditDataGPS.getText())
                         .setBillingType((String) mSpinnerEditDataBillable.getValue())
                         .build();
-                // Validate FieldNote
-                if (FNValidation.validate(fieldNote)) {
-                    updateFieldNote(fieldNote);
+                // Validate FNNote
+                if (FNValidation.validate(note)) {
+                    updateFieldNote(note);
                 }
             }
         });
@@ -234,12 +234,12 @@ public class EditDataPanel extends FNPanel {
     }
 
     /**
-     * update an existing FieldNote
+     * update an existing FNNote
      *
-     * @param fieldNote
+     * @param note
      */
-    private void updateFieldNote(FieldNote fieldNote) {
-        JSONObject updateResult = FNDataController.updateFieldNote(fieldNote);
+    private void updateFieldNote(FNNote note) {
+        JSONObject updateResult = FNDataController.updateFieldNote(note);
         String status = updateResult.getString(RESPONSE_STATUS_TAG);
         String message = updateResult.getString(RESPONSE_MESSAGE_TAG);
 

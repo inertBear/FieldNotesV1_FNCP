@@ -1,5 +1,5 @@
 /**
- * � 2017-2018 FieldNotes
+ * ? 2017-2018 FieldNotes
  * All Rights Reserved
  * <p>
  * Created by DevHunter exclusively for FieldNotes
@@ -12,7 +12,7 @@ import com.fieldnotes.fncp.mvc.controller.FNDataController;
 import com.fieldnotes.fncp.mvc.controller.billingStateMachine.BillingState;
 import com.fieldnotes.fncp.mvc.controller.billingStateMachine.FNBillingStateMachine;
 import com.fieldnotes.fncp.mvc.controller.exporter.ExportController;
-import com.fieldnotes.fncp.mvc.model.FieldNote;
+import com.fieldnotes.fncp.mvc.model.FNNote;
 import com.fieldnotes.fncp.mvc.model.dateutils.DateLabelFormatter;
 import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
 import com.fieldnotes.fncp.mvc.model.fnview.FNLabel;
@@ -54,7 +54,7 @@ public class BillingStatePanel extends FNPanel {
     private FNButton mBtnSearch;
     private FNButton mButtonExport;
     private FNListView mListView;
-    private ArrayList<FieldNote> mFieldNotes;
+    private ArrayList<FNNote> mNotes;
 
     private BillingStatePanel() {
         mSearchDataPanel = new FNPanel();
@@ -71,8 +71,8 @@ public class BillingStatePanel extends FNPanel {
         mDatePickerSearchEnd = new JDatePickerImpl(mDatePanelSearchEnd, new DateLabelFormatter());
         mBtnSearch = new FNButton(FNCPConstants.BUTTON_SEARCH);
         mButtonExport = new FNButton(FNCPConstants.BUTTON_EXPORT);
-        mListView = new FNListView();
-        mFieldNotes = new ArrayList<>();
+        mListView = new FNListView(true);
+        mNotes = new ArrayList<>();
 
         drawPanel();
     }
@@ -89,8 +89,6 @@ public class BillingStatePanel extends FNPanel {
         // Panel Layouts
         mSearchDataPanel.setLayout(new BorderLayout());
         mSearchTextFieldPanel.setLayout(new GridLayout(0, 2));
-        // JavaFX ListView panel
-        mListView = new FNListView();
 
         // Set DatePicker Properties
         mSearchStartProperties.put("text.today", "Today");
@@ -133,7 +131,7 @@ public class BillingStatePanel extends FNPanel {
         // export CSV file to User Desktop
         mButtonExport.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean exportSuccess = ExportController.writeBillingToCSVFile(mFieldNotes);
+                boolean exportSuccess = ExportController.writeBillingToCSVFile(mNotes);
 
                 if (exportSuccess) {
                     JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), "Success! CVS report generated");
@@ -155,10 +153,10 @@ public class BillingStatePanel extends FNPanel {
             for (int i = 0; i < messageArray.length(); i++) {
                 JSONObject message = messageArray.getJSONObject(i);
 
-                FieldNote fieldNote = FNUtil.buildFieldNote(message);
+                FNNote note = FNUtil.buildNote(message);
 
                 // add to ListView
-                mListView.addItem(fieldNote);
+                mListView.addItem(note);
             }
         } else {
             JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);
