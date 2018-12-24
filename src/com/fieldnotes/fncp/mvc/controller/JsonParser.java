@@ -1,3 +1,10 @@
+/**
+ * © 2018 FieldNotes
+ * All Rights Reserved
+ * <p>
+ * Created by DevHunter exclusively for FieldNotes
+ */
+
 package com.fieldnotes.fncp.mvc.controller;
 
 import com.fieldnotes.fncp.utilities.FNUtil;
@@ -92,4 +99,3 @@ class JsonParser {
         return mJsonObj;
     }
 }
-

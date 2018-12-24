@@ -1,5 +1,5 @@
 /**
- * � 2017-2018 FieldNotes
+ * ? 2017-2018 FieldNotes
  * All Rights Reserved
  * <p>
  * Created by DevHunter exclusively for FieldNotes
@@ -11,8 +11,8 @@ import com.fieldnotes.fncp.constants.FNCPConstants;
 import com.fieldnotes.fncp.constants.FNPConstants;
 import com.fieldnotes.fncp.mvc.controller.FNDataController;
 import com.fieldnotes.fncp.mvc.controller.validation.FNValidation;
-import com.fieldnotes.fncp.mvc.model.FieldNote;
-import com.fieldnotes.fncp.mvc.model.FieldNote.FieldNoteBuilder;
+import com.fieldnotes.fncp.mvc.model.FNNote;
+import com.fieldnotes.fncp.mvc.model.FNNote.FieldNoteBuilder;
 import com.fieldnotes.fncp.mvc.model.dateutils.DateLabelFormatter;
 import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
 import com.fieldnotes.fncp.mvc.model.fnview.FNLabel;
@@ -179,8 +179,8 @@ public class AddDataPanel extends FNPanel {
 
         buttonSubmit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // build a FieldNote from the data entered by user
-                FieldNote fieldNote = new FieldNoteBuilder()
+                // build a FNNote from the data entered by user
+                FNNote note = new FieldNoteBuilder()
                         .setUserName(mTextNewDataName.getText())
                         .setWellName(mTextNewDataWellName.getText())
                         .setTimeStart(formatTime(mNewTicketTimeStart.getFormatedTime()))
@@ -196,21 +196,21 @@ public class AddDataPanel extends FNPanel {
                         .setBillingType((String) mSpinnerNewDataBillable.getValue())
                         .setBillingState(FNPConstants.BILLING_STATE_CREATED)
                         .build();
-                // validate FieldNote
-                if (FNValidation.validate(fieldNote)) {
-                    addFieldNote(fieldNote);
+                // validate FNNote
+                if (FNValidation.validate(note)) {
+                    addFieldNote(note);
                 }
             }
         });
     }
 
     /**
-     * add a new FieldNote
+     * add a new FNNote
      *
-     * @param fieldNote
+     * @param note
      */
-    private void addFieldNote(FieldNote fieldNote) {
-        JSONObject addFieldNoteResponse = FNDataController.addFieldNote(fieldNote);
+    private void addFieldNote(FNNote note) {
+        JSONObject addFieldNoteResponse = FNDataController.addFieldNote(note);
         String status = addFieldNoteResponse.getString(RESPONSE_STATUS_TAG);
         String addUserMessage = addFieldNoteResponse.getString(RESPONSE_MESSAGE_TAG);
 
