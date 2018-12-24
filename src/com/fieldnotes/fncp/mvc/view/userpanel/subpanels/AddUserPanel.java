@@ -157,6 +157,9 @@ public class AddUserPanel extends FNPanel {
      * @param type
      */
     private void addUser(String username, String password, String type) {
+        // capitalize username for consistency
+        username = username.substring(0, 1).toUpperCase() + username.substring(1);
+
         JSONObject addUserResponse = FNUserController.addUser(username, password, type);
 
         String addUserMessage = addUserResponse.getString(RESPONSE_MESSAGE_TAG);

@@ -85,6 +85,8 @@ public class FNUtil {
      * @param username
      */
     public void setCurrentUsername(String username) {
+        // capitalize username for consistency
+        username = username.substring(0, 1).toUpperCase() + username.substring(1);
         mCurrentUsername = username;
     }
 
