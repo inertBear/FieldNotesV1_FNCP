@@ -1,3 +1,10 @@
+/**
+ * © 2018 FieldNotes
+ * All Rights Reserved
+ * <p>
+ * Created by DevHunter exclusively for FieldNotes
+ */
+
 package com.fieldnotes.fncp.mvc.model.fnview;
 
 import javax.swing.BorderFactory;
@@ -22,5 +29,4 @@ public class FNImageLabel extends JLabel {
         setOpaque(false);
         setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
     }
-
 }

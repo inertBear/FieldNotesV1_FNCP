@@ -70,7 +70,7 @@ public class FNListView extends JFXPanel {
             @Override
             public void handle(MouseEvent event) {
                 // get index of selected item
-                FieldNote note  = mListView.getSelectionModel().getSelectedItem();
+                FieldNote note = mListView.getSelectionModel().getSelectedItem();
 
                 //create Dialog
                 Stage dialogStage = new Stage();
@@ -99,7 +99,7 @@ public class FNListView extends JFXPanel {
                 } else if (note instanceof FNNote) {
                     FNNote fnNote = (FNNote) note;
                     // if they are updating billing
-                    if(mIsBilling) {
+                    if (mIsBilling) {
                         //create the "Advance State" button
                         Button btnChangeState = new Button(FNBillingStateMachine.getInstance()
                                 .getNextState(fnNote.getBillingState()));
@@ -150,7 +150,7 @@ public class FNListView extends JFXPanel {
                     }
                 }
 
-                if(vbox != null) {
+                if (vbox != null) {
                     vbox.setAlignment(Pos.CENTER);
                     vbox.setPadding(new Insets(15));
 

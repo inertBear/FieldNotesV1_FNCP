@@ -260,4 +260,3 @@ public class AddDataPanel extends FNPanel {
         mNewTicketEndDatePicker.getJFormattedTextField().setText(null);
     }
 }
-

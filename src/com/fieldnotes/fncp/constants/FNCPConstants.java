@@ -12,7 +12,6 @@ import java.io.File;
 /**
  * constant values relevant to FNCP
  */
-
 public class FNCPConstants {
     // approved work locations
     public static final String[] APPROVED_BILLING_LOCATIONS = {"", "Office", "Field", "Shop"};
@@ -98,6 +97,6 @@ public class FNCPConstants {
     public static final String BUTTON_SUBMIT_LOCATION = "/images/submitbutton.png";
     public static final String BUTTON_SEARCH_LOCATION = "/images/searchbutton.png";
     // Registration File Locations
-    public static final String SYSTEM_FILE_PATH = System.getProperty("user.home") + File.separator + "Documents";
+    private static final String SYSTEM_FILE_PATH = System.getProperty("user.home") + File.separator + "Documents";
     public static final String REGISTRATION_FILE_PATH = SYSTEM_FILE_PATH + "FNCP_product_key.txt";
 }

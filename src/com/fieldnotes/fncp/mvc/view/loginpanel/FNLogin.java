@@ -157,4 +157,3 @@ public class FNLogin extends FNPanel {
         mLoginPassword.setText(null);
     }
 }
-
