@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 
+import static com.devhunter.fncp.constants.FNCPConstants.UNBILLED_DATA;
 import static com.devhunter.fncp.constants.FNPConstants.*;
 
 public class FNBillingStateMachine {
@@ -51,6 +52,7 @@ public class FNBillingStateMachine {
                 Object state = message.get(BILLING_STATE_TAG);
                 // if no state
                 if (state == JSONObject.NULL || state.equals("")) {
+                    message.put(BILLING_STATE_TAG, BILLING_STATE_NOT_SET);
                     // create update state
                     FNNote note = FNUtil.buildNote(message);
                     // advance state
