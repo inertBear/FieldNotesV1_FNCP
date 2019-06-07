@@ -13,7 +13,7 @@ package com.fieldnotes.fncp.constants;
 public class FNPConstants {
 
     // JSON Data tags
-    public static final String PRODUCT_KEY_TAG = "customerKey";
+    public static final String TOKEN_TAG = "token";
     public static final String TICKET_NUMBER_TAG = "ticketNumber";
     public static final String USERNAME_TAG = "userName";
     public static final String WELLNAME_TAG = "wellName";
@@ -32,8 +32,8 @@ public class FNPConstants {
 
     // JSON User tags
     public static final String USER_USER_ID_TAG = "userId";
-    public static final String USER_USERNAME_TAG = "userUserName";
-    public static final String USER_PASSWORD_TAG = "userPassword";
+    public static final String USER_USERNAME_TAG = "UserName";
+    public static final String USER_PASSWORD_TAG = "UserPassword";
     public static final String USER_TYPE_TAG = "userType";
 
     // JSON response tags
@@ -41,6 +41,7 @@ public class FNPConstants {
     public static final String RESPONSE_STATUS_SUCCESS = "success";
     public static final String RESPONSE_STATUS_FAILURE = "failure";
     public static final String RESPONSE_MESSAGE_TAG = "message";
+    public static final String RESPONSE_TOKEN_TAG = "token";
 
     // Web Service URLs
     public static final String REGISTER_URL = "http://www.fieldnotesfn.com/FN_PROCESSOR/FN_register.php";

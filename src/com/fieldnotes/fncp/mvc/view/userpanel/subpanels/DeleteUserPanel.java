@@ -8,7 +8,7 @@
 package com.fieldnotes.fncp.mvc.view.userpanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNUserController;
+import com.fieldnotes.fncp.mvc.controller.FNUserService;
 import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
 import com.fieldnotes.fncp.mvc.model.fnview.FNLabel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
@@ -77,7 +77,7 @@ public class DeleteUserPanel extends FNPanel {
      */
     private void deleteUser(String username) {
         // delete user
-        JSONObject deleteUserResponse = FNUserController.deleteUser(username);
+        JSONObject deleteUserResponse = FNUserService.deleteUser(username);
 
         String deleteStatus = deleteUserResponse.getString(RESPONSE_STATUS_TAG);
         if (deleteStatus.equals(RESPONSE_STATUS_SUCCESS)) {

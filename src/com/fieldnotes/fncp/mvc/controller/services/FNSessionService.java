@@ -5,7 +5,7 @@
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.fieldnotes.fncp.utilities;
+package com.fieldnotes.fncp.mvc.controller.services;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
 import com.fieldnotes.fncp.constants.FNPConstants;
@@ -33,11 +33,12 @@ import static com.fieldnotes.fncp.constants.FNPConstants.*;
  * borders stay the same throughout the entire project.
  */
 
-public class FNUtil {
+public class FNSessionService {
 
-    private static FNUtil sInstance;
+    private static FNSessionService sInstance;
     private static String mCurrentUsername;
     private static String mCurrentPassword;
+    private static String mCurrentToken;
     private static String mCurrentUserType;
     private static String mCurrentProductKey;
     private static boolean mCurrentAdminAccess;
@@ -58,7 +59,7 @@ public class FNUtil {
      * <p>
      * TODO: include utilities for Thread control- i.e. UI VS background threading
      */
-    private FNUtil() {
+    private FNSessionService() {
         mLocationModel = new SpinnerListModel(FNCPConstants.APPROVED_BILLING_LOCATIONS);
         mBillableModel = new SpinnerListModel(FNCPConstants.APPROVED_BILLING_CODES);
         mFormatter = new SimpleDateFormat("HHmmss");
@@ -72,9 +73,9 @@ public class FNUtil {
         mLoginPanelDimension = new Dimension(325, 40);
     }
 
-    public static FNUtil getInstance() {
+    public static FNSessionService getInstance() {
         if (sInstance == null) {
-            sInstance = new FNUtil();
+            sInstance = new FNSessionService();
         }
         return sInstance;
     }
@@ -118,11 +119,27 @@ public class FNUtil {
     }
 
     /**
+     * set user session token
+     *
+     * @param token
+     */
+    public void setCurrentToken(String token) {
+        mCurrentToken = token;
+    }
+
+    /**
+     * get the cuurent session token.
+     *
+     * @return String, token
+     */
+    public String getCurrentToken() {
+        return mCurrentToken;
+    }
+    /**
      * set product key for session
      *
      * @param productKey
      */
-
     public void setCurrentProductKey(String productKey) {
         mCurrentProductKey = productKey;
     }

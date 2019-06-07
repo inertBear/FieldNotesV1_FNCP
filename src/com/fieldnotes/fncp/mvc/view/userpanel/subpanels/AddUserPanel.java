@@ -6,7 +6,7 @@
 package com.fieldnotes.fncp.mvc.view.userpanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNUserController;
+import com.fieldnotes.fncp.mvc.controller.FNUserService;
 import com.fieldnotes.fncp.mvc.model.fnview.*;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
 import org.json.JSONObject;
@@ -160,7 +160,7 @@ public class AddUserPanel extends FNPanel {
         // capitalize username for consistency
         username = username.substring(0, 1).toUpperCase() + username.substring(1);
 
-        JSONObject addUserResponse = FNUserController.addUser(username, password, type);
+        JSONObject addUserResponse = FNUserService.addUser(username, password, type);
 
         String addUserMessage = addUserResponse.getString(RESPONSE_MESSAGE_TAG);
         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), addUserMessage);

@@ -8,14 +8,14 @@
 package com.fieldnotes.fncp.mvc.view.datapanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNDataController;
+import com.fieldnotes.fncp.mvc.controller.FNDataService;
 import com.fieldnotes.fncp.mvc.controller.validation.CrudSearchValidation;
 import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
 import com.fieldnotes.fncp.mvc.model.fnview.FNLabel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -97,7 +97,7 @@ public class DeleteDataPanel extends FNPanel {
         mDeleteFNDataPanel.setLayout(deleteFNDataPanelLayout);
         FlowLayout deleteFNButtonPanelLayout = new FlowLayout();
         mDeleteFNButtonPanel.setLayout(deleteFNButtonPanelLayout);
-        mDeleteFNButtonPanel.setBorder(FNUtil.getInstance().getLineBorder());
+        mDeleteFNButtonPanel.setBorder(FNSessionService.getInstance().getLineBorder());
 
         FNLabel lblDeleteDataName = new FNLabel(FNCPConstants.FN_USERNAME_LABEL);
         FNLabel lblDeleteDataWellName = new FNLabel(FNCPConstants.FN_WELLNAME_LABEL);
@@ -176,7 +176,7 @@ public class DeleteDataPanel extends FNPanel {
                 if (CrudSearchValidation.validate(mDeleteTicketNumber.getText())) {
                     mDeleteTicketNumberString = mDeleteTicketNumber.getText();
 
-                    JSONObject searchResult = FNDataController.searchFieldNotes(null, null, null, mDeleteTicketNumberString);
+                    JSONObject searchResult = FNDataService.searchFieldNotes(null, null, null, mDeleteTicketNumberString);
                     String status = searchResult.getString(RESPONSE_STATUS_TAG);
                     String messageString = searchResult.getString(RESPONSE_MESSAGE_TAG);
 
@@ -225,7 +225,7 @@ public class DeleteDataPanel extends FNPanel {
                         mDeleteTicketNumberString, "", JOptionPane.YES_NO_OPTION);
                 switch (res) {
                     case JOptionPane.YES_OPTION:
-                        JSONObject deleteResult = FNDataController.deleteFieldNote(mDeleteTicketNumberString);
+                        JSONObject deleteResult = FNDataService.deleteFieldNote(mDeleteTicketNumberString);
                         String message = deleteResult.getString(RESPONSE_MESSAGE_TAG);
 
                         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), message);

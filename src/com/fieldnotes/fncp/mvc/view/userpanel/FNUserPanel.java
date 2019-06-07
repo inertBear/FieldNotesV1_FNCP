@@ -15,7 +15,7 @@ import com.fieldnotes.fncp.mvc.view.userpanel.subpanels.AddUserPanel;
 import com.fieldnotes.fncp.mvc.view.userpanel.subpanels.ChangeUserPasswordPanel;
 import com.fieldnotes.fncp.mvc.view.userpanel.subpanels.DeleteUserPanel;
 import com.fieldnotes.fncp.mvc.view.userpanel.subpanels.SearchUserPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +48,7 @@ public class FNUserPanel extends FNPanel {
 
     private void init() {
         // ADMIN ACCESS
-        if (FNUtil.getInstance().hasAdminAccess()) {
+        if (FNSessionService.getInstance().hasAdminAccess()) {
             sUserControlPanel.add(mBtnUserSearch);
             sUserControlPanel.add(mBtnUserAdd);
             sUserControlPanel.add(mBtnUserDelete);
@@ -64,7 +64,7 @@ public class FNUserPanel extends FNPanel {
         // when user navigates to Search User TAB
         mBtnUserSearch.addActionListener(e -> {
             resetGui();
-            mBtnUserSearch.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnUserSearch.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(SearchUserPanel.getView(), BorderLayout.CENTER);
             sUserControlPanel.setVisible(true);
             SearchUserPanel.getView().setVisible(true);
@@ -76,7 +76,7 @@ public class FNUserPanel extends FNPanel {
         // When user navigates to Add User TAB
         mBtnUserAdd.addActionListener(e -> {
             resetGui();
-            mBtnUserAdd.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnUserAdd.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(AddUserPanel.getView(), BorderLayout.CENTER);
             sUserControlPanel.setVisible(true);
             AddUserPanel.getView().setVisible(true);
@@ -88,7 +88,7 @@ public class FNUserPanel extends FNPanel {
         // When user navigates to Delete User TAB
         mBtnUserDelete.addActionListener(e -> {
             resetGui();
-            mBtnUserDelete.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnUserDelete.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(DeleteUserPanel.getView(), BorderLayout.CENTER);
             sUserControlPanel.setVisible(true);
             DeleteUserPanel.getView().setVisible(true);
@@ -100,7 +100,7 @@ public class FNUserPanel extends FNPanel {
         // When user navigates to Change User Password TAB
         mBtnUserPassword.addActionListener(e -> {
             resetGui();
-            mBtnUserPassword.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnUserPassword.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(ChangeUserPasswordPanel.getView(), BorderLayout.CENTER);
             sUserControlPanel.setVisible(true);
             ChangeUserPasswordPanel.getView().setVisible(true);

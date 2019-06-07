@@ -8,10 +8,10 @@
 package com.fieldnotes.fncp.mvc.controller.billingStateMachine;
 
 import com.fieldnotes.fncp.constants.FNPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNDataController;
+import com.fieldnotes.fncp.mvc.controller.FNDataService;
 import com.fieldnotes.fncp.mvc.model.FNNote;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -37,7 +37,7 @@ public class FNBillingStateMachine {
      * Updates the billing state of all uninitialized FieldNotes to "created".
      */
     public void initializeStates() {
-        JSONObject searchResponse = FNDataController.searchFieldNotes(null, null, null, null);
+        JSONObject searchResponse = FNDataService.searchFieldNotes(null, null, null, null);
         String status = searchResponse.getString(RESPONSE_STATUS_TAG);
         String messageString = searchResponse.getString(RESPONSE_MESSAGE_TAG);
 
@@ -53,7 +53,7 @@ public class FNBillingStateMachine {
                 if (state == JSONObject.NULL || state.equals("")) {
                     message.put(BILLING_STATE_TAG, BILLING_STATE_NOT_SET);
                     // create update state
-                    FNNote note = FNUtil.buildNote(message);
+                    FNNote note = FNSessionService.buildNote(message);
                     // advance state
                     advanceState(note);
                 }
@@ -80,9 +80,9 @@ public class FNBillingStateMachine {
                 note.setBillingState(FNPConstants.BILLING_STATE_CREATED);
                 break;
         }
-        note.setDescription(FNUtil.allowApostrophe(note.getDescription()));
+        note.setDescription(FNSessionService.allowApostrophe(note.getDescription()));
 
-        JSONObject updateResponse = FNDataController.updateFieldNote(note);
+        JSONObject updateResponse = FNDataService.updateFieldNote(note);
         String status = updateResponse.getString(RESPONSE_STATUS_TAG);
         String messageString = updateResponse.getString(RESPONSE_MESSAGE_TAG);
 

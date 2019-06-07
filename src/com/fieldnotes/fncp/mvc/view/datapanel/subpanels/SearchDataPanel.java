@@ -8,7 +8,7 @@
 package com.fieldnotes.fncp.mvc.view.datapanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNDataController;
+import com.fieldnotes.fncp.mvc.controller.FNDataService;
 import com.fieldnotes.fncp.mvc.controller.exporter.ExportController;
 import com.fieldnotes.fncp.mvc.model.FNNote;
 import com.fieldnotes.fncp.mvc.model.dateutils.DateLabelFormatter;
@@ -18,7 +18,7 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
 import com.fieldnotes.fncp.mvc.model.listview.FNListView;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -98,8 +98,8 @@ public class SearchDataPanel extends FNPanel {
         mSearchEndProperties.put("text.month", "Month");
         mSearchEndProperties.put("text.year", "Year");
 
-        if (!FNUtil.getInstance().hasAdminAccess()) {
-            mTextDataUsername.setText(FNUtil.getInstance().getCurrentUsername());
+        if (!FNSessionService.getInstance().hasAdminAccess()) {
+            mTextDataUsername.setText(FNSessionService.getInstance().getCurrentUsername());
             mTextDataUsername.setEditable(false);
             mTextDataUsername.setBackground(Color.WHITE);
         }
@@ -164,7 +164,7 @@ public class SearchDataPanel extends FNPanel {
      * @param dateEnd
      */
     private void searchFieldNotes(String username, String dateStart, String dateEnd) {
-        JSONObject searchFieldNoteResponse = FNDataController.searchFieldNotes(username, dateStart, dateEnd, null);
+        JSONObject searchFieldNoteResponse = FNDataService.searchFieldNotes(username, dateStart, dateEnd, null);
         String status = searchFieldNoteResponse.getString(RESPONSE_STATUS_TAG);
         String messageString = searchFieldNoteResponse.getString(RESPONSE_MESSAGE_TAG);
 
@@ -173,7 +173,7 @@ public class SearchDataPanel extends FNPanel {
 
             for (int i = 0; i < messageArray.length(); i++) {
                 JSONObject message = messageArray.getJSONObject(i);
-                FNNote note = FNUtil.buildNoteForReadback(message);
+                FNNote note = FNSessionService.buildNoteForReadback(message);
                 // add to ListView
                 mListView.addItem(note);
             }
@@ -197,7 +197,7 @@ public class SearchDataPanel extends FNPanel {
 
     private void resetGui() {
         mSearchDataPanel.setVisible(false);
-        if (FNUtil.getInstance().hasAdminAccess()) {
+        if (FNSessionService.getInstance().hasAdminAccess()) {
             mTextDataUsername.setText(null);
         }
         // remove items from ListView

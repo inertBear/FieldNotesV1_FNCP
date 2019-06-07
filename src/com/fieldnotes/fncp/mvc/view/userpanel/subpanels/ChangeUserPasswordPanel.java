@@ -6,10 +6,10 @@
 package com.fieldnotes.fncp.mvc.view.userpanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNUserController;
+import com.fieldnotes.fncp.mvc.controller.FNUserService;
 import com.fieldnotes.fncp.mvc.model.fnview.*;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -54,7 +54,7 @@ public class ChangeUserPasswordPanel extends FNPanel {
         mChangePasswordTextFieldPanel.setLayout(changeUserPasswordTextFieldPanelLayout);
 
         // ADMIN ACCESS: change any user password
-        if (FNUtil.getInstance().hasAdminAccess()) {
+        if (FNSessionService.getInstance().hasAdminAccess()) {
             FNLabel passUserlbl = new FNLabel(FNCPConstants.USER_USERNAME_LABEL);
             FNLabel newPassUserlbl = new FNLabel(FNCPConstants.USER_NEW_PASSWORD_LABEL);
 
@@ -70,7 +70,7 @@ public class ChangeUserPasswordPanel extends FNPanel {
                 public void actionPerformed(ActionEvent e) {
                     // Create FNUser -- with new password
                     String username = mChangePassUsername.getText();
-                    String currentPassword = FNUtil.getInstance().getCurrentPassword();
+                    String currentPassword = FNSessionService.getInstance().getCurrentPassword();
                     String newPassword = mNewUserPass.getText();
 
                     updatePassword(username, currentPassword, newPassword);
@@ -91,7 +91,7 @@ public class ChangeUserPasswordPanel extends FNPanel {
             mButtonChangePassword.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String username = FNUtil.getInstance().getCurrentUsername();
+                    String username = FNSessionService.getInstance().getCurrentUsername();
                     String currentPassword = mCurrentPass.getText();
                     String newPassword = mNewUserPass.getText();
 
@@ -114,14 +114,14 @@ public class ChangeUserPasswordPanel extends FNPanel {
     private void updatePassword(String username, String oldPassword, String newPassword) {
         JSONObject updatePasswordResponse;
         // if they supply their current password
-        if (FNUtil.getInstance().getCurrentPassword().equals(oldPassword)) {
+        if (FNSessionService.getInstance().getCurrentPassword().equals(oldPassword)) {
             // update their password
-            updatePasswordResponse = FNUserController.updatePassword(username, newPassword);
+            updatePasswordResponse = FNUserService.updatePassword(username, newPassword);
 
             String status = updatePasswordResponse.getString(RESPONSE_STATUS_TAG);
             String message = updatePasswordResponse.getString(RESPONSE_MESSAGE_TAG);
             if (status.equals(RESPONSE_STATUS_SUCCESS)) {
-                FNUtil.getInstance().setCurrentPassword(newPassword);
+                FNSessionService.getInstance().setCurrentPassword(newPassword);
                 resetGui();
             } else {
                 mCurrentPass.setText(null);

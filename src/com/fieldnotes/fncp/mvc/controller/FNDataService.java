@@ -8,6 +8,7 @@
 package com.fieldnotes.fncp.mvc.controller;
 
 import com.fieldnotes.fncp.mvc.controller.billingStateMachine.BillingState;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 import com.fieldnotes.fncp.mvc.model.FNNote;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -26,11 +27,10 @@ import static com.fieldnotes.fncp.constants.FNPConstants.*;
  * NOTE: The methods housed here were only intended to relate
  * to the actual storing, alteration, and retrieving of FNNote data.
  */
-public class FNDataController {
-
+public class FNDataService {
     private static JsonParser mJsonParser = new JsonParser();
 
-    public FNDataController() {
+    public FNDataService() {
     }
 
     /**
@@ -49,6 +49,7 @@ public class FNDataController {
         params.add(new BasicNameValuePair(DATE_START_TAG, dateStart));
         params.add(new BasicNameValuePair(DATE_END_TAG, dateEnd));
         params.add(new BasicNameValuePair(TICKET_NUMBER_TAG, ticketNumber));
+        params.add(new BasicNameValuePair(TOKEN_TAG, FNSessionService.getInstance().getCurrentToken()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(SEARCH_NOTES_URL, HTTP_REQUEST_METHOD_POST, params);
@@ -74,6 +75,7 @@ public class FNDataController {
         params.add(new BasicNameValuePair(PROJECT_NUMBER_TAG, projectNumber));
         params.add(new BasicNameValuePair(DATE_START_TAG, dateStart));
         params.add(new BasicNameValuePair(DATE_END_TAG, dateEnd));
+        params.add(new BasicNameValuePair(TOKEN_TAG, FNSessionService.getInstance().getCurrentToken()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(SEARCH_BILLING_URL, HTTP_REQUEST_METHOD_POST, params);
@@ -101,6 +103,7 @@ public class FNDataController {
         params.add(new BasicNameValuePair(LOCATION_TAG, note.getLocation()));
         params.add(new BasicNameValuePair(BILLING_TAG, note.getBillingType()));
         params.add(new BasicNameValuePair(GPS_TAG, note.getGPSCoords()));
+        params.add(new BasicNameValuePair(TOKEN_TAG, FNSessionService.getInstance().getCurrentToken()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(ADD_NOTE_URL, HTTP_REQUEST_METHOD_POST, params);
@@ -130,6 +133,7 @@ public class FNDataController {
         params.add(new BasicNameValuePair(BILLING_TAG, note.getBillingType()));
         params.add(new BasicNameValuePair(GPS_TAG, note.getGPSCoords()));
         params.add(new BasicNameValuePair(BILLING_STATE_TAG, note.getBillingState()));
+        params.add(new BasicNameValuePair(TOKEN_TAG, FNSessionService.getInstance().getCurrentToken()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(UPDATE_NOTE_URL, HTTP_REQUEST_METHOD_POST, params);
@@ -145,6 +149,7 @@ public class FNDataController {
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair(TICKET_NUMBER_TAG, ticketNumber));
+        params.add(new BasicNameValuePair(TOKEN_TAG, FNSessionService.getInstance().getCurrentToken()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(DELETE_NOTE_URL, HTTP_REQUEST_METHOD_POST, params);

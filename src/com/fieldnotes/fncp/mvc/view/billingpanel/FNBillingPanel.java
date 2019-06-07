@@ -14,7 +14,7 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
 import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
 import com.fieldnotes.fncp.mvc.view.billingpanel.subpanels.BillingStatePanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,7 +57,7 @@ public class FNBillingPanel extends FNPanel {
 
         mBtnUnbilled.addActionListener(e -> {
             resetGui();
-            mBtnUnbilled.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnUnbilled.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(BillingStatePanel.getView(), BorderLayout.CENTER);
             BillingStatePanel.setBillingState(new BillingState(FNPConstants.BILLING_STATE_CREATED));
 
@@ -70,7 +70,7 @@ public class FNBillingPanel extends FNPanel {
 
         mBtnBilled.addActionListener(e -> {
             resetGui();
-            mBtnBilled.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnBilled.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(BillingStatePanel.getView(), BorderLayout.CENTER);
             BillingStatePanel.setBillingState(new BillingState(FNPConstants.BILLING_STATE_BILLED));
 
@@ -83,7 +83,7 @@ public class FNBillingPanel extends FNPanel {
 
         mBtnCompleted.addActionListener(e -> {
             resetGui();
-            mBtnCompleted.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnCompleted.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(BillingStatePanel.getView(), BorderLayout.CENTER);
             BillingStatePanel.setBillingState(new BillingState(FNPConstants.BILLING_STATE_COMPLETE));
 

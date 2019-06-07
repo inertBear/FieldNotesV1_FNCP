@@ -7,7 +7,7 @@
 
 package com.fieldnotes.fncp.mvc.model.fnview;
 
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 
 import javax.swing.*;
 
@@ -16,13 +16,13 @@ public class FNLabel extends JLabel {
     public FNLabel() {
         setText("");
         setHorizontalAlignment(JLabel.CENTER);
-        setPreferredSize(FNUtil.getInstance().getStandardLabelDimension());
+        setPreferredSize(FNSessionService.getInstance().getStandardLabelDimension());
     }
 
     public FNLabel(String labelText) {
         setText(labelText);
-        setPreferredSize(FNUtil.getInstance().getStandardLabelDimension());
+        setPreferredSize(FNSessionService.getInstance().getStandardLabelDimension());
         setHorizontalAlignment(JLabel.CENTER);
-        setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
+        setBorder(BorderFactory.createLineBorder(FNSessionService.getInstance().getPrimaryColor()));
     }
 }

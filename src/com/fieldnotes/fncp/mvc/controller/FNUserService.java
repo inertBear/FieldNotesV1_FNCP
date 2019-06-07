@@ -7,7 +7,7 @@
 
 package com.fieldnotes.fncp.mvc.controller;
 
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -27,11 +27,10 @@ import static com.fieldnotes.fncp.constants.FNPConstants.*;
  * relate to the actual storing, alteration, and retrieving of FNUser
  * data.
  */
-public class FNUserController {
-
+public class FNUserService {
     private static JsonParser mJsonParser = new JsonParser();
 
-    public FNUserController() {
+    public FNUserService() {
     }
 
     /**
@@ -44,6 +43,7 @@ public class FNUserController {
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
+        params.add(new BasicNameValuePair(TOKEN_TAG, FNSessionService.getInstance().getCurrentToken()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(SEARCH_USERS_URL, HTTP_REQUEST_METHOD_POST, params);
@@ -63,6 +63,7 @@ public class FNUserController {
         params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
         params.add(new BasicNameValuePair(USER_PASSWORD_TAG, password));
         params.add(new BasicNameValuePair(USER_TYPE_TAG, type));
+        params.add(new BasicNameValuePair(TOKEN_TAG, FNSessionService.getInstance().getCurrentToken()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(ADD_USER_URL, HTTP_REQUEST_METHOD_POST, params);
@@ -78,6 +79,7 @@ public class FNUserController {
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
+        params.add(new BasicNameValuePair(TOKEN_TAG, FNSessionService.getInstance().getCurrentToken()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(DELETE_USER_URL, HTTP_REQUEST_METHOD_POST, params);
@@ -95,6 +97,7 @@ public class FNUserController {
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
         params.add(new BasicNameValuePair(USER_PASSWORD_TAG, newPassword));
+        params.add(new BasicNameValuePair(TOKEN_TAG, FNSessionService.getInstance().getCurrentToken()));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(UPDATE_PASSWORD_URL, HTTP_REQUEST_METHOD_POST, params);
@@ -108,7 +111,7 @@ public class FNUserController {
     public static JSONObject register(String productKey) {
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair(PRODUCT_KEY_TAG, productKey));
+        params.add(new BasicNameValuePair(TOKEN_TAG, productKey));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(REGISTER_URL, HTTP_REQUEST_METHOD_POST, params);
@@ -151,7 +154,7 @@ public class FNUserController {
         String message = response.getString(RESPONSE_MESSAGE_TAG);
 
         if (status.equals(RESPONSE_STATUS_SUCCESS)) {
-            FNUtil.getInstance().setCurrentUserType(message);
+            FNSessionService.getInstance().setCurrentUserType(message);
             return message.equals(ADMIN_USER);
         }
         return false;

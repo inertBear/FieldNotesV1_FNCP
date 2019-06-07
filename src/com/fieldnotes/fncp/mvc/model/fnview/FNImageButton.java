@@ -7,7 +7,7 @@
 
 package com.fieldnotes.fncp.mvc.model.fnview;
 
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
@@ -22,6 +22,6 @@ public class FNImageButton extends JButton {
         setBorder(null);
         setText(null);
         setOpaque(false);
-        setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
+        setBorder(BorderFactory.createLineBorder(FNSessionService.getInstance().getPrimaryColor()));
     }
 }

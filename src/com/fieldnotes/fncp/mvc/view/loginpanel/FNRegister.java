@@ -9,12 +9,12 @@ package com.fieldnotes.fncp.mvc.view.loginpanel;
 
 import com.fieldnotes.fncp.FNInit;
 import com.fieldnotes.fncp.constants.FNCPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNUserController;
+import com.fieldnotes.fncp.mvc.controller.FNUserService;
 import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
 import com.fieldnotes.fncp.mvc.model.fnview.FNLabel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -65,7 +65,7 @@ public class FNRegister extends FNPanel {
 
         BoxLayout controlPanel_Layout = new BoxLayout(mRegisterPanel, BoxLayout.Y_AXIS);
         mRegisterPanel.setLayout(controlPanel_Layout);
-        mRegisterPanel.setBorder(FNUtil.getInstance().getLineBorder());
+        mRegisterPanel.setBorder(FNSessionService.getInstance().getLineBorder());
 
         mRegisterPanel.add(mRegisterLabel);
         mRegisterPanel.add(Box.createVerticalGlue());
@@ -91,9 +91,9 @@ public class FNRegister extends FNPanel {
 
     private void register(String productKey) {
         // save key
-        FNUtil.getInstance().setCurrentProductKey(productKey);
+        FNSessionService.getInstance().setCurrentProductKey(productKey);
         // try to register
-        JSONObject response = FNUserController.register(productKey);
+        JSONObject response = FNUserService.register(productKey);
 
         String status = response.getString(RESPONSE_STATUS_TAG);
         String message = response.getString(RESPONSE_MESSAGE_TAG);
@@ -114,7 +114,7 @@ public class FNRegister extends FNPanel {
             mRegisterFrame.dispatchEvent(new WindowEvent(mRegisterFrame, WindowEvent.WINDOW_CLOSING));
         } else {
             // clear the key
-            FNUtil.getInstance().setCurrentProductKey("");
+            FNSessionService.getInstance().setCurrentProductKey("");
 
             JOptionPane.showMessageDialog(mRegisterFrame, message);
             resetGui();
