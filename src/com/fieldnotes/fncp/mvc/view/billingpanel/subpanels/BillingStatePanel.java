@@ -20,7 +20,7 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
 import com.fieldnotes.fncp.mvc.model.listview.FNListView;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;

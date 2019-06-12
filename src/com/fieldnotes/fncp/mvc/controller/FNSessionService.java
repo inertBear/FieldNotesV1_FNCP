@@ -5,7 +5,7 @@
  * Created by DevHunter exclusively for FieldNotes
  */
 
-package com.fieldnotes.fncp.mvc.controller.services;
+package com.fieldnotes.fncp.mvc.controller;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
 import com.fieldnotes.fncp.constants.FNPConstants;

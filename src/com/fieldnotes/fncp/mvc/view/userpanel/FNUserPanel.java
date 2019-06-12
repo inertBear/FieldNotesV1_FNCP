@@ -15,7 +15,7 @@ import com.fieldnotes.fncp.mvc.view.userpanel.subpanels.AddUserPanel;
 import com.fieldnotes.fncp.mvc.view.userpanel.subpanels.ChangeUserPasswordPanel;
 import com.fieldnotes.fncp.mvc.view.userpanel.subpanels.DeleteUserPanel;
 import com.fieldnotes.fncp.mvc.view.userpanel.subpanels.SearchUserPanel;
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 
 import javax.swing.*;
 import java.awt.*;

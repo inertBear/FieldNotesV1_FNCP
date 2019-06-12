@@ -14,7 +14,7 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
 import com.fieldnotes.fncp.mvc.model.fnview.FNLabel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import org.json.JSONObject;
 
 import javax.swing.*;

@@ -12,7 +12,7 @@ import com.fieldnotes.fncp.constants.FNCPConstants;
 import com.fieldnotes.fncp.mvc.controller.FNUserService;
 import com.fieldnotes.fncp.mvc.model.fnview.*;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;

@@ -7,7 +7,6 @@
 
 package com.fieldnotes.fncp.mvc.controller;
 
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;

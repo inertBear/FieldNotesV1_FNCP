@@ -15,7 +15,7 @@ import com.fieldnotes.fncp.mvc.view.datapanel.subpanels.AddDataPanel;
 import com.fieldnotes.fncp.mvc.view.datapanel.subpanels.DeleteDataPanel;
 import com.fieldnotes.fncp.mvc.view.datapanel.subpanels.EditDataPanel;
 import com.fieldnotes.fncp.mvc.view.datapanel.subpanels.SearchDataPanel;
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 
 import javax.swing.*;
 import java.awt.*;

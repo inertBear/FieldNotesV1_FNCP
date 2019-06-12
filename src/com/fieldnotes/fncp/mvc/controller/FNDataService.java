@@ -8,7 +8,6 @@
 package com.fieldnotes.fncp.mvc.controller;
 
 import com.fieldnotes.fncp.mvc.controller.billingStateMachine.BillingState;
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
 import com.fieldnotes.fncp.mvc.model.FNNote;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

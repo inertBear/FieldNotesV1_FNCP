@@ -11,7 +11,7 @@ import com.fieldnotes.fncp.constants.FNPConstants;
 import com.fieldnotes.fncp.mvc.controller.FNDataService;
 import com.fieldnotes.fncp.mvc.model.FNNote;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

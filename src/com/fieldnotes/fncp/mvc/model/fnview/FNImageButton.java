@@ -7,7 +7,7 @@
 
 package com.fieldnotes.fncp.mvc.model.fnview;
 
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;

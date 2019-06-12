@@ -12,7 +12,7 @@ import com.fieldnotes.fncp.mvc.controller.billingStateMachine.FNBillingStateMach
 import com.fieldnotes.fncp.mvc.model.FNNote;
 import com.fieldnotes.fncp.mvc.model.FNUser;
 import com.fieldnotes.fncp.mvc.model.FieldNote;
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.EventHandler;

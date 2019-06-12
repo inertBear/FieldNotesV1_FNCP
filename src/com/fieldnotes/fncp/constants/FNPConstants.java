@@ -31,10 +31,10 @@ public class FNPConstants {
     public static final String BILLING_STATE_TAG = "state";
 
     // JSON User tags
-    public static final String USER_USER_ID_TAG = "userId";
+    public static final String USER_USER_ID_TAG = "UserId";
     public static final String USER_USERNAME_TAG = "UserName";
     public static final String USER_PASSWORD_TAG = "UserPassword";
-    public static final String USER_TYPE_TAG = "userType";
+    public static final String USER_TYPE_TAG = "UserType";
 
     // JSON response tags
     public static final String RESPONSE_STATUS_TAG = "status";

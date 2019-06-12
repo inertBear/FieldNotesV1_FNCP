@@ -14,7 +14,7 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
 import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
 import com.fieldnotes.fncp.mvc.view.billingpanel.subpanels.BillingStatePanel;
-import com.fieldnotes.fncp.mvc.controller.services.FNSessionService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 
 import javax.swing.*;
 import java.awt.*;
