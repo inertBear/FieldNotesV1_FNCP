@@ -250,9 +250,10 @@ public class FNSessionService {
     public static FNUser buildUser(JSONObject message) {
         return new FNUser.FNUserBuilder()
                 .setId(message.getString(USER_USER_ID_TAG))
-                .setUsername(message.getString(USER_USERNAME_TAG))
-                .setPassword(message.getString(USER_PASSWORD_TAG))
+                .setUsername(message.getString(RESPONSE_USERNAME_TAG))
+                .setPassword(message.getString(RESPONSE_PASSWORD_TAG))
                 .setType(message.getString(USER_TYPE_TAG))
+                .setToken(message.getString(RESPONSE_USER_TOKEN_TAG))
                 .build();
     }
 
@@ -381,7 +382,8 @@ public class FNSessionService {
         return (FNCPConstants.USER_ID_LABEL + " " + user.getId() + "\n") +
                 FNCPConstants.USER_USERNAME_LABEL + " " + user.getName() + "\n" +
                 FNCPConstants.USER_PASSWORD_LABEL + " " + user.getPassword() + "\n" +
-                FNCPConstants.USER_USER_TYPE_LABEL + " " + user.getType() + "\n";
+                FNCPConstants.USER_USER_TYPE_LABEL + " " + user.getType() + "\n" +
+                FNCPConstants.USER_TOKEN_LABEL + " " + user.getToken() + "\n";
     }
 
     /**

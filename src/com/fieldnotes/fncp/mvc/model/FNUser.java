@@ -12,14 +12,15 @@ package com.fieldnotes.fncp.mvc.model;
 public class FNUser extends FieldNote {
 
     private String mType;
-    //TODO: [FNCP-022] convert this to Char array
     private String mPassword;
+    private String mToken;
 
-    private FNUser(String id, String username, String password, String type) {
+    private FNUser(String id, String username, String password, String type, String token) {
         this.mId = id;
         this.mName = username;
         this.mPassword = password;
         this.mType = type;
+        this.mToken = token;
     }
 
     public String getUsername() {
@@ -34,6 +35,10 @@ public class FNUser extends FieldNote {
         return this.mType;
     }
 
+    public String getToken() {
+        return this.mToken;
+    }
+
     /**
      * FNEntityBuilder
      */
@@ -41,8 +46,8 @@ public class FNUser extends FieldNote {
         private String mId;
         private String mType;
         private String mUsername;
-        //TODO: [FNCP-022] convert this to Char array
         private String mPassword;
+        private String mToken;
 
         public FNUserBuilder() {
         }
@@ -67,8 +72,13 @@ public class FNUser extends FieldNote {
             return this;
         }
 
+        public FNUserBuilder setToken(String token) {
+            this.mToken = token;
+            return this;
+        }
+
         public FNUser build() {
-            return new FNUser(mId, mUsername, mPassword, mType);
+            return new FNUser(mId, mUsername, mPassword, mType, mToken);
         }
     }
 }

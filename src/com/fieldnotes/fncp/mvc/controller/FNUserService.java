@@ -56,13 +56,13 @@ public class FNUserService {
      * @param type     of user to add
      * @return JSONObject that contains the search 'status' and 'message'
      */
-    public static JSONObject addUser(String username, String password, String type) {
+    public static JSONObject addUser(String username, String password, String type, String token) {
         // convert to List of params
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair(USER_USERNAME_TAG, username));
         params.add(new BasicNameValuePair(USER_PASSWORD_TAG, password));
         params.add(new BasicNameValuePair(USER_TYPE_TAG, type));
-        params.add(new BasicNameValuePair(TOKEN_TAG, FNSessionService.getInstance().getCurrentToken()));
+        params.add(new BasicNameValuePair(TOKEN_TAG, token));
 
         // make HTTP connection
         return mJsonParser.createHttpRequest(ADD_USER_URL, HTTP_REQUEST_METHOD_POST, params);

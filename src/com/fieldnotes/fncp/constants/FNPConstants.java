@@ -41,6 +41,9 @@ public class FNPConstants {
     public static final String RESPONSE_STATUS_SUCCESS = "success";
     public static final String RESPONSE_STATUS_FAILURE = "failure";
     public static final String RESPONSE_MESSAGE_TAG = "message";
+    public static final String RESPONSE_USERNAME_TAG = "Username";
+    public static final String RESPONSE_PASSWORD_TAG = "Password";
+    public static final String RESPONSE_USER_TOKEN_TAG = "UserToken";
     public static final String RESPONSE_TOKEN_TAG = "token";
 
     // Web Service URLs

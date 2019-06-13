@@ -27,6 +27,7 @@ public class AddUserPanel extends FNPanel {
     private FNPanel mCheckBoxPanel;
     private FNTextField mAddUser;
     private FNTextField mAddPassword;
+    private FNTextField mAddToken;
     private FNButton mButtonAdd;
     private FNCheckbox mAdminCheckbox;
     private FNCheckbox mUserCheckbox;
@@ -38,6 +39,7 @@ public class AddUserPanel extends FNPanel {
         mCheckBoxPanel = new FNPanel();
         mAddUser = new FNTextField();
         mAddPassword = new FNTextField();
+        mAddToken = new FNTextField();
         mButtonAdd = new FNButton(FNCPConstants.BUTTON_ADD);
         mAdminCheckbox = new FNCheckbox();
         mUserCheckbox = new FNCheckbox();
@@ -59,6 +61,7 @@ public class AddUserPanel extends FNPanel {
 
         FNLabel addUserLbl = new FNLabel(FNCPConstants.USER_NEW_USERNAME_LABEL);
         FNLabel addPassLbl = new FNLabel(FNCPConstants.USER_NEW_PASSWORD_LABEL);
+        FNLabel addTokenLbl = new FNLabel(FNCPConstants.USER_NEW_TOKEN_LABEL);
 
         ButtonGroup userButtonGroup = new ButtonGroup();
         userButtonGroup.add(mUserCheckbox);
@@ -117,6 +120,24 @@ public class AddUserPanel extends FNPanel {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        constraints.weightx = 1;
+        constraints.insets = new Insets(15, 20, 15, 20);
+        mAddUserTextFieldPanel.add(addTokenLbl, constraints);
+        //set constraints
+        constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        constraints.weightx = 3;
+        constraints.insets = new Insets(15, 20, 15, 20);
+        mAddUserTextFieldPanel.add(mAddToken, constraints);
+        //set constraints
+        constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 3;
         constraints.gridwidth = 2;
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.insets = new Insets(15, 20, 15, 20);
@@ -125,7 +146,7 @@ public class AddUserPanel extends FNPanel {
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         constraints.gridwidth = 2;
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.insets = new Insets(15, 50, 15, 50);
@@ -142,9 +163,10 @@ public class AddUserPanel extends FNPanel {
             public void actionPerformed(ActionEvent e) {
                 String newUsername = mAddUser.getText();
                 String newPassword = mAddPassword.getText();
+                String newToken = mAddToken.getText();
                 String newType = getSelectedUserType();
 
-                addUser(newUsername, newPassword, newType);
+                addUser(newUsername, newPassword, newType, newToken);
             }
         });
     }
@@ -156,11 +178,11 @@ public class AddUserPanel extends FNPanel {
      * @param password
      * @param type
      */
-    private void addUser(String username, String password, String type) {
+    private void addUser(String username, String password, String type, String token) {
         // capitalize username for consistency
         username = username.substring(0, 1).toUpperCase() + username.substring(1);
 
-        JSONObject addUserResponse = FNUserService.addUser(username, password, type);
+        JSONObject addUserResponse = FNUserService.addUser(username, password, type, token);
 
         String addUserMessage = addUserResponse.getString(RESPONSE_MESSAGE_TAG);
         JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), addUserMessage);
@@ -199,6 +221,7 @@ public class AddUserPanel extends FNPanel {
     private void resetGui() {
         mAddUser.setText(null);
         mAddPassword.setText(null);
+        mAddToken.setText(null);
         mAdminCheckbox.setSelected(false);
         mTestCheckbox.setSelected(false);
         mUserCheckbox.setSelected(true);
