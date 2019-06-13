@@ -15,7 +15,7 @@ import com.fieldnotes.fncp.mvc.view.datapanel.subpanels.AddDataPanel;
 import com.fieldnotes.fncp.mvc.view.datapanel.subpanels.DeleteDataPanel;
 import com.fieldnotes.fncp.mvc.view.datapanel.subpanels.EditDataPanel;
 import com.fieldnotes.fncp.mvc.view.datapanel.subpanels.SearchDataPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +50,7 @@ public class FNDataPanel extends FNPanel {
         sDataControlPanel.add(mBtnDataSearch);
         sDataControlPanel.add(mBtnDataAdd);
         // ADMIN ACCESS
-        if (FNUtil.getInstance().hasAdminAccess()) {
+        if (FNSessionService.getInstance().hasAdminAccess()) {
             sDataControlPanel.add(mBtnDataDeleteSearch);
         }
         sDataControlPanel.add(mBtnDataEditSearch);
@@ -63,7 +63,7 @@ public class FNDataPanel extends FNPanel {
 
         mBtnDataSearch.addActionListener(e -> {
             resetGui();
-            mBtnDataSearch.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnDataSearch.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(SearchDataPanel.getView(), BorderLayout.CENTER);
             sDataControlPanel.setVisible(true);
             SearchDataPanel.getView().setVisible(true);
@@ -74,7 +74,7 @@ public class FNDataPanel extends FNPanel {
 
         mBtnDataAdd.addActionListener(e -> {
             resetGui();
-            mBtnDataAdd.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnDataAdd.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(AddDataPanel.getView(), BorderLayout.CENTER);
             sDataControlPanel.setVisible(true);
             AddDataPanel.getView().setVisible(true);
@@ -85,7 +85,7 @@ public class FNDataPanel extends FNPanel {
 
         mBtnDataDeleteSearch.addActionListener(e -> {
             resetGui();
-            mBtnDataDeleteSearch.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnDataDeleteSearch.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(DeleteDataPanel.getView(), BorderLayout.CENTER);
             sDataControlPanel.setVisible(true);
             DeleteDataPanel.getView().setVisible(true);
@@ -96,7 +96,7 @@ public class FNDataPanel extends FNPanel {
 
         mBtnDataEditSearch.addActionListener(e -> {
             resetGui();
-            mBtnDataEditSearch.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mBtnDataEditSearch.setBackground(FNSessionService.getInstance().getPrimaryColor());
             FNControlPanel.getFieldNotesFrame().add(EditDataPanel.getView(), BorderLayout.CENTER);
             sDataControlPanel.setVisible(true);
             EditDataPanel.getView().setVisible(true);

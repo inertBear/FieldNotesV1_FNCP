@@ -7,7 +7,6 @@
 
 package com.fieldnotes.fncp.mvc.controller;
 
-import com.fieldnotes.fncp.utilities.FNUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -18,7 +17,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,11 +35,6 @@ class JsonParser {
     }
 
     JSONObject createHttpRequest(String url, String method, List<NameValuePair> params) {
-        //get Product key
-        String productKey = FNUtil.getInstance().getCurrentProductKey();
-        // add the Product key to params
-        params.add(new BasicNameValuePair(PRODUCT_KEY_TAG, productKey));
-
         // Make new HTTP request
         InputStream mInputStream = null;
         JSONObject mJsonObj = null;

@@ -8,7 +8,7 @@
 package com.fieldnotes.fncp.mvc.view.datapanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNDataController;
+import com.fieldnotes.fncp.mvc.controller.FNDataService;
 import com.fieldnotes.fncp.mvc.controller.validation.CrudSearchValidation;
 import com.fieldnotes.fncp.mvc.controller.validation.FNValidation;
 import com.fieldnotes.fncp.mvc.model.FNNote;
@@ -19,7 +19,7 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNLabel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import lu.tudor.santec.jtimechooser.JTimeChooser;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -82,8 +82,8 @@ public class EditDataPanel extends FNPanel {
         mTextEditDataMileageEnd = new FNTextField();
         mTextEditDataProject = new FNTextField();
         mTextEditDataGPS = new FNTextField();
-        mSpinnerEditDataLocation = new JSpinner(FNUtil.getInstance().getLocations());
-        mSpinnerEditDataBillable = new JSpinner(FNUtil.getInstance().getBillable());
+        mSpinnerEditDataLocation = new JSpinner(FNSessionService.getInstance().getLocations());
+        mSpinnerEditDataBillable = new JSpinner(FNSessionService.getInstance().getBillable());
         mEditTicketTimeStart = new JTimeChooser(new Date());
         mEditTicketTimeEnd = new JTimeChooser(new Date());
         mEditTicketStartModel = new UtilDateModel();
@@ -137,9 +137,9 @@ public class EditDataPanel extends FNPanel {
         FNLabel lblEditDataBillable = new FNLabel(FNCPConstants.FN_BILLING_LABEL);
 
         // Customize Spinner properties
-        mSpinnerEditDataLocation.setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
+        mSpinnerEditDataLocation.setPreferredSize(FNSessionService.getInstance().getLargeTextFieldDimen());
         mSpinnerEditDataLocation.setEditor(new JSpinner.DefaultEditor(mSpinnerEditDataLocation));
-        mSpinnerEditDataBillable.setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
+        mSpinnerEditDataBillable.setPreferredSize(FNSessionService.getInstance().getLargeTextFieldDimen());
         mSpinnerEditDataBillable.setEditor(new JSpinner.DefaultEditor(mSpinnerEditDataBillable));
 
         // set DatePickers properties
@@ -239,7 +239,7 @@ public class EditDataPanel extends FNPanel {
      * @param note
      */
     private void updateFieldNote(FNNote note) {
-        JSONObject updateResult = FNDataController.updateFieldNote(note);
+        JSONObject updateResult = FNDataService.updateFieldNote(note);
         String status = updateResult.getString(RESPONSE_STATUS_TAG);
         String message = updateResult.getString(RESPONSE_MESSAGE_TAG);
 
@@ -251,7 +251,7 @@ public class EditDataPanel extends FNPanel {
     }
 
     private void searchFieldNotes(String ticketNumber) {
-        JSONObject searchResult = FNDataController.searchFieldNotes(null, null, null, ticketNumber);
+        JSONObject searchResult = FNDataService.searchFieldNotes(null, null, null, ticketNumber);
         String status = searchResult.getString(RESPONSE_STATUS_TAG);
         String messageString = searchResult.getString(RESPONSE_MESSAGE_TAG);
 
@@ -337,8 +337,8 @@ public class EditDataPanel extends FNPanel {
         mEditFNDataPanel.setVisible(false);
         mCrudSearchPanel.setVisible(false);
         // clear all values in the views
-        mEditTicketTimeStart.setTime(FNUtil.getInstance().getZeroHour());
-        mEditTicketTimeEnd.setTime(FNUtil.getInstance().getZeroHour());
+        mEditTicketTimeStart.setTime(FNSessionService.getInstance().getZeroHour());
+        mEditTicketTimeEnd.setTime(FNSessionService.getInstance().getZeroHour());
         mEditTicketNumber.setText(null);
         mTextEditDataName.setText(null);
         mTextEditDataWellName.setText(null);

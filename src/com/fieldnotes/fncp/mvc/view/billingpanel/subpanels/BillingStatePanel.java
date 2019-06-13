@@ -8,7 +8,7 @@
 package com.fieldnotes.fncp.mvc.view.billingpanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNDataController;
+import com.fieldnotes.fncp.mvc.controller.FNDataService;
 import com.fieldnotes.fncp.mvc.controller.billingStateMachine.BillingState;
 import com.fieldnotes.fncp.mvc.controller.billingStateMachine.FNBillingStateMachine;
 import com.fieldnotes.fncp.mvc.controller.exporter.ExportController;
@@ -20,7 +20,7 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
 import com.fieldnotes.fncp.mvc.model.listview.FNListView;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -143,7 +143,7 @@ public class BillingStatePanel extends FNPanel {
     }
 
     private void searchFieldNotes(BillingState state, String username, String projectNumber, String dateStart, String dateEnd) {
-        JSONObject searchFieldNoteResponse = FNDataController.searchFieldNotes(state, projectNumber, username, dateStart, dateEnd);
+        JSONObject searchFieldNoteResponse = FNDataService.searchFieldNotes(state, projectNumber, username, dateStart, dateEnd);
         String status = searchFieldNoteResponse.getString(RESPONSE_STATUS_TAG);
         String messageString = searchFieldNoteResponse.getString(RESPONSE_MESSAGE_TAG);
 
@@ -153,7 +153,7 @@ public class BillingStatePanel extends FNPanel {
             for (int i = 0; i < messageArray.length(); i++) {
                 JSONObject message = messageArray.getJSONObject(i);
 
-                FNNote note = FNUtil.buildNote(message);
+                FNNote note = FNSessionService.buildNote(message);
 
                 // add to ListView
                 mListView.addItem(note);
@@ -182,7 +182,7 @@ public class BillingStatePanel extends FNPanel {
 
     private void resetGui() {
         mSearchDataPanel.setVisible(false);
-        if (FNUtil.getInstance().hasAdminAccess()) {
+        if (FNSessionService.getInstance().hasAdminAccess()) {
             mSearchUsername.setText(null);
         }
         mListView.removeItems();

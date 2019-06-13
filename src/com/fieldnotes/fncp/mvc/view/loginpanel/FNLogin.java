@@ -9,10 +9,10 @@ package com.fieldnotes.fncp.mvc.view.loginpanel;
 
 import com.fieldnotes.fncp.FNInit;
 import com.fieldnotes.fncp.constants.FNCPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNUserController;
+import com.fieldnotes.fncp.mvc.controller.FNUserService;
 import com.fieldnotes.fncp.mvc.model.fnview.*;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
@@ -91,10 +91,10 @@ public class FNLogin extends FNPanel {
         FNLabel lblPassword = new FNLabel(FNCPConstants.USER_PASSWORD_LABEL);
 
         // Override Label properties
-        mLoginUsername.setPreferredSize(FNUtil.getInstance().getStandardTextFieldDimension());
-        mLoginPassword.setPreferredSize(FNUtil.getInstance().getStandardTextFieldDimension());
+        mLoginUsername.setPreferredSize(FNSessionService.getInstance().getStandardTextFieldDimension());
+        mLoginPassword.setPreferredSize(FNSessionService.getInstance().getStandardTextFieldDimension());
         // Override PasswordField properties
-        mLoginPassword.setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
+        mLoginPassword.setBorder(BorderFactory.createLineBorder(FNSessionService.getInstance().getPrimaryColor()));
 
         // Add Views to UserName/Password Panels
         mLoginCredentialPanel.add(lblUsername);
@@ -126,21 +126,24 @@ public class FNLogin extends FNPanel {
     }
 
     private void login(String username, String password) {
-        JSONObject loginResponse = FNUserController.login(username, password);
+        JSONObject loginResponse = FNUserService.login(username, password);
 
         String status = loginResponse.getString(RESPONSE_STATUS_TAG);
         String message = loginResponse.getString(RESPONSE_MESSAGE_TAG);
 
         if (status.equals(RESPONSE_STATUS_SUCCESS)) {
+            // get login token from response
+            String token = loginResponse.getString(RESPONSE_TOKEN_TAG);
             //set username & password to session
-            FNUtil.getInstance().setCurrentUsername(username);
-            FNUtil.getInstance().setCurrentPassword(password);
+            FNSessionService.getInstance().setCurrentUsername(username);
+            FNSessionService.getInstance().setCurrentPassword(password);
+            FNSessionService.getInstance().setCurrentToken(token);
 
             //find out if user has Admin Access
-            if (FNUserController.hasAdminAccess(username)) {
-                FNUtil.getInstance().setAdminAccess(true);
+            if (FNUserService.hasAdminAccess(username)) {
+                FNSessionService.getInstance().setAdminAccess(true);
             } else {
-                FNUtil.getInstance().setAdminAccess(false);
+                FNSessionService.getInstance().setAdminAccess(false);
             }
 
             //open Control Panel

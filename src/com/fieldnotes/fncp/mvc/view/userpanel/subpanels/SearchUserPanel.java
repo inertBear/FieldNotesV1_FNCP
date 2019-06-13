@@ -8,7 +8,7 @@
 package com.fieldnotes.fncp.mvc.view.userpanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNUserController;
+import com.fieldnotes.fncp.mvc.controller.FNUserService;
 import com.fieldnotes.fncp.mvc.controller.exporter.ExportController;
 import com.fieldnotes.fncp.mvc.model.FNUser;
 import com.fieldnotes.fncp.mvc.model.fnview.FNButton;
@@ -17,7 +17,7 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
 import com.fieldnotes.fncp.mvc.model.listview.FNListView;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -105,7 +105,7 @@ public class SearchUserPanel extends FNPanel {
      * @param username
      */
     private void searchUser(String username) {
-        JSONObject searchResponse = FNUserController.searchUsers(username);
+        JSONObject searchResponse = FNUserService.searchUsers(username);
         String status = searchResponse.getString(RESPONSE_STATUS_TAG);
         String messageString = searchResponse.getString(RESPONSE_MESSAGE_TAG);
 
@@ -115,7 +115,7 @@ public class SearchUserPanel extends FNPanel {
             for (int i = 0; i < messageArray.length(); i++) {
                 JSONObject message = messageArray.getJSONObject(i);
 
-                FNUser note = FNUtil.buildUser(message);
+                FNUser note = FNSessionService.buildUser(message);
                 // add to ListView
                 mListView.addItem(note);
             }

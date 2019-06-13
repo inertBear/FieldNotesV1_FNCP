@@ -7,7 +7,7 @@
 
 package com.fieldnotes.fncp.mvc.model.fnview;
 
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +16,8 @@ public class FNTextField extends JTextField {
 
     public FNTextField() {
         new JTextField();
-        setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
-        setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
+        setPreferredSize(FNSessionService.getInstance().getLargeTextFieldDimen());
+        setBorder(BorderFactory.createLineBorder(FNSessionService.getInstance().getPrimaryColor()));
 
         float mCenterAlignment = Component.CENTER_ALIGNMENT;
 

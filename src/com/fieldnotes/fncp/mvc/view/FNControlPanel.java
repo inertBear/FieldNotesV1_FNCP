@@ -16,7 +16,7 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.view.billingpanel.FNBillingPanel;
 import com.fieldnotes.fncp.mvc.view.datapanel.FNDataPanel;
 import com.fieldnotes.fncp.mvc.view.userpanel.FNUserPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -60,7 +60,7 @@ public class FNControlPanel extends FNPanel {
 
         BoxLayout controlPanel_Layout = new BoxLayout(mControlPanel, BoxLayout.Y_AXIS);
         mControlPanel.setLayout(controlPanel_Layout);
-        mControlPanel.setBorder(FNUtil.getInstance().getLineBorder());
+        mControlPanel.setBorder(FNSessionService.getInstance().getLineBorder());
 
         // ImageLabels
         try {
@@ -81,7 +81,7 @@ public class FNControlPanel extends FNPanel {
         mControlPanel.add(mControlPanelDataButton);
         mControlPanel.add(Box.createVerticalGlue());
         // ADMIN ACCESS
-        if (FNUtil.getInstance().hasAdminAccess()) {
+        if (FNSessionService.getInstance().hasAdminAccess()) {
             mControlPanel.add(mControlPanelBillingButton);
             mControlPanel.add(Box.createVerticalGlue());
         }
@@ -101,7 +101,7 @@ public class FNControlPanel extends FNPanel {
             resetGui();
             FNUserPanel.showView();
 
-            mControlPanelUserButton.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mControlPanelUserButton.setBackground(FNSessionService.getInstance().getPrimaryColor());
 
             mMainControlFrame.add(FNUserPanel.getView(), BorderLayout.NORTH);
             mMainControlFrame.repaint();
@@ -113,7 +113,7 @@ public class FNControlPanel extends FNPanel {
             resetGui();
             FNDataPanel.showView();
 
-            mControlPanelDataButton.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mControlPanelDataButton.setBackground(FNSessionService.getInstance().getPrimaryColor());
 
             mMainControlFrame.add(FNDataPanel.getView(), BorderLayout.NORTH);
             mMainControlFrame.repaint();
@@ -125,7 +125,7 @@ public class FNControlPanel extends FNPanel {
             resetGui();
             FNBillingPanel.showView();
 
-            mControlPanelBillingButton.setBackground(FNUtil.getInstance().getPrimaryColor());
+            mControlPanelBillingButton.setBackground(FNSessionService.getInstance().getPrimaryColor());
 
             mMainControlFrame.add(FNBillingPanel.getView(), BorderLayout.NORTH);
             mMainControlFrame.repaint();

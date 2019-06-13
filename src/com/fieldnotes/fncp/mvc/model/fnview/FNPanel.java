@@ -7,7 +7,7 @@
 
 package com.fieldnotes.fncp.mvc.model.fnview;
 
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 
 import javax.swing.*;
 
@@ -15,6 +15,6 @@ public class FNPanel extends JPanel {
 
     public FNPanel() {
         new JPanel();
-        setBorder(FNUtil.getInstance().getLineBorder());
+        setBorder(FNSessionService.getInstance().getLineBorder());
     }
 }

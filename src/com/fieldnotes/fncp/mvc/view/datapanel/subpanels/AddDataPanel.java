@@ -9,7 +9,7 @@ package com.fieldnotes.fncp.mvc.view.datapanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
 import com.fieldnotes.fncp.constants.FNPConstants;
-import com.fieldnotes.fncp.mvc.controller.FNDataController;
+import com.fieldnotes.fncp.mvc.controller.FNDataService;
 import com.fieldnotes.fncp.mvc.controller.validation.FNValidation;
 import com.fieldnotes.fncp.mvc.model.FNNote;
 import com.fieldnotes.fncp.mvc.model.FNNote.FieldNoteBuilder;
@@ -19,7 +19,7 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNLabel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import lu.tudor.santec.jtimechooser.JTimeChooser;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -77,15 +77,15 @@ public class AddDataPanel extends FNPanel {
         mTextNewDataTimeEnd = new FNTextField();
         mTextNewDataProject = new FNTextField();
         mTextNewDataGPS = new FNTextField();
-        mSpinnerNewDataLocation = new JSpinner(FNUtil.getInstance().getLocations());
-        mSpinnerNewDataBillable = new JSpinner(FNUtil.getInstance().getBillable());
+        mSpinnerNewDataLocation = new JSpinner(FNSessionService.getInstance().getLocations());
+        mSpinnerNewDataBillable = new JSpinner(FNSessionService.getInstance().getBillable());
         mNewTicketTimeStart = new JTimeChooser(new Date());
         mNewTicketTimeEnd = new JTimeChooser(new Date());
         // FIXME: need to resize the JDatePicker's TextFields
         mNewTicketStartModel = new UtilDateModel();
         mNewTicketStartProperties = new Properties();
         mNewTicketStartDatePanel = new JDatePanelImpl(mNewTicketStartModel, mNewTicketStartProperties);
-        mNewTicketStartDatePanel.setSize(FNUtil.getInstance().getLargeTextFieldDimen());
+        mNewTicketStartDatePanel.setSize(FNSessionService.getInstance().getLargeTextFieldDimen());
         mNewTicketStartDatePicker = new JDatePickerImpl(mNewTicketStartDatePanel, new DateLabelFormatter());
         mNewTicketEndModel = new UtilDateModel();
         mNewTicketEndProperties = new Properties();
@@ -108,7 +108,7 @@ public class AddDataPanel extends FNPanel {
         mAddFNMainPanel.setLayout(addFNDataPanelLayout);
         FlowLayout addFNButtonPanelLayout = new FlowLayout();
         mAddFNButtonPanel.setLayout(addFNButtonPanelLayout);
-        mAddFNButtonPanel.setBorder(FNUtil.getInstance().getLineBorder());
+        mAddFNButtonPanel.setBorder(FNSessionService.getInstance().getLineBorder());
 
         FNLabel lblNewDataName = new FNLabel(FNCPConstants.FN_USERNAME_LABEL);
         FNLabel lblNewDataWellName = new FNLabel(FNCPConstants.FN_WELLNAME_LABEL);
@@ -126,12 +126,12 @@ public class AddDataPanel extends FNPanel {
 
         // Override TextField properties
         mTextNewDataName.setEditable(false);
-        mTextNewDataName.setText(FNUtil.getInstance().getCurrentUsername());
+        mTextNewDataName.setText(FNSessionService.getInstance().getCurrentUsername());
 
         // Customize Spinner properties
-        mSpinnerNewDataLocation.setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
+        mSpinnerNewDataLocation.setPreferredSize(FNSessionService.getInstance().getLargeTextFieldDimen());
         mSpinnerNewDataLocation.setEditor(new JSpinner.DefaultEditor(mSpinnerNewDataLocation));
-        mSpinnerNewDataBillable.setPreferredSize(FNUtil.getInstance().getLargeTextFieldDimen());
+        mSpinnerNewDataBillable.setPreferredSize(FNSessionService.getInstance().getLargeTextFieldDimen());
         mSpinnerNewDataBillable.setEditor(new JSpinner.DefaultEditor(mSpinnerNewDataBillable));
 
         // Set DatePicker properties
@@ -210,7 +210,7 @@ public class AddDataPanel extends FNPanel {
      * @param note
      */
     private void addFieldNote(FNNote note) {
-        JSONObject addFieldNoteResponse = FNDataController.addFieldNote(note);
+        JSONObject addFieldNoteResponse = FNDataService.addFieldNote(note);
         String status = addFieldNoteResponse.getString(RESPONSE_STATUS_TAG);
         String addUserMessage = addFieldNoteResponse.getString(RESPONSE_MESSAGE_TAG);
 
@@ -240,8 +240,8 @@ public class AddDataPanel extends FNPanel {
     private void resetGui() {
         // remove editable values in GUI
         mTextNewDataWellName.setText(null);
-        mNewTicketTimeStart.setTime(FNUtil.getInstance().getZeroHour());
-        mNewTicketTimeEnd.setTime(FNUtil.getInstance().getZeroHour());
+        mNewTicketTimeStart.setTime(FNSessionService.getInstance().getZeroHour());
+        mNewTicketTimeEnd.setTime(FNSessionService.getInstance().getZeroHour());
         mTextNewDataMileageStart.setText(null);
         mTextNewDataDescription.setText(null);
         mTextNewDataMileageEnd.setText(null);

@@ -11,7 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 
 import java.awt.*;
 
@@ -27,6 +27,6 @@ public class FNImageLabel extends JLabel {
         setBorder(null);
         setText(null);
         setOpaque(false);
-        setBorder(BorderFactory.createLineBorder(FNUtil.getInstance().getPrimaryColor()));
+        setBorder(BorderFactory.createLineBorder(FNSessionService.getInstance().getPrimaryColor()));
     }
 }

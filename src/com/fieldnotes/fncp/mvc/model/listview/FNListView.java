@@ -12,7 +12,7 @@ import com.fieldnotes.fncp.mvc.controller.billingStateMachine.FNBillingStateMach
 import com.fieldnotes.fncp.mvc.model.FNNote;
 import com.fieldnotes.fncp.mvc.model.FNUser;
 import com.fieldnotes.fncp.mvc.model.FieldNote;
-import com.fieldnotes.fncp.utilities.FNUtil;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.EventHandler;
@@ -93,7 +93,7 @@ public class FNListView extends JFXPanel {
                         }
                     });
 
-                    vbox = new VBox(5.0, new Text(FNUtil.getUserAsString(fnUser)), btnCancel);
+                    vbox = new VBox(5.0, new Text(FNSessionService.getUserAsString(fnUser)), btnCancel);
 
                     // if displaying a Note
                 } else if (note instanceof FNNote) {
@@ -131,9 +131,9 @@ public class FNListView extends JFXPanel {
 
                         //create Vbox  NOTE:(a Vbox is just a simple, single vertical column, this may need to be refined)
                         if (!fnNote.getBillingState().equals(FNPConstants.BILLING_STATE_COMPLETE)) {
-                            vbox = new VBox(5.0, new Text(FNUtil.getNoteAsString(fnNote)), btnChangeState, btnCancel);
+                            vbox = new VBox(5.0, new Text(FNSessionService.getNoteAsString(fnNote)), btnChangeState, btnCancel);
                         } else {
-                            vbox = new VBox(5.0, new Text(FNUtil.getNoteAsString(fnNote)), btnCancel);
+                            vbox = new VBox(5.0, new Text(FNSessionService.getNoteAsString(fnNote)), btnCancel);
                         }
                     } else {
                         //Create the "Close" button
@@ -146,7 +146,7 @@ public class FNListView extends JFXPanel {
                             }
                         });
 
-                        vbox = new VBox(5.0, new Text(FNUtil.getNoteAsStringForReadback(fnNote)), btnCancel);
+                        vbox = new VBox(5.0, new Text(FNSessionService.getNoteAsStringForReadback(fnNote)), btnCancel);
                     }
                 }
 

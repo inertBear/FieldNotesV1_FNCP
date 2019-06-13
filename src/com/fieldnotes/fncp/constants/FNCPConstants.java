@@ -16,7 +16,7 @@ public class FNCPConstants {
     // approved work locations
     public static final String[] APPROVED_BILLING_LOCATIONS = {"", "Office", "Field", "Shop"};
     // approved billing codes
-    public static final String[] APPROVED_BILLING_CODES = {"", "Turnkey", "Billable", "Not Billable"};
+    public static final String[] APPROVED_BILLING_CODES = {"", "Turn-key", "Billable", "Not Billable"};
     // Login window size Constants
     public static final int lOGIN_PANEL_X_AXIS = 300;
     public static final int lOGIN_PANEL_Y_AXIS = 300;
@@ -51,10 +51,12 @@ public class FNCPConstants {
     public static final String USER_NEW_USERNAME_LABEL = "New Username:";
     public static final String USER_CURRENT_PASSWORD_LABEL = "Current Password:";
     public static final String USER_NEW_PASSWORD_LABEL = "New Password:";
+    public static final String USER_NEW_TOKEN_LABEL = "User Token:";
     public static final String USER_USERNAME_LABEL = "Username:";
     public static final String USER_PASSWORD_LABEL = "Password:";
     public static final String USER_ID_LABEL = "User ID:";
     public static final String USER_USER_TYPE_LABEL = "User Type:";
+    public static final String USER_TOKEN_LABEL = "User Token:";
     public static final String ADMIN_USER = "admin";
     public static final String REGULAR_USER = "user";
     public static final String TEST_USER = "test";
