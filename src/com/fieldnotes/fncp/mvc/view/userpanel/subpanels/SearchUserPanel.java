@@ -118,6 +118,8 @@ public class SearchUserPanel extends FNPanel {
                 FNUser note = FNSessionService.buildUser(message);
                 // add to ListView
                 mListView.addItem(note);
+                // add the Export List
+                mUsers.add(note);
             }
         } else {
             JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);

@@ -9,6 +9,7 @@ package com.fieldnotes.fncp.mvc.view.billingpanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
 import com.fieldnotes.fncp.mvc.controller.FNDataService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import com.fieldnotes.fncp.mvc.controller.billingStateMachine.BillingState;
 import com.fieldnotes.fncp.mvc.controller.billingStateMachine.FNBillingStateMachine;
 import com.fieldnotes.fncp.mvc.controller.exporter.ExportController;
@@ -20,7 +21,6 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
 import com.fieldnotes.fncp.mvc.model.listview.FNListView;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -152,11 +152,12 @@ public class BillingStatePanel extends FNPanel {
 
             for (int i = 0; i < messageArray.length(); i++) {
                 JSONObject message = messageArray.getJSONObject(i);
-
                 FNNote note = FNSessionService.buildNote(message);
 
                 // add to ListView
                 mListView.addItem(note);
+                // add to Export List
+                mNotes.add(note);
             }
         } else {
             JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);

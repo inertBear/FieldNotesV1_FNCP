@@ -9,9 +9,9 @@ package com.fieldnotes.fncp.mvc.controller.billingStateMachine;
 
 import com.fieldnotes.fncp.constants.FNPConstants;
 import com.fieldnotes.fncp.mvc.controller.FNDataService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import com.fieldnotes.fncp.mvc.model.FNNote;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -37,7 +37,7 @@ public class FNBillingStateMachine {
      * Updates the billing state of all uninitialized FieldNotes to "created".
      */
     public void initializeStates() {
-        JSONObject searchResponse = FNDataService.searchFieldNotes(null, null, null, null);
+        JSONObject searchResponse = FNDataService.searchFieldNotes(null, null, null, "");
         String status = searchResponse.getString(RESPONSE_STATUS_TAG);
         String messageString = searchResponse.getString(RESPONSE_MESSAGE_TAG);
 

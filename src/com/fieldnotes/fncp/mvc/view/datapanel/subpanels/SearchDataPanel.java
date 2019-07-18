@@ -9,6 +9,7 @@ package com.fieldnotes.fncp.mvc.view.datapanel.subpanels;
 
 import com.fieldnotes.fncp.constants.FNCPConstants;
 import com.fieldnotes.fncp.mvc.controller.FNDataService;
+import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import com.fieldnotes.fncp.mvc.controller.exporter.ExportController;
 import com.fieldnotes.fncp.mvc.model.FNNote;
 import com.fieldnotes.fncp.mvc.model.dateutils.DateLabelFormatter;
@@ -18,7 +19,6 @@ import com.fieldnotes.fncp.mvc.model.fnview.FNPanel;
 import com.fieldnotes.fncp.mvc.model.fnview.FNTextField;
 import com.fieldnotes.fncp.mvc.model.listview.FNListView;
 import com.fieldnotes.fncp.mvc.view.FNControlPanel;
-import com.fieldnotes.fncp.mvc.controller.FNSessionService;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -164,7 +164,7 @@ public class SearchDataPanel extends FNPanel {
      * @param dateEnd
      */
     private void searchFieldNotes(String username, String dateStart, String dateEnd) {
-        JSONObject searchFieldNoteResponse = FNDataService.searchFieldNotes(username, dateStart, dateEnd, null);
+        JSONObject searchFieldNoteResponse = FNDataService.searchFieldNotes(username, dateStart, dateEnd, "");
         String status = searchFieldNoteResponse.getString(RESPONSE_STATUS_TAG);
         String messageString = searchFieldNoteResponse.getString(RESPONSE_MESSAGE_TAG);
 
@@ -176,6 +176,8 @@ public class SearchDataPanel extends FNPanel {
                 FNNote note = FNSessionService.buildNoteForReadback(message);
                 // add to ListView
                 mListView.addItem(note);
+                // add to Export List
+                mNotes.add(note);
             }
         } else {
             JOptionPane.showMessageDialog(FNControlPanel.getFieldNotesFrame(), messageString);
